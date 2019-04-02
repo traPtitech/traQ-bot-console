@@ -20,7 +20,10 @@ import {
   QList,
   QItem,
   QItemSection,
-  QItemLabel
+  QItemLabel,
+  QSeparator,
+  QScrollArea,
+  QExpansionItem
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -38,7 +41,10 @@ Vue.use(Quasar, {
     QList,
     QItem,
     QItemSection,
-    QItemLabel
+    QItemLabel,
+    QSeparator,
+    QScrollArea,
+    QExpansionItem
   },
   directives: {
   },
