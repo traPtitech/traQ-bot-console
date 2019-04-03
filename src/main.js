@@ -23,7 +23,8 @@ import {
   QItemLabel,
   QSeparator,
   QScrollArea,
-  QExpansionItem
+  QAvatar,
+  Loading
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -44,11 +45,12 @@ Vue.use(Quasar, {
     QItemLabel,
     QSeparator,
     QScrollArea,
-    QExpansionItem
+    QAvatar
   },
   directives: {
   },
   plugins: {
+    Loading
   }
 })
 

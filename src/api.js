@@ -43,6 +43,18 @@ export function getMe () {
   return axios.get(`/users/me`)
 }
 
+export function getUser (id) {
+  return axios.get(`/users/${id}`)
+}
+
+export function getUserIconURL (name) {
+  return `${baseURL}/public/icon/${encodeURIComponent(name)}`
+}
+
+export function getChannels () {
+  return axios.get(`/channels`)
+}
+
 export function getWebhooks () {
   return axios.get(`/webhooks`)
 }
