@@ -32,7 +32,8 @@ import {
   QImg,
   QCheckbox,
   Notify,
-  Loading
+  Loading,
+  Dialog
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -65,7 +66,8 @@ Vue.use(Quasar, {
   directives: {},
   plugins: {
     Notify,
-    Loading
+    Loading,
+    Dialog
   }
 })
 
