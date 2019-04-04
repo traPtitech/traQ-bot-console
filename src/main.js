@@ -29,6 +29,7 @@ import {
   QForm,
   QInput,
   QSelect,
+  QImg,
   QCheckbox,
   Notify,
   Loading
@@ -58,6 +59,7 @@ Vue.use(Quasar, {
     QForm,
     QInput,
     QSelect,
+    QImg,
     QCheckbox
   },
   directives: {},

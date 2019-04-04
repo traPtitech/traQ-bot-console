@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from './store'
-import { fetchAuthToken, redirectAuthorizationEndpoint, getMe, setAuthToken } from './api'
-import DefaultLayout from './layouts/Default.vue'
+import { fetchAuthToken, redirectAuthorizationEndpoint, setAuthToken } from './api'
 
 Vue.use(Router)
 
@@ -13,17 +12,12 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: DefaultLayout,
+      component: () => import('./layouts/Default'),
       children: [
         {
           path: '',
           name: 'home',
           component: () => import('./views/Home')
-        },
-        {
-          path: 'account',
-          name: 'account',
-          component: () => import('./views/Account')
         },
         {
           path: 'bots',
@@ -48,7 +42,7 @@ export default new Router({
       ],
       beforeEnter: async (to, from, next) => {
         try {
-          await getMe()
+          await store.dispatch('fetchUserInfo')
           next()
         } catch (e) {
           await redirectAuthorizationEndpoint()

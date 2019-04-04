@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { setAuthToken, getUser, getChannels } from './api'
+import { setAuthToken, getUser, getChannels, getMe } from './api'
 import { parseAPIChannelList } from './utils'
 import createPersistedState from 'vuex-persistedstate'
 
@@ -8,6 +8,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    userInfo: null,
     authToken: null,
     usernames: {},
     channelList: []
@@ -16,6 +17,9 @@ export default new Vuex.Store({
     getChannelArray: state => state.channelList.filter(c => c.visibility && !c.private)
   },
   mutations: {
+    setUserInfo (state, info) {
+      state.userInfo = info
+    },
     setToken (state, token) {
       state.authToken = token
       setAuthToken(token)
@@ -28,6 +32,10 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    async fetchUserInfo ({ commit }) {
+      const res = await getMe()
+      commit('setUserInfo', res.data)
+    },
     async fetchUserName ({ state, commit }, id) {
       let name = state.usernames[id]
       if (name) return name

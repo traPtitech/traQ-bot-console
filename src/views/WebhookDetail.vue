@@ -1,6 +1,10 @@
 <template lang="pug">
-  q-page 詳細
+  q-page.q-pa-md.q-gutter-sm
+    template(v-if="webhook !== null")
+      h6 {{ webhook.displayName }} Webhookの詳細
 
+    template(v-else)
+      span 読み込み中...
 </template>
 
 <script>
@@ -23,6 +27,7 @@ export default {
   methods: {
     async fetchData () {
       this.loading = true
+      this.webhook = null
       this.$q.loading.show({ delay: 400 })
       try {
         const res = await getWebhook(this.$route.params.id)
