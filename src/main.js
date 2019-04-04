@@ -24,6 +24,8 @@ import {
   QSeparator,
   QScrollArea,
   QAvatar,
+  QSpace,
+  QBanner,
   Loading
 } from 'quasar'
 
@@ -45,7 +47,9 @@ Vue.use(Quasar, {
     QItemLabel,
     QSeparator,
     QScrollArea,
-    QAvatar
+    QAvatar,
+    QSpace,
+    QBanner
   },
   directives: {
   },

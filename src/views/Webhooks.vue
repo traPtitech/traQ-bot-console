@@ -3,13 +3,16 @@
     q-list(bordered v-if="!loading" separator)
       q-item-label(header) 作成したWebhook一覧
 
-      q-item(v-for="wh in webhooks" :key="wh.webhookId" clickable)
+      q-item(v-for="wh in webhooks" :key="wh.webhookId" clickable :to="`/webhooks/${wh.webhookId}`")
         q-item-section(avatar)
           q-avatar
             img(:src="getUserIconURL(wh.botUserId)")
         q-item-section
           q-item-label {{ wh.displayName }}
           q-item-label(caption lines="1") {{ wh.description }}
+
+    div.q-pa-md
+      q-btn.full-width(color="primary" unelevated to="/webhooks/create") 新規作成
 
 </template>
 
@@ -30,9 +33,7 @@ export default {
   methods: {
     async getWebhooks () {
       this.loading = true
-      this.$q.loading.show({
-        delay: 400 // ms
-      })
+      this.$q.loading.show({ delay: 400 })
       try {
         const res = await getWebhooks()
         for (let wh of res.data) {

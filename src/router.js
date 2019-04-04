@@ -34,6 +34,16 @@ export default new Router({
           path: 'webhooks',
           name: 'webhooks',
           component: () => import('./views/Webhooks')
+        },
+        {
+          path: 'webhooks/create',
+          name: 'createWebhook',
+          component: () => import('./views/CreateWebhook')
+        },
+        {
+          path: 'webhooks/:id',
+          name: 'webhookDetail',
+          component: () => import('./views/WebhookDetail')
         }
       ],
       beforeEnter: async (to, from, next) => {
