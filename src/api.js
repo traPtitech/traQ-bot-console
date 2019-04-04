@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { randomString, pkce, hmacsha1 } from './utils'
 
-const baseURL = process.env.VUE_APP_API_ENDPOINT || 'https://traq-dev.tokyotech.org/api/1.0'
+export const baseURL = process.env.VUE_APP_API_ENDPOINT || 'https://traq-dev.tokyotech.org/api/1.0'
 axios.defaults.baseURL = baseURL
 
 export function setAuthToken (token) {

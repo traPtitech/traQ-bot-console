@@ -31,6 +31,8 @@ import {
   QSelect,
   QImg,
   QCheckbox,
+  QUploader,
+  QSpinner,
   Notify,
   Loading,
   Dialog
@@ -61,7 +63,9 @@ Vue.use(Quasar, {
     QInput,
     QSelect,
     QImg,
-    QCheckbox
+    QCheckbox,
+    QUploader,
+    QSpinner
   },
   directives: {},
   plugins: {
