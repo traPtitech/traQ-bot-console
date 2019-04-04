@@ -26,6 +26,11 @@ import {
   QAvatar,
   QSpace,
   QBanner,
+  QForm,
+  QInput,
+  QSelect,
+  QCheckbox,
+  Notify,
   Loading
 } from 'quasar'
 
@@ -49,11 +54,15 @@ Vue.use(Quasar, {
     QScrollArea,
     QAvatar,
     QSpace,
-    QBanner
+    QBanner,
+    QForm,
+    QInput,
+    QSelect,
+    QCheckbox
   },
-  directives: {
-  },
+  directives: {},
   plugins: {
+    Notify,
     Loading
   }
 })

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { setAuthToken, getUser } from './api'
+import { setAuthToken, getUser, getChannels } from './api'
+import { parseAPIChannelList } from './utils'
 import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
@@ -8,7 +9,11 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     authToken: null,
-    usernames: {}
+    usernames: {},
+    channelList: []
+  },
+  getters: {
+    getChannelArray: state => state.channelList.filter(c => c.visibility && !c.private)
   },
   mutations: {
     setToken (state, token) {
@@ -17,6 +22,9 @@ export default new Vuex.Store({
     },
     addUserNameCache (state, { id, name }) {
       state.usernames[id] = name
+    },
+    putChannelList (state, list) {
+      state.channelList = list
     }
   },
   actions: {
@@ -33,9 +41,14 @@ export default new Vuex.Store({
       }
       commit('addUserNameCache', { id, name })
       return name
+    },
+    async updateChannelList ({ commit }) {
+      const res = await getChannels()
+      const list = parseAPIChannelList(res.data)
+      commit('putChannelList', list)
     }
   },
   plugins: [createPersistedState({
-    paths: ['authToken', 'usernames']
+    paths: ['authToken', 'usernames', 'channelList']
   })]
 })

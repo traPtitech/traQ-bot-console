@@ -29,6 +29,12 @@ export default {
         this.webhook = res.data
       } catch (e) {
         console.error(e)
+        this.$q.notify({
+          icon: 'error_outline',
+          color: 'red-5',
+          textColor: 'white',
+          message: '取得時にエラーが発生しました'
+        })
       } finally {
         this.loading = false
         this.$q.loading.hide()

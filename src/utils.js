@@ -40,3 +40,48 @@ export async function hmacsha1 (message, secret) {
 export async function pkce (verifier) {
   return sha256(verifier).then(bufferToBase64UrlEncoded)
 }
+
+export function parseAPIChannelList (channels) {
+  function dfs (c, root) {
+    c.channelName = root + c.name
+    c.children.forEach(e => dfs(e, c.channelName + '/'))
+  }
+
+  function flatMap (channels) {
+    const children = channels.flatMap(c => flatMap(c.children))
+    channels.forEach(c => { delete c['children'] })
+    return [...channels, ...children]
+  }
+
+  let pool = {}
+  let root = ''
+  channels.filter(c => !c.dm).forEach(c => {
+    pool[c.channelId] = {
+      channelId: c.channelId,
+      name: c.name,
+      channelName: c.name,
+      children: [],
+      visibility: c.visibility,
+      private: c.private,
+      parent: c.parent
+    }
+  })
+  Object.keys(pool)
+    .filter(id => pool[id].channelId !== '')
+    .forEach(id => { pool[pool[id].parent].children.push(pool[id]) })
+  Object.keys(pool)
+    .forEach(id => {
+      pool[pool[id].parent].children.sort((lhs, rhs) => {
+        if (lhs.name < rhs.name) return -1
+        if (lhs.name > rhs.name) return 1
+        return 0
+      })
+    })
+  pool[root].children.forEach(e => dfs(e, '#'))
+
+  return flatMap(pool[root].children).sort((lhs, rhs) => {
+    if (lhs.channelName < rhs.channelName) return -1
+    if (lhs.channelName > rhs.channelName) return 1
+    return 0
+  })
+}

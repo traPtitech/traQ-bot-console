@@ -6,7 +6,7 @@
       q-item(v-for="wh in webhooks" :key="wh.webhookId" clickable :to="`/webhooks/${wh.webhookId}`")
         q-item-section(avatar)
           q-avatar
-            img(:src="getUserIconURL(wh.botUserId)")
+            img(:src="getUserIconURL(wh.botUserName)")
         q-item-section
           q-item-label {{ wh.displayName }}
           q-item-label(caption lines="1") {{ wh.description }}
@@ -37,19 +37,23 @@ export default {
       try {
         const res = await getWebhooks()
         for (let wh of res.data) {
-          this.$store.dispatch('fetchUserName', wh.botUserId)
+          wh.botUserName = await this.$store.dispatch('fetchUserName', wh.botUserId)
         }
         this.webhooks = res.data
       } catch (e) {
         console.error(e)
+        this.$q.notify({
+          icon: 'error_outline',
+          color: 'red-5',
+          textColor: 'white',
+          message: '一覧の取得時にエラーが発生しました'
+        })
       } finally {
         this.loading = false
         this.$q.loading.hide()
       }
     },
-    getUserIconURL (id) {
-      return getUserIconURL(this.$store.state.usernames[id])
-    }
+    getUserIconURL
   }
 }
 </script>
