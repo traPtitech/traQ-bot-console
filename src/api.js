@@ -83,7 +83,9 @@ export function patchWebhook (id, data) {
 }
 
 export async function postWebhookMessage (id, message, secret) {
-  const headers = {}
+  const headers = {
+    'Content-Type': 'text/plain; charset=UTF-8'
+  }
   if (secret && secret !== '') {
     headers['X-TRAQ-Signature'] = await hmacsha1(message, secret)
   }

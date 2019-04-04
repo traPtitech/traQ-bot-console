@@ -35,6 +35,11 @@ export default new Router({
           component: () => import('./views/CreateWebhook')
         },
         {
+          path: 'webhooks/tester',
+          name: 'testWebhook',
+          component: () => import('./views/WebhookTester')
+        },
+        {
           path: 'webhooks/:id',
           name: 'webhookDetail',
           component: () => import('./views/WebhookDetail')
