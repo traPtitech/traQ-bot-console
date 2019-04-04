@@ -8,7 +8,7 @@ VUE_APP_API_CLIENT_ID = ''
 
 [context.dev.environment]
 VUE_APP_API_ENDPOINT = 'https://traq-dev.tokyotech.org/api/1.0'
-VUE_APP_API_CLIENT_ID = ''
+VUE_APP_API_CLIENT_ID = '4yRM7RQvfLD71BbTwKfWzga2EgedPb22Vo6e'
 
 [[redirects]]
 from = "/*"
