@@ -1,11 +1,7 @@
-<template>
-  <q-page class="flex flex-center">
-    <img alt="Quasar logo" src="../assets/logo.png">
-  </q-page>
+<template lang="pug">
+  q-page.q-pa-md.q-gutter-sm
+    q-banner.bg-primary.text-white(rounded) 工事中
 </template>
-
-<style>
-</style>
 
 <script>
 export default {
