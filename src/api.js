@@ -55,6 +55,10 @@ export function getChannels () {
   return axios.get(`/channels`)
 }
 
+export function getChannel (id) {
+  return axios.get(`/channels/${id}`)
+}
+
 export function getWebhooks () {
   return axios.get(`/webhooks`)
 }

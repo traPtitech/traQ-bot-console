@@ -17,7 +17,7 @@
             q-item-section.text-grey チャンネルが表示されない場合は右の更新ボタンを押してください
         template(slot="after")
           q-btn(round dense flat icon="refresh" @click="fetchChannels")
-      q-input(v-model="secret" outlined label="Webhookシークレット" hint="Secure Webhookを使用しない場合は空欄にしてください")
+      q-input(v-model="secret" outlined label="Webhookシークレット" hint="Secure Webhookを使用しない場合は空欄にしてください。シークレットは後から見ることはできないので、記録しておいてください。")
       q-checkbox(v-model="accept" label="Webhook利用ルールに同意する")
       div
         q-btn.float-right(label="作成" color="primary" type="submit" unelevated)

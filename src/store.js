@@ -14,7 +14,15 @@ export default new Vuex.Store({
     channelList: []
   },
   getters: {
-    getChannelArray: state => state.channelList.filter(c => c.visibility && !c.private)
+    getChannelArray: state => state.channelList.filter(c => c.visibility && !c.private),
+    getChannel: state => id => {
+      for (let channel of state.channelList) {
+        if (channel.channelId === id) {
+          return channel
+        }
+      }
+      return null
+    }
   },
   mutations: {
     setUserInfo (state, info) {
