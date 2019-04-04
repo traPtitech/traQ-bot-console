@@ -1,23 +1,23 @@
 <template lang="pug">
   q-page.q-pa-md.q-gutter-sm
-    h6 Webhookの新規作成
+    h6 Webhook新規作成
     q-form.q-gutter-md(@submit="onSubmit")
       q-banner.bg-grey-3.text-black(rounded)
         template(slot="avatar")
           q-icon.text-orange(name="warning")
         | 不必要に大量のWebhookを作成することは避けてください
-      q-input(v-model="name" outlined label="Webhook名(表示名)" counter maxlength="32"
+      q-input(v-model="name" outlined stack-label label="Webhook名(表示名)" counter maxlength="32"
         :rules="[val => val && val.length > 0 || '必須項目です']" hint="Webhookが投稿したメッセージに表示されます")
-      q-input(v-model="description" outlined autogrow label="説明" type="textarea"
+      q-input(v-model="description" outlined autogrow stack-label label="説明" type="textarea"
         :rules="[val => val && val.length > 0 || '必須項目です']")
-      q-select(v-model="targetChannel" outlined clearable use-input hide-selected input-debounce="0" label="投稿先チャンネル" :options="channelOptions" option-value="channelName" option-label="channelName"
+      q-select(v-model="targetChannel" outlined clearable use-input hide-selected input-debounce="0" stack-label label="投稿先チャンネル" :options="channelOptions" option-value="channelName" option-label="channelName"
         :rules="[val => val || '必須項目です']" @filter="channelFilterFn" :loading="loadingChannel" :disable="loadingChannel" hint="プライベートなチャンネルは指定できません")
         template(slot="no-option")
           q-item
             q-item-section.text-grey チャンネルが表示されない場合は右の更新ボタンを押してください
         template(slot="after")
           q-btn(round dense flat icon="refresh" @click="fetchChannels")
-      q-input(v-model="secret" outlined label="Webhookシークレット" hint="Secure Webhookを使用しない場合は空欄にしてください。シークレットは後から見ることはできないので、記録しておいてください。")
+      q-input(v-model="secret" outlined stack-label label="Webhookシークレット" hint="Secure Webhookを使用しない場合は空欄にしてください。シークレットは後から見ることはできないので、記録しておいてください。")
       q-checkbox(v-model="accept" label="Webhook利用ルールに同意する")
       div
         q-btn.float-right(label="作成" color="primary" type="submit" unelevated)

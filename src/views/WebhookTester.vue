@@ -1,10 +1,11 @@
 <template lang="pug">
   q-page.q-pa-md.q-gutter-sm
     h6 Webhookテスター
+      p.text-caption 以下に指定した内容で実際にWebhookを送信します。
     q-form.q-gutter-md(@submit="onSubmit")
-      q-input(v-model="webhookId" outlined label="Webhook ID" :rules="[val => val && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(val) || 'Webhook IDを入力してください']")
-      q-input(v-model="webhookSecret" outlined label="Webhookシークレット" hint="Secure Webhookを使用しない場合は空欄にしてください")
-      q-input(v-model="message" ref="message" outlined height="300px" label="メッセージ本体" type="textarea" :rules="[val => val && val.length > 0 || '必須項目です']")
+      q-input(v-model="webhookId" outlined stack-label label="Webhook ID" :rules="[val => val && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(val) || 'Webhook IDを入力してください']")
+      q-input(v-model="webhookSecret" outlined stack-label label="Webhookシークレット" hint="Secure Webhookを使用しない場合は空欄にしてください")
+      q-input(v-model="message" ref="message" outlined height="300px" stack-label label="メッセージ本体" type="textarea" :rules="[val => val && val.length > 0 || '必須項目です']")
       div
         q-btn.float-right(label="送信" color="primary" type="submit" unelevated)
 </template>
