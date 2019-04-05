@@ -48,6 +48,7 @@ export default new Router({
       beforeEnter: async (to, from, next) => {
         try {
           await store.dispatch('fetchUserInfo')
+          await store.dispatch('updateChannelList')
           next()
         } catch (e) {
           await redirectAuthorizationEndpoint()

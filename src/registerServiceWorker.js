@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 
 import { register } from 'register-service-worker'
+import { Notify } from 'quasar'
 
 if (process.env.NODE_ENV === 'production') {
   register(`${process.env.BASE_URL}service-worker.js`, {
@@ -21,6 +22,13 @@ if (process.env.NODE_ENV === 'production') {
     },
     updated () {
       console.log('New content is available; please refresh.')
+      Notify.create({
+        icon: 'update',
+        color: 'teal',
+        textColor: 'white',
+        timeout: 3600 * 1000,
+        message: '新しいBOT Consoleが利用できます。ページを更新してください。'
+      })
     },
     offline () {
       console.log('No internet connection found. App is running in offline mode.')
