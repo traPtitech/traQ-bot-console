@@ -4,7 +4,7 @@ command = 'yarn build'
 
 [context.production.environment]
 VUE_APP_API_ENDPOINT = 'https://q.trap.jp/api/1.0'
-VUE_APP_API_CLIENT_ID = ''
+VUE_APP_API_CLIENT_ID = 'lkEl3HAUIqFm5mUvxmWIanbWO7EBd9ttwBaW'
 
 [context.dev.environment]
 VUE_APP_API_ENDPOINT = 'https://traq-dev.tokyotech.org/api/1.0'
