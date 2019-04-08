@@ -10,7 +10,7 @@ traQ BOTとは異なり、サービス・アプリケーションからtraQへ�
 ### 主な使用用途
 + サービスやアプリケーションの通知
 + 定期的なメッセージ送信
-+ IFTTTなどとの連携
++ IFTTT, Microsoft Flowなどとの連携
 + GiteaやGithubからのIssueやPull Requestなどの作成通知
 
 など

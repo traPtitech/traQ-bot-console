@@ -20,6 +20,11 @@ Insecure方式では、 ==`Webhook ID`を知っている人は誰でもメッセ
     + 投稿するメッセージをリクエストボディに含めてHTTP POSTで送信します。
 3. 使用したWebhookに登録してあるチャンネルにメッセージが投稿されます。 
 
+#### シェルスクリプト(curl)による送信例
+```bash
+curl -X POST -H "Content-Type: text/plain; charset=utf-8" -d "メッセージ本文" https://q.trap.jp/api/1.0/webhooks/{コピーしたWebhook ID}
+```
+
 ## Secure方式
 Webhook作成・編集時に登録した`Webhookシークレット`が必要になります。
 
@@ -39,3 +44,12 @@ traQサーバーがWebhookの送信元の正当性を検証します。
 3. 使用したWebhookに登録してあるチャンネルにメッセージが投稿されます。 
 
 #### [HMAC-SHA1の計算方法](/docs/webhook/hmacsha1)
+
+#### シェルスクリプト(curl)による送信例
+
+```bash
+message="メッセージ本文"
+signature=$(echo -n "$message" | openssl sha1 -hmac "Webhookシークレット")
+
+curl -X POST -H "Content-Type: text/plain; charset=utf-8" -H "X-TRAQ-Signature: $signature" -d "$message" https://q.trap.jp/api/1.0/webhooks/{コピーしたWebhook ID}
+```

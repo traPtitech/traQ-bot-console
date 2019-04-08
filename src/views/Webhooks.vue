@@ -1,8 +1,8 @@
 <template lang="pug">
   q-page.q-pa-md.q-gutter-md
     template(v-if="!loading")
-      q-list(bordered separator)
-        q-item-label(header) あなたが作成したWebhook一覧
+      q-list.rounded-borders(bordered separator)
+        q-item-label(header) あなたが作成したWebhook
 
         q-item(v-for="wh in myWebhooks" :key="wh.webhookId" clickable :to="`/webhooks/${wh.webhookId}`")
           q-item-section(avatar)
@@ -12,8 +12,8 @@
             q-item-label {{ wh.displayName }}
             q-item-label(caption lines="1") {{ wh.description }}
 
-      q-list(bordered separator v-if="othersWebhooks.length > 0")
-        q-item-label(header) 他の人が作成したWebhook一覧 (管理者権限による表示)
+      q-list.rounded-borders(bordered separator v-if="othersWebhooks.length > 0")
+        q-item-label(header) 他の人が作成したWebhook (管理者権限による表示)
 
         q-item(v-for="wh in othersWebhooks" :key="wh.webhookId" clickable :to="`/webhooks/${wh.webhookId}`")
           q-item-section(avatar)
