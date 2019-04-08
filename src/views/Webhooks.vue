@@ -1,7 +1,7 @@
 <template lang="pug">
   q-page
     q-list(bordered v-if="!loading" separator)
-      q-item-label(header) 作成したWebhook一覧
+      q-item-label(header) あなたが作成したWebhook一覧
 
       q-item(v-for="wh in webhooks" :key="wh.webhookId" clickable :to="`/webhooks/${wh.webhookId}`")
         q-item-section(avatar)

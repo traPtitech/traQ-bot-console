@@ -33,6 +33,8 @@ import {
   QCheckbox,
   QUploader,
   QSpinner,
+  QBreadcrumbs,
+  QBreadcrumbsEl,
   Notify,
   Loading,
   Dialog
@@ -65,7 +67,9 @@ Vue.use(Quasar, {
     QImg,
     QCheckbox,
     QUploader,
-    QSpinner
+    QSpinner,
+    QBreadcrumbs,
+    QBreadcrumbsEl
   },
   directives: {},
   plugins: {

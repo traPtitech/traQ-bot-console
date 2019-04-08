@@ -20,6 +20,37 @@ export default new Router({
           component: () => import('./views/Home')
         },
         {
+          path: 'docs/',
+          name: 'docs',
+          component: () => import('./layouts/Docs'),
+          children: [
+            {
+              path: '',
+              component: () => import('./docs/index.md')
+            },
+            {
+              path: 'webhook',
+              component: () => import('./docs/webhook/webhook.md')
+            },
+            {
+              path: 'webhook/hmacsha1',
+              component: () => import('./docs/webhook/hmacsha1.md')
+            },
+            {
+              path: 'webhook/rule',
+              component: () => import('./docs/webhook/rule.md')
+            },
+            {
+              path: 'webhook/create',
+              component: () => import('./docs/webhook/create.md')
+            },
+            {
+              path: 'webhook/send',
+              component: () => import('./docs/webhook/send.md')
+            }
+          ]
+        },
+        {
           path: 'bots',
           name: 'bots',
           component: () => import('./views/Bots')

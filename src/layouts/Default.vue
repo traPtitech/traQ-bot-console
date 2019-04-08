@@ -26,6 +26,10 @@
             q-item-section(avatar)
               q-icon(name="tag_faces")
             q-item-section BOTs
+          q-item(clickable to="/docs")
+            q-item-section(avatar)
+              q-icon(name="help")
+            q-item-section マニュアル
           q-separator
           q-item(clickable @click="logout")
             q-item-section(avatar)

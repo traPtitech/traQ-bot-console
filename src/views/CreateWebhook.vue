@@ -5,10 +5,13 @@
       q-banner.bg-grey-3.text-black(rounded)
         template(slot="avatar")
           q-icon.text-orange(name="warning")
-        | 不必要に大量のWebhookを作成することは避けてください
+        router-link(to="/docs/webhook") Webhookマニュアル
+        | と
+        router-link(to="/docs/webhook/rule") Webhook利用ルール
+        | をよく読んでから使用してください。
       q-input(v-model="name" outlined stack-label label="Webhook名(表示名)" counter maxlength="32"
         :rules="[val => val && val.length > 0 || '必須項目です']" hint="Webhookが投稿したメッセージに表示されます")
-      q-input(v-model="description" outlined autogrow stack-label label="説明" type="textarea"
+      q-input(v-model="description" outlined autogrow stack-label label="説明" type="textarea" hint="使用用途等を入力してください"
         :rules="[val => val && val.length > 0 || '必須項目です']")
       q-select(v-model="targetChannel" outlined clearable use-input hide-selected input-debounce="0" stack-label label="投稿先チャンネル" :options="channelOptions" option-value="channelName" option-label="channelName"
         :rules="[val => val || '必須項目です']" @filter="channelFilterFn" :loading="loadingChannel" :disable="loadingChannel" hint="プライベートなチャンネルは指定できません")
