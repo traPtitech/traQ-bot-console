@@ -37,3 +37,10 @@ function calcHMACSHA1(message, secret) {
   return crypto.createHmac('sha1', secret).update(message).digest('hex')
 }
 ```
+
+## bash(sh)
+`openssl`コマンドがインストールされている必要があります。
+
+```bash
+echo -n "message" | openssl sha1 -hmac "secret"
+```

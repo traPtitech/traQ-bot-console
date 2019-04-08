@@ -35,6 +35,7 @@ import {
   QSpinner,
   QBreadcrumbs,
   QBreadcrumbsEl,
+  QBadge,
   Notify,
   Loading,
   Dialog
@@ -69,7 +70,8 @@ Vue.use(Quasar, {
     QUploader,
     QSpinner,
     QBreadcrumbs,
-    QBreadcrumbsEl
+    QBreadcrumbsEl,
+    QBadge
   },
   directives: {},
   plugins: {

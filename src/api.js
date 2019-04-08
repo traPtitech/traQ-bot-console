@@ -60,7 +60,7 @@ export function getChannel (id) {
 }
 
 export function getWebhooks () {
-  return axios.get(`/webhooks`)
+  return axios.get(`/webhooks?all=1`)
 }
 
 export function getWebhook (id) {

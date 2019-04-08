@@ -20,6 +20,9 @@
               div.col-5.col-md-12.col-sm-12.q-pa-md
                 q-btn.full-width(unelevated color="grey" @click="editingIcon = !editingIcon") {{ editingIcon ? 'キャンセル' : 'アイコン変更'}}
           div.col-12.col-md-10.col-sm-9
+            div
+              q-badge(v-if="webhook.secure" color="blue") Secure Webhook
+              q-badge(v-else color="red") Insecure Webhook
             q-form.col(@submit="onSubmit")
               q-input(label="Webhook ID" v-model="webhook.webhookId" readonly hint='')
               q-input(label="Webhook User ID" v-model="webhook.botUserId" readonly hint='')
@@ -32,7 +35,10 @@
                     q-item-section.text-grey チャンネルが表示されない場合は右の更新ボタンを押してください
                 template(v-if="editing" slot="after")
                   q-btn(round dense flat icon="refresh" @click="fetchChannels")
-              q-input(v-model="secret" stack-label label="Webhookシークレット" :readonly="!editing" hide-hint hint="Secure Webhookを使用しない場合は空欄にしてください")
+              q-input(v-model="secret.value" stack-label label="Webhookシークレット" :readonly="!editing" hide-hint hint="Webhookシークレットを変更する場合は左のチェックを入れてください")
+                template(v-if="editing" slot="before")
+                  q-checkbox(v-model="secret.editing")
+              q-input(v-if="webhook.creatorId !== userInfo.userId" label="作成者" hint='' v-model="webhook.creatorName" readonly)
               q-input(label="作成日時" hint='' v-model="webhook.createdAt" readonly)
               div.row.q-gutter-sm(v-if="editing")
                 q-btn.col.btn-fixed-width(label="キャンセル" unelevated @click="cancelEditing")
@@ -72,7 +78,10 @@ export default {
         value: null,
         temp: null
       },
-      secret: '表示されません'
+      secret: {
+        value: '表示されません',
+        editing: false
+      }
     }
   },
   computed: {
@@ -80,7 +89,8 @@ export default {
       'getChannelArray'
     ]),
     ...mapState([
-      'authToken'
+      'authToken',
+      'userInfo'
     ]),
     iconUploadURL () {
       return `${baseURL}/webhooks/${this.$route.params.id}/icon`
@@ -103,6 +113,7 @@ export default {
       try {
         const webhook = (await getWebhook(this.$route.params.id)).data
         webhook.botUserName = await this.$store.dispatch('fetchUserName', webhook.botUserId)
+        webhook.creatorName = await this.$store.dispatch('fetchUserName', webhook.creatorId)
         this.name.value = webhook.displayName
         this.description.value = webhook.description
         this.webhook = webhook
@@ -193,31 +204,38 @@ export default {
       this.name.temp = this.name.value
       this.description.temp = this.description.value
       this.channel.temp = this.channel.value
-      this.secret = ''
+      this.secret.value = ''
+      this.secret.editing = false
       this.editing = true
     },
     cancelEditing () {
       this.name.value = this.name.temp
       this.description.value = this.description.temp
       this.channel.value = this.channel.temp
-      this.secret = '表示されません'
+      this.secret.value = '表示されません'
+      this.secret.editing = false
       this.editing = false
     },
     async onSubmit () {
       this.$q.loading.show({ delay: 400 })
       try {
-        await patchWebhook(this.webhook.webhookId, {
+        const params = {
           name: this.name.value,
           description: this.description.value,
-          channelId: this.channel.value.channelId,
-          secret: this.secret
-        })
+          channelId: this.channel.value.channelId
+        }
+        if (this.secret.editing) {
+          params.secret = this.secret.value
+        }
+        await patchWebhook(this.webhook.webhookId, params)
+        await this.fetchData()
         this.$q.notify({
           icon: 'done',
           color: 'primary',
           textColor: 'white',
           message: 'Webhookが編集されました'
         })
+        this.secret.value = '表示されません'
         this.editing = false
       } catch (e) {
         console.error(e)
