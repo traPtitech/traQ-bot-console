@@ -42,7 +42,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { getUserIconURL } from '../api'
+import { getUserIconURL, revokeAuthToken } from '../api'
 
 export default {
   name: 'LayoutDefault',
@@ -58,7 +58,11 @@ export default {
   },
   methods: {
     getUserIconURL,
-    logout () {
+    async logout () {
+      try {
+        await revokeAuthToken(this.$store.state.authToken)
+      } catch (e) {
+      }
       this.$store.commit('setToken', null)
       this.$store.commit('putChannelList', [])
       location.reload()

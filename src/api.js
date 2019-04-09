@@ -39,6 +39,12 @@ export function fetchAuthToken (code, verifier) {
   }))
 }
 
+export function revokeAuthToken (token) {
+  return axios.post(`/oauth2/revoke`, new URLSearchParams({
+    token: token
+  }))
+}
+
 export function getMe () {
   return axios.get(`/users/me`)
 }
