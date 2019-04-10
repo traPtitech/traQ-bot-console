@@ -1,5 +1,5 @@
 <template lang="pug">
-  q-page.q-pa-md.q-gutter-sm
+  q-page.q-pa-md.q-gutter-md
     h6 Webhook新規作成
     q-form.q-gutter-md(@submit="onSubmit")
       q-banner.bg-grey-3.text-black(rounded)

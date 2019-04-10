@@ -36,6 +36,10 @@ import {
   QBreadcrumbs,
   QBreadcrumbsEl,
   QBadge,
+  QTabs,
+  QTab,
+  QTabPanels,
+  QTabPanel,
   Notify,
   Loading,
   Dialog
@@ -71,7 +75,11 @@ Vue.use(Quasar, {
     QSpinner,
     QBreadcrumbs,
     QBreadcrumbsEl,
-    QBadge
+    QBadge,
+    QTabs,
+    QTab,
+    QTabPanels,
+    QTabPanel
   },
   directives: {},
   plugins: {

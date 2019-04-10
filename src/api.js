@@ -25,7 +25,7 @@ export async function redirectAuthorizationEndpoint () {
     response_type: 'code',
     code_challenge: codeChallenge,
     code_challenge_method: 'S256',
-    state: state
+    state
   })
   window.location.assign(authorizationEndpointUrl)
 }
@@ -35,14 +35,12 @@ export function fetchAuthToken (code, verifier) {
     client_id: process.env.VUE_APP_API_CLIENT_ID || 'lkElAHAUIqFmImUvxmWItnbWO7EBdxttwBaW',
     grant_type: 'authorization_code',
     code_verifier: verifier,
-    code: code
+    code
   }))
 }
 
 export function revokeAuthToken (token) {
-  return axios.post(`/oauth2/revoke`, new URLSearchParams({
-    token: token
-  }))
+  return axios.post(`/oauth2/revoke`, new URLSearchParams({ token }))
 }
 
 export function getMe () {
@@ -73,6 +71,10 @@ export function getWebhook (id) {
   return axios.get(`/webhooks/${id}`)
 }
 
+export function getWebhookMessages (id) {
+  return axios.get(`/webhooks/${id}/messages?limit=10`)
+}
+
 export function createWebhook (name, description, channelId, secret) {
   return axios.post(`/webhooks`, { name, description, channelId, secret })
 }
@@ -100,4 +102,8 @@ export async function postWebhookMessage (id, message, secret) {
     headers['X-TRAQ-Signature'] = await hmacsha1(message, secret)
   }
   return axios.post(`/webhooks/${id}`, message, { headers })
+}
+
+export async function getBots () {
+  return axios.get(`/bots`)
 }

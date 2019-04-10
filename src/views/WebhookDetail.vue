@@ -20,47 +20,64 @@
               div.col-5.col-md-12.col-sm-12.q-pa-md
                 q-btn.full-width(unelevated color="grey" @click="editingIcon = !editingIcon") {{ editingIcon ? 'キャンセル' : 'アイコン変更'}}
           div.col-12.col-md-10.col-sm-9
-            div
-              q-badge(v-if="webhook.secure" color="blue") Secure Webhook
-              q-badge(v-else color="red") Insecure Webhook
-            q-form.col(@submit="onSubmit")
-              q-input(label="Webhook ID" v-model="webhook.webhookId" readonly hint='')
-              q-input(label="Webhook User ID" v-model="webhook.botUserId" readonly hint='')
-              q-input(label="Webhook名" stack-label v-model="name.value" :readonly="!editing" :counter="editing" maxlength="32" :rules="[val => val && val.length > 0 || '必須項目です']")
-              q-input(label="説明" stack-label v-model="description.value" :readonly="!editing" type="textarea" autogrow :rules="[val => val && val.length > 0 || '必須項目です']")
-              q-select(v-model="channel.value" :readonly="!editing" :clearable="editing" use-input hide-selected input-debounce="0" stack-label label="投稿先チャンネル" :options="channelOptions" option-value="channelName" option-label="channelName"
-                :rules="[val => val || '必須項目です']" @filter="channelFilterFn" :loading="loadingChannel" :disable="loadingChannel")
-                template(slot="no-option")
-                  q-item
-                    q-item-section.text-grey チャンネルが表示されない場合は右の更新ボタンを押してください
-                template(v-if="editing" slot="after")
-                  q-btn(round dense flat icon="refresh" @click="fetchChannels")
-              q-input(v-model="secret.value" stack-label label="Webhookシークレット" :readonly="!editing" hide-hint hint="Webhookシークレットを変更する場合は左のチェックを入れてください")
-                template(v-if="editing" slot="before")
-                  q-checkbox(v-model="secret.editing")
-              q-input(v-if="webhook.creatorId !== userInfo.userId" label="作成者" hint='' v-model="webhook.creatorName" readonly)
-              q-input(label="作成日時" hint='' v-model="webhook.createdAt" readonly)
-              div.row.q-gutter-sm(v-if="editing")
-                q-btn.col.btn-fixed-width(label="キャンセル" unelevated @click="cancelEditing")
-                q-btn.col.btn-fixed-width(label="送信" color="primary" type="submit" unelevated)
-            div.row.q-gutter-sm(v-if="!editing")
-              q-btn.col.btn-fixed-width(color="primary" unelevated :to='`/webhooks/tester?id=${webhook.webhookId}`') テスト
-              q-btn.col.btn-fixed-width(color="secondary" unelevated @click="startEditing") 編集
-              q-btn.col.btn-fixed-width(color="negative" unelevated @click="onDeleteBtnClicked") 削除
+            q-tabs.text-grey(v-model="tab" dense active-color="primary" indicator-color="primary" narrow-indicator align="left")
+              q-tab(name="info" label="情報")
+              q-tab(name="messages" label="投稿メッセージ")
+            q-separator
+            q-tab-panels(v-model="tab" animated)
+              q-tab-panel(name="info")
+                div
+                  q-badge(v-if="webhook.secure" color="blue") Secure Webhook
+                  q-badge(v-else color="red") Insecure Webhook
+                q-form.col(@submit="onSubmit")
+                  q-input(label="Webhook ID" v-model="webhook.webhookId" readonly hint='')
+                  q-input(label="Webhook User ID" v-model="webhook.botUserId" readonly hint='')
+                  q-input(label="Webhook名" stack-label v-model="name.value" :readonly="!editing" :counter="editing" maxlength="32" :rules="[val => val && val.length > 0 || '必須項目です']")
+                  q-input(label="説明" stack-label v-model="description.value" :readonly="!editing" type="textarea" autogrow :rules="[val => val && val.length > 0 || '必須項目です']")
+                  q-select(v-model="channel.value" :readonly="!editing" :clearable="editing" use-input hide-selected input-debounce="0" stack-label label="投稿先チャンネル" :options="channelOptions" option-value="channelName" option-label="channelName"
+                    :rules="[val => val || '必須項目です']" @filter="channelFilterFn" :loading="loadingChannel" :disable="loadingChannel")
+                    template(slot="no-option")
+                      q-item
+                        q-item-section.text-grey チャンネルが表示されない場合は右の更新ボタンを押してください
+                    template(v-if="editing" slot="after")
+                      q-btn(round dense flat icon="refresh" @click="fetchChannels")
+                  q-input(v-model="secret.value" stack-label label="Webhookシークレット" :readonly="!editing" hide-hint hint="Webhookシークレットを変更する場合は左のチェックを入れてください")
+                    template(v-if="editing" slot="before")
+                      q-checkbox(v-model="secret.editing")
+                  q-input(v-if="webhook.creatorId !== userInfo.userId" label="作成者" hint='' v-model="webhook.creatorName" readonly)
+                  q-input(label="作成日時" hint='' v-model="webhook.createdAt" readonly)
+                  div.row.q-gutter-sm(v-if="editing")
+                    q-btn.col.btn-fixed-width(label="キャンセル" unelevated @click="cancelEditing")
+                    q-btn.col.btn-fixed-width(label="送信" color="primary" type="submit" unelevated)
+                div.row.q-gutter-sm(v-if="!editing")
+                  q-btn.col.btn-fixed-width(color="primary" unelevated :to='`/webhooks/tester?id=${webhook.webhookId}`') テスト
+                  q-btn.col.btn-fixed-width(color="secondary" unelevated @click="startEditing") 編集
+                  q-btn.col.btn-fixed-width(color="negative" unelevated @click="onDeleteBtnClicked") 削除
+              q-tab-panel(name="messages")
+                | このWebhookが投稿した最新のメッセージ10件を見ることができます。
+                q-list(separator)
+                  q-item(v-for="m in messages" :key="m.messageId")
+                    q-item-section
+                      q-item-label {{ getChannel(m.parentChannelId).channelName }}
+                      q-item-label(caption style="white-space:pre-wrap; word-wrap:break-word;") {{ m.content }}
+                    q-item-section(side top)
+                      q-item-label(caption) {{ dayjs(m.createdAt).format('YY/MM/DD HH:mm:ss')  }}
 
     template(v-else)
       span 読み込み中...
 </template>
 
 <script>
+import dayjs from 'dayjs'
 import { mapGetters, mapState } from 'vuex'
-import { getWebhook, deleteWebhook, getUserIconURL, patchWebhook, baseURL } from '../api'
+import { getWebhook, deleteWebhook, getUserIconURL, patchWebhook, getWebhookMessages, baseURL } from '../api'
 
 export default {
   name: 'WebhookDetail',
   data () {
     return {
       loading: false,
+      tab: 'info',
       webhook: null,
       loadingChannel: false,
       channelOptions: [],
@@ -81,12 +98,14 @@ export default {
       secret: {
         value: '表示されません',
         editing: false
-      }
+      },
+      messages: []
     }
   },
   computed: {
     ...mapGetters([
-      'getChannelArray'
+      'getChannelArray',
+      'getChannel'
     ]),
     ...mapState([
       'authToken',
@@ -122,6 +141,7 @@ export default {
           await this.$store.dispatch('updateChannelList')
           this.channel = this.$store.getters.getChannel(webhook.channelId)
         }
+        this.messages = (await getWebhookMessages(this.$route.params.id)).data
       } catch (e) {
         console.error(e)
         this.$q.notify({
@@ -265,7 +285,8 @@ export default {
         textColor: 'white',
         message: 'アイコンの変更でエラーが発生しました'
       })
-    }
+    },
+    dayjs
   }
 }
 </script>
