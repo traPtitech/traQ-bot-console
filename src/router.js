@@ -47,6 +47,14 @@ export default new Router({
             {
               path: 'webhook/send',
               component: () => import('./docs/webhook/send.md')
+            },
+            {
+              path: 'bot/bot',
+              component: () => import('./docs/bot/bot.md')
+            },
+            {
+              path: 'bot/rule',
+              component: () => import('./docs/bot/rule.md')
             }
           ]
         },
@@ -54,6 +62,11 @@ export default new Router({
           path: 'bots',
           name: 'bots',
           component: () => import('./views/Bots')
+        },
+        {
+          path: 'bots/create',
+          name: 'createBot',
+          component: () => import('./views/CreateBot')
         },
         {
           path: 'webhooks',
