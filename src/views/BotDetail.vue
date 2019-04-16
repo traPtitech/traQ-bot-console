@@ -1,7 +1,7 @@
 <template lang="pug">
   q-page.q-pa-md.q-gutter-md
     template(v-if="bot !== null")
-      h6 @{{ bot.botUserName }}の詳細
+      h6 {{ bot.displayName }} (@{{ bot.botUserName }})の詳細
         q-space
         div.q-gutter-sm
           template
@@ -97,8 +97,9 @@
                         template(slot="after")
                           q-btn(:disable="addingChannel === null" round dense flat icon="add" @click="onAddBotToChannelBtnClicked(addingChannel.channelId)")
               q-tab-panel(name="logs")
-                p 最新のBOTイベントを50件まで表示します。
-                q-table(:columns="eventLogsColumns" :data="eventLogs" flat row-key="requestId")
+                q-table(:columns="eventLogsColumns" :data="eventLogs" :loading="loadingEventLogs" flat row-key="requestId" title="最近のBOTイベント")
+                  template(#top-right)
+                    q-btn(round dense flat icon="refresh" @click="fetchEventLogs" :disable="loadingEventLogs")
                   template(#body="props")
                     q-tr.text-right(:props="props")
                       q-td(key="code" auto-width)
@@ -138,7 +139,8 @@ import {
   getBotInstalledChannels,
   removeBotFromChannel,
   addBotToChannel,
-  getBotEventLogs
+  getBotEventLogs,
+  getUser
 } from '../api'
 import events from '../botEvents'
 
@@ -182,7 +184,8 @@ export default {
           field: 'dateTime'
         }
       ],
-      eventLogs: []
+      eventLogs: [],
+      loadingEventLogs: false
     }
   },
   computed: {
@@ -232,11 +235,13 @@ export default {
       this.$q.loading.show({ delay: 400 })
       try {
         const bot = (await getBotDetail(this.botId)).data
-        bot.botUserName = await this.$store.dispatch('fetchUserName', bot.botUserId)
+        const botUser = (await getUser(bot.botUserId)).data
+        bot.botUserName = botUser.name
+        bot.displayName = botUser.displayName
         bot.creatorName = await this.$store.dispatch('fetchUserName', bot.creatorId)
         this.checkedEvents = [...bot.subscribeEvents]
         this.installedChannels = (await getBotInstalledChannels(this.botId)).data
-        this.eventLogs = (await getBotEventLogs(this.botId, 0, 0)).data
+        await this.fetchEventLogs()
         this.bot = bot
       } catch (e) {
         console.error(e)
@@ -266,6 +271,22 @@ export default {
         })
       } finally {
         this.loadingChannels = false
+      }
+    },
+    async fetchEventLogs () {
+      this.loadingEventLogs = true
+      try {
+        this.eventLogs = (await getBotEventLogs(this.botId, 0, 0)).data
+      } catch (e) {
+        console.error(e)
+        this.$q.notify({
+          icon: 'error_outline',
+          color: 'red-5',
+          textColor: 'white',
+          message: 'イベントログ更新時にエラーが発生しました'
+        })
+      } finally {
+        this.loadingEventLogs = false
       }
     },
     channelFilterFn (val, update) {
