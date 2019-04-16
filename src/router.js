@@ -69,6 +69,11 @@ export default new Router({
           component: () => import('./views/CreateBot')
         },
         {
+          path: 'bots/:id',
+          name: 'botDetail',
+          component: () => import('./views/BotDetail')
+        },
+        {
           path: 'webhooks',
           name: 'webhooks',
           component: () => import('./views/Webhooks')

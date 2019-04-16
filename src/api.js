@@ -108,6 +108,42 @@ export async function getBots () {
   return axios.get(`/bots`)
 }
 
+export async function getBotDetail (id) {
+  return axios.get(`/bots/${id}/detail`)
+}
+
 export async function createBot (name, displayName, description, webhookUrl) {
   return axios.post(`/bots`, { name, displayName, description, webhookUrl })
+}
+
+export async function changeBotEvents (id, events) {
+  return axios.put(`/bots/${id}/events`, { events })
+}
+
+export async function deleteBot (id) {
+  return axios.delete(`/bots/${id}`)
+}
+
+export async function revokeBotTokens (id) {
+  return axios.post(`/bots/${id}/reissue`)
+}
+
+export async function putBotState (id, state) {
+  return axios.put(`/bots/${id}/state`, { state })
+}
+
+export async function getBotInstalledChannels (id) {
+  return axios.get(`/bots/${id}/channels`)
+}
+
+export async function addBotToChannel (botCode, channelId) {
+  return axios.post(`/channels/${channelId}/bots`, { code: botCode })
+}
+
+export async function removeBotFromChannel (botId, channelId) {
+  return axios.delete(`/channels/${channelId}/bots/${botId}`)
+}
+
+export async function getBotEventLogs (botId, limit, offset) {
+  return axios.get(`/bots/${botId}/events/logs`, { params: { limit, offset } })
 }

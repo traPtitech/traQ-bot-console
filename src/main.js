@@ -40,6 +40,11 @@ import {
   QTab,
   QTabPanels,
   QTabPanel,
+  QTooltip,
+  QTable,
+  QTh,
+  QTr,
+  QTd,
   Notify,
   Loading,
   Dialog
@@ -79,7 +84,12 @@ Vue.use(Quasar, {
     QTabs,
     QTab,
     QTabPanels,
-    QTabPanel
+    QTabPanel,
+    QTooltip,
+    QTable,
+    QTh,
+    QTr,
+    QTd
   },
   directives: {},
   plugins: {
