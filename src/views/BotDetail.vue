@@ -39,16 +39,25 @@
             q-separator
             q-tab-panels(v-model="tab" animated)
               q-tab-panel(name="info")
-                q-form
+                q-form(@submit="onSubmit")
                   q-input(label="BOT ID" v-model="botId" readonly hint='')
                   q-input(label="BOT User ID" v-model="bot.botUserId" readonly hint='')
-                  q-input(v-model="bot.description" autogrow stack-label label="説明" type="textarea" readonly hint="")
-                  q-input(label="BOTサーバーエンドポイント" v-model="bot.postUrl" readonly hint='')
+                  q-input(label="BOT表示名" stack-label v-model="displayName" :readonly="!editing" :counter="editing" maxlength="32" hide-hint hint="BOTが投稿したメッセージに表示されます"
+                    :rules="[val => val && val.length > 0 || '必須項目です']")
+                  q-input(label="説明" stack-label v-model="description" :readonly="!editing" autogrow type="textarea" hide-hint hint="使用用途等を入力してください"
+                    :rules="[val => val && val.length > 0 || '必須項目です']")
+                  q-input(label="BOTサーバーエンドポイント" stack-label v-model="webhookUrl" :readonly="!editing" hide-hint  hint="traQのイベント送信先のURLを入力してください"
+                    :rules="[val => val && urlRegex.test(val) || '有効なURLを入力してください']")
+                  div.row.q-gutter-sm(v-if="editing")
+                    q-btn.col.btn-fixed-width(label="キャンセル" unelevated @click="cancelEditing")
+                    q-btn.col.btn-fixed-width(label="送信" color="primary" type="submit" unelevated)
                 div.row.q-gutter-sm
-                  template
-                    q-btn.col.btn-fixed-width(v-if="bot.state === 1" unelevated color="warning" @click="onDeactivateBtnClicked") 停止
-                    q-btn.col.btn-fixed-width(v-else unelevated color="primary" @click="onActivateBtnClicked") アクティベーション
-                  q-btn.col.btn-fixed-width(unelevated color='negative' @click="onDeleteBtnClicked") 削除
+                  template(v-if="!editing")
+                    template
+                      q-btn.col.btn-fixed-width(v-if="bot.state === 1" unelevated color="warning" @click="onDeactivateBtnClicked") 停止
+                      q-btn.col.btn-fixed-width(v-else unelevated color="primary" @click="onActivateBtnClicked") アクティベーション
+                    q-btn.col.btn-fixed-width(color="secondary" unelevated @click="startEditing") 基本情報編集
+                    q-btn.col.btn-fixed-width(unelevated color='negative' @click="onDeleteBtnClicked") 削除
               q-tab-panel(name="cred")
                 p 以下の認証情報の取り扱いに十分注意してください
                 q-form
@@ -140,7 +149,8 @@ import {
   removeBotFromChannel,
   addBotToChannel,
   getBotEventLogs,
-  getUser
+  getUser,
+  patchBot
 } from '../api'
 import events from '../botEvents'
 
@@ -185,7 +195,12 @@ export default {
         }
       ],
       eventLogs: [],
-      loadingEventLogs: false
+      loadingEventLogs: false,
+      displayName: '',
+      description: '',
+      webhookUrl: '',
+      editing: false,
+      urlRegex: /http(s)?:\/\/([\w-]+.)+[\w-]+(\/[\w- ./?%&=]*)?/i
     }
   },
   computed: {
@@ -231,6 +246,7 @@ export default {
   methods: {
     async fetchData () {
       this.loading = true
+      this.editing = false
       this.bot = null
       this.$q.loading.show({ delay: 400 })
       try {
@@ -243,6 +259,9 @@ export default {
         this.installedChannels = (await getBotInstalledChannels(this.botId)).data
         await this.fetchEventLogs()
         this.bot = bot
+        this.displayName = bot.displayName
+        this.description = bot.description
+        this.webhookUrl = bot.postUrl
       } catch (e) {
         console.error(e)
         this.$q.notify({
@@ -297,6 +316,40 @@ export default {
           const l = val.toLowerCase()
           this.channelOptions = this.getChannelArray.filter(v => v.channelName.toLowerCase().indexOf(l) > -1)
         })
+      }
+    },
+    async onSubmit () {
+      this.$q.loading.show({ delay: 400 })
+      try {
+        const params = {}
+        if (this.displayName !== this.bot.displayName) {
+          params['displayName'] = this.displayName
+        }
+        if (this.description !== this.bot.description) {
+          params['description'] = this.description
+        }
+        if (this.webhookUrl !== this.bot.postUrl) {
+          params['webhookUrl'] = this.webhookUrl
+        }
+        await patchBot(this.botId, params)
+        await this.fetchData()
+        this.$q.notify({
+          icon: 'done',
+          color: 'primary',
+          textColor: 'white',
+          message: 'BOTが編集されました'
+        })
+        this.editing = false
+      } catch (e) {
+        console.error(e)
+        this.$q.notify({
+          icon: 'error_outline',
+          color: 'red-5',
+          textColor: 'white',
+          message: '送信時にエラーが発生しました'
+        })
+      } finally {
+        this.$q.loading.hide()
       }
     },
     async onChangeEventBtnClicked () {
@@ -541,6 +594,18 @@ export default {
         textColor: 'white',
         message: 'アイコンの変更でエラーが発生しました'
       })
+    },
+    startEditing () {
+      this.displayName = this.bot.displayName
+      this.description = this.bot.description
+      this.webhookUrl = this.bot.postUrl
+      this.editing = true
+    },
+    cancelEditing () {
+      this.displayName = this.bot.displayName
+      this.description = this.bot.description
+      this.webhookUrl = this.bot.postUrl
+      this.editing = false
     },
     getUserIconURL,
     dayjs

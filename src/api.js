@@ -116,6 +116,10 @@ export async function createBot (name, displayName, description, webhookUrl) {
   return axios.post(`/bots`, { name, displayName, description, webhookUrl })
 }
 
+export async function patchBot (id, data) {
+  return axios.patch(`/bots/${id}`, data)
+}
+
 export async function changeBotEvents (id, events) {
   return axios.put(`/bots/${id}/events`, { events })
 }
