@@ -18,6 +18,10 @@ export default {
     category: 'メッセージ',
     description: 'チャンネルにメッセージが投稿された'
   },
+  'DIRECT_MESSAGE_CREATED': {
+    category: 'メッセージ',
+    description: 'BOTに対してダイレクトメッセージが投稿された'
+  },
   'CHANNEL_CREATED': {
     category: 'チャンネル',
     description: 'チャンネルが作成された',
