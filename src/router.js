@@ -49,12 +49,32 @@ export default new Router({
               component: () => import('./docs/webhook/send.md')
             },
             {
-              path: 'bot/bot',
+              path: 'bot',
               component: () => import('./docs/bot/bot.md')
             },
             {
               path: 'bot/rule',
               component: () => import('./docs/bot/rule.md')
+            },
+            {
+              path: 'bot/register',
+              component: () => import('./docs/bot/register.md')
+            },
+            {
+              path: 'bot/settings',
+              component: () => import('./docs/bot/settings.md')
+            },
+            {
+              path: 'bot/settings',
+              component: () => import('./docs/bot/settings.md')
+            },
+            {
+              path: 'bot/server',
+              component: () => import('./docs/bot/server.md')
+            },
+            {
+              path: 'bot/events',
+              component: () => import('./docs/bot/events.md')
             }
           ]
         },
