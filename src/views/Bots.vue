@@ -2,7 +2,7 @@
   q-page.q-pa-md.q-gutter-md
     template(v-if="!loading")
       q-list.rounded-borders(bordered separator)
-        q-item-label(header) あなたが作成したBOT
+        q-item-label(header) あなたが登録したBOT
 
         q-item(v-for="b in myBots" :key="b.botId" :to="`/bots/${b.botId}`" clickable)
           q-item-section(avatar)
@@ -13,7 +13,7 @@
             q-item-label(caption lines="1") {{ b.description }}
 
       q-list.rounded-borders(v-if="othersBots.length > 0" bordered separator)
-        q-item-label(header) 他の人が作成したBOT (管理者権限による表示)
+        q-item-label(header) 他の人が登録したBOT (管理者権限による表示)
 
         q-item(v-for="b in othersBots" :key="b.botId" :to="`/bots/${b.botId}`" clickable)
           q-item-section(avatar)
@@ -23,10 +23,10 @@
             q-item-label @{{ b.botUserName }}
             q-item-label(caption lines="1") {{ b.description }}
           q-item-section(side top)
-            q-item-label(caption) @{{ b.creatorName }}によって作成
+            q-item-label(caption) @{{ b.creatorName }}によって登録
 
     div.q-pa-md
-      q-btn.full-width(color="primary" unelevated to="/bots/create") 新規作成
+      q-btn.full-width(color="primary" unelevated to="/bots/create") 新規登録
 </template>
 
 <script>

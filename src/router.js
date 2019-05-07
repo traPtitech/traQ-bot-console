@@ -57,6 +57,10 @@ export default new Router({
               component: () => import('./docs/bot/rule.md')
             },
             {
+              path: 'bot/overview',
+              component: () => import('./docs/bot/overview.md')
+            },
+            {
               path: 'bot/register',
               component: () => import('./docs/bot/register.md')
             },
@@ -74,7 +78,17 @@ export default new Router({
             },
             {
               path: 'bot/events',
-              component: () => import('./docs/bot/events.md')
+              template: '<router-view></router-view>',
+              children: [
+                {
+                  path: '',
+                  component: () => import('./docs/bot/events.md')
+                }
+              ]
+            },
+            {
+              path: 'bot/traq-api',
+              component: () => import('./docs/bot/traq-api.md')
             }
           ]
         },

@@ -1,6 +1,6 @@
 <template lang="pug">
   q-page.q-pa-md.q-gutter-md
-    h6 BOT新規作成
+    h6 BOT新規登録
     q-form.q-gutter-md(@submit="onSubmit")
       q-banner.bg-grey-3.text-black(rounded)
         template(slot="avatar")
@@ -19,7 +19,7 @@
         :rules="[val => val && urlRegex.test(val) || '有効なURLを入力してください']")
       q-checkbox(v-model="accept" label="BOT利用ルールに同意する")
       div
-        q-btn.float-right(label="作成" color="primary" type="submit" unelevated)
+        q-btn.float-right(label="登録" color="primary" type="submit" unelevated)
 
 </template>
 
@@ -57,7 +57,7 @@ export default {
               icon: 'done',
               color: 'primary',
               textColor: 'white',
-              message: 'BOTが作成されました'
+              message: 'BOTが登録されました'
             })
           })
         } catch (e) {
@@ -74,7 +74,7 @@ export default {
               icon: 'error_outline',
               color: 'red-5',
               textColor: 'white',
-              message: '作成時にエラーが発生しました'
+              message: '登録時にエラーが発生しました'
             })
           }
         } finally {

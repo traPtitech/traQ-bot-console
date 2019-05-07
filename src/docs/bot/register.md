@@ -1,5 +1,5 @@
 # BOTを新規登録する
-BOTは[BOT新規作成ページ](/bots/create)から登録することができます。
+BOTは[BOT新規登録ページ](/bots/create)から登録することができます。
 
 BOTがtraQのどのイベントを受け取るかの設定は登録後に行います。詳しくは[BOTを設定する](/docs/bot/settings)ページをご覧ください。
 

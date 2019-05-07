@@ -5,6 +5,8 @@ traQ BOTでは、HTTP POSTによってtraQからイベントをBOTに送信す�
 
 ==使用する場合は、このマニュアルと、[BOT利用ルール](/docs/bot/rule)をよく読んでから使用してください。==
 
+## [traQ BOT概要](/docs/bot/overview)
+traQ BOTの全体的な構成や、BOTを実際に動かすまでの大まかな手順はこちらをご覧ください。
 
 ## [BOTを新規登録する](/docs/bot/register)
 
@@ -14,4 +16,4 @@ traQ BOTでは、HTTP POSTによってtraQからイベントをBOTに送信す�
 
 ## [BOTイベントリファレンス](/docs/bot/events)
 
-## traQ APIリファレンス
+## [traQ APIリファレンス](/docs/bot/traq-api)
