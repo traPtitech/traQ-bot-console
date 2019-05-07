@@ -13,3 +13,5 @@ traQ BOTでは、HTTP POSTによってtraQからイベントをBOTに送信す�
 ## [BOTを設定する](/docs/bot/settings)
 
 ## [BOTイベントリファレンス](/docs/bot/events)
+
+## traQ APIリファレンス
