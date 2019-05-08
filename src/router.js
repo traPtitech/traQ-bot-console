@@ -78,13 +78,7 @@ export default new Router({
             },
             {
               path: 'bot/events',
-              template: '<router-view></router-view>',
-              children: [
-                {
-                  path: '',
-                  component: () => import('./docs/bot/events.md')
-                }
-              ]
+              component: () => import('./docs/bot/events.md')
             },
             {
               path: 'bot/traq-api',
