@@ -27,6 +27,10 @@ export default {
     description: 'チャンネルが作成された',
     privileged: true
   },
+  'CHANNEL_TOPIC_CHANGED': {
+    category: 'チャンネル',
+    description: 'チャンネルのトピックが変更された'
+  },
   'USER_CREATED': {
     category: 'ユーザー',
     description: 'ユーザーが作成された',
