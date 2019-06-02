@@ -1,6 +1,6 @@
 # traq-bot-console
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/3f3f6a7e-f4ae-4a4a-9685-1630eac8f0ea/deploy-status)](https://app.netlify.com/sites/traq-bot-console/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/bf81b35b-92e3-4f3b-99c7-a1a46c48388c/deploy-status)](https://app.netlify.com/sites/traq-bot-console/deploys)
 
 ## Project setup
 ```
