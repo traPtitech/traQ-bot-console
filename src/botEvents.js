@@ -16,7 +16,7 @@ export default {
   },
   'MESSAGE_CREATED': {
     category: 'メッセージ',
-    description: 'チャンネルにメッセージが投稿された'
+    description: 'チャンネルにメッセージが投稿された。BOTに対してメンションされた。'
   },
   'DIRECT_MESSAGE_CREATED': {
     category: 'メッセージ',
@@ -35,5 +35,9 @@ export default {
     category: 'ユーザー',
     description: 'ユーザーが作成された',
     privileged: true
+  },
+  'STAMP_CREATED': {
+    category: 'スタンプ',
+    description: 'スタンプが作成された'
   }
 }
