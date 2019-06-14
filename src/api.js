@@ -105,7 +105,7 @@ export async function postWebhookMessage (id, message, secret) {
 }
 
 export async function getBots () {
-  return axios.get(`/bots`)
+  return axios.get(`/bots?all=1`)
 }
 
 export async function getBotDetail (id) {
