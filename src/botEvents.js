@@ -16,7 +16,11 @@ export default {
   },
   'MESSAGE_CREATED': {
     category: 'メッセージ',
-    description: 'チャンネルにメッセージが投稿された。BOTに対してメンションされた。'
+    description: 'チャンネルにメッセージが投稿された。このイベントは参加チャンネルに投稿されたメンションを含みます。'
+  },
+  'MENTION_MESSAGE_CREATED': {
+    category: 'メッセージ',
+    description: 'BOTに対してメンションされた。このイベントはMESSAGE_CREATEDとして配信されます。'
   },
   'DIRECT_MESSAGE_CREATED': {
     category: 'メッセージ',
