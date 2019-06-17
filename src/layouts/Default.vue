@@ -26,6 +26,10 @@
             q-item-section(avatar)
               q-icon(name="tag_faces")
             q-item-section BOTs
+          q-item(clickable to="/clients")
+            q-item-section(avatar)
+              q-icon(name="chrome_reader_mode")
+            q-item-section Clients
           q-item(clickable to="/docs")
             q-item-section(avatar)
               q-icon(name="help")
