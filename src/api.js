@@ -1,14 +1,24 @@
-import axios from 'axios'
+import Axios from 'axios'
 import { randomString, pkce, hmacsha1 } from './utils'
 
-export const baseURL = process.env.VUE_APP_API_ENDPOINT || 'https://traq-dev.tokyotech.org/api/1.0'
-axios.defaults.baseURL = baseURL
+export const baseURL = process.env.VUE_APP_API_ENDPOINT || 'http://localhost:8080/api/1.0'
+
+let axios = Axios.create({
+  baseURL
+})
 
 export function setAuthToken (token) {
   if (token) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+    axios = Axios.create({
+      baseURL,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
   } else {
-    delete axios.defaults.headers.common['Authorization']
+    axios = Axios.create({
+      baseURL
+    })
   }
 }
 
@@ -151,3 +161,35 @@ export async function removeBotFromChannel (botId, channelId) {
 export async function getBotEventLogs (botId, limit, offset) {
   return axios.get(`/bots/${botId}/events/logs`, { params: { limit, offset } })
 }
+
+const clientAxios = Axios.create({
+  baseURL,
+  withCredentials: true
+})
+
+export async function getClients () {
+  return clientAxios.get(`/clients`)
+}
+
+export async function getClientDetail (id) {
+  return clientAxios.get(`/clients/${id}`)
+}
+
+export async function createClient (name, description, redirectUri, scopes) {
+  return clientAxios.post(`/clients`, {
+    name,
+    description,
+    redirectUri,
+    scopes
+  })
+}
+
+export async function patchClient (id, data) {
+  return clientAxios.patch(`/clients/${id}`, data)
+}
+
+export async function deleteClient (id) {
+  return clientAxios.delete(`/clients/${id}`)
+}
+
+window.apis = { getClientDetail, patchClient, deleteClient }
