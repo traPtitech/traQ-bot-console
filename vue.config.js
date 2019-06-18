@@ -64,13 +64,5 @@ module.exports = {
       maskIcon: 'img/icons/safari-pinned-tab.svg',
       msTileImage: 'img/icons/mstile-150x150.png'
     }
-  },
-  devServer: {
-    proxy: {
-      '^/api': {
-        target: 'https://traq-dev.tokyotech.org',
-        changeOrigin: true
-      }
-    }
   }
 }
