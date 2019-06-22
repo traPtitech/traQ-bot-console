@@ -157,7 +157,7 @@ export async function getClients () {
 }
 
 export async function getClientDetail (id) {
-  return axios.get(`/clients/${id}`)
+  return axios.get(`/clients/${id}/detail`)
 }
 
 export async function createClient (name, description, redirectUri, scopes) {

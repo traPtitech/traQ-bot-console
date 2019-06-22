@@ -39,7 +39,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { getClients /* getClientDetail */, deleteClient, patchClient } from '../api'
+import { getClientDetail, deleteClient, patchClient } from '../api'
 import scopeOptions from '../clientScopes'
 
 export default {
@@ -85,8 +85,7 @@ export default {
       this.client = null
       this.$q.loading.show({ delay: 400 })
       try {
-        // const client = (await getClientDetail(this.$route.params.id)).data
-        const client = (await getClients()).data.filter(c => c.clientId === this.$route.params.id)[0]
+        const client = (await getClientDetail(this.$route.params.id)).data
         client.creatorName = await this.$store.dispatch('fetchUserName', client.creatorId)
         this.name.value = client.name
         this.description.value = client.description
