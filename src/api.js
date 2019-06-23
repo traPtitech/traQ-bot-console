@@ -151,3 +151,28 @@ export async function removeBotFromChannel (botId, channelId) {
 export async function getBotEventLogs (botId, limit, offset) {
   return axios.get(`/bots/${botId}/events/logs`, { params: { limit, offset } })
 }
+
+export async function getClients () {
+  return axios.get(`/clients`)
+}
+
+export async function getClientDetail (id) {
+  return axios.get(`/clients/${id}/detail`)
+}
+
+export async function createClient (name, description, redirectUri, scopes) {
+  return axios.post(`/clients`, {
+    name,
+    description,
+    redirectUri,
+    scopes
+  })
+}
+
+export async function patchClient (id, data) {
+  return axios.patch(`/clients/${id}`, data)
+}
+
+export async function deleteClient (id) {
+  return axios.delete(`/clients/${id}`)
+}

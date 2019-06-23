@@ -45,6 +45,8 @@ import {
   QTh,
   QTr,
   QTd,
+  QOptionGroup,
+  QField,
   Notify,
   Loading,
   Dialog
@@ -89,7 +91,9 @@ Vue.use(Quasar, {
     QTable,
     QTh,
     QTr,
-    QTd
+    QTd,
+    QOptionGroup,
+    QField
   },
   directives: {},
   plugins: {
