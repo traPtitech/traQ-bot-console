@@ -341,13 +341,22 @@ export default {
         })
         this.editing = false
       } catch (e) {
-        console.error(e)
-        this.$q.notify({
-          icon: 'error_outline',
-          color: 'red-5',
-          textColor: 'white',
-          message: '送信時にエラーが発生しました'
-        })
+        if (e.response && e.response.data.message === 'prohibited webhook host') {
+          this.$q.notify({
+            icon: 'error_outline',
+            color: 'red-5',
+            textColor: 'white',
+            message: 'エンドポイントURLが無効です'
+          })
+        } else {
+          console.error(e)
+          this.$q.notify({
+            icon: 'error_outline',
+            color: 'red-5',
+            textColor: 'white',
+            message: '送信時にエラーが発生しました'
+          })
+        }
       } finally {
         this.$q.loading.hide()
       }

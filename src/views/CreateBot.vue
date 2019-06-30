@@ -68,6 +68,13 @@ export default {
               textColor: 'white',
               message: '既に使われているIDです'
             })
+          } else if (e.response && e.response.data.message === 'prohibited webhook host') {
+            this.$q.notify({
+              icon: 'error_outline',
+              color: 'red-5',
+              textColor: 'white',
+              message: 'エンドポイントURLが無効です'
+            })
           } else {
             console.error(e)
             this.$q.notify({
