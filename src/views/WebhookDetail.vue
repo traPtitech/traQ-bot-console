@@ -35,7 +35,7 @@
                   q-input(label="Webhook名" stack-label v-model="name.value" :readonly="!editing" :counter="editing" maxlength="32" :rules="[val => val && val.length > 0 || '必須項目です']")
                   q-input(label="説明" stack-label v-model="description.value" :readonly="!editing" type="textarea" autogrow :rules="[val => val && val.length > 0 || '必須項目です']")
                   q-select(v-model="channel.value" :readonly="!editing" :clearable="editing" use-input hide-selected fill-input input-debounce="0" stack-label label="投稿先チャンネル" :options="channelOptions" option-value="channelName" option-label="channelName"
-                    :rules="[val => val || '必須項目です']" @filter="channelFilterFn" :loading="loadingChannel" :disable="loadingChannel")
+                    :rules="[val => val || '必須項目です']" @filter="channelFilterFn" :loading="loadingChannel" :disable="loadingChannel" ref="channel")
                     template(slot="no-option")
                       q-item
                         q-item-section.text-grey チャンネルが表示されない場合は右の更新ボタンを押してください
@@ -232,6 +232,7 @@ export default {
       this.name.value = this.name.temp
       this.description.value = this.description.temp
       this.channel.value = this.channel.temp
+      this.$refs.channel.updateInputValue(this.channel.value.channelName)
       this.secret.value = '表示されません'
       this.secret.editing = false
       this.editing = false
