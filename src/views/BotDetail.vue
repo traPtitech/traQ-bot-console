@@ -62,14 +62,14 @@
               q-tab-panel(name="cred")
                 p 以下の認証情報の取り扱いに十分注意してください
                 q-form
-                  q-input(label="Verification Code" :value="bot.verificationCode" :type="hideVerificationCode ? 'password' : 'text'")
-                    template(slot="append")
+                  q-input(label="Verification Code" :value="bot.verificationCode" :type="hideVerificationCode ? 'password' : 'text'" readonly)
+                    template(slot="after")
                       q-icon(:name="hideVerificationCode ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="hideVerificationCode = !hideVerificationCode")
-                  q-input(label="BOT Access Token" :value="bot.accessToken" :type="hideAccessToken ? 'password' : 'text'")
-                    template(slot="append")
+                  q-input(label="BOT Access Token" :value="bot.accessToken" :type="hideAccessToken ? 'password' : 'text'" readonly)
+                    template(slot="after")
                       q-icon(:name="hideAccessToken ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="hideAccessToken = !hideAccessToken")
-                  q-input(label="BOTインストールコード" :value="bot.botCode" :type="hideBotCode ? 'password' : 'text'" hint="")
-                    template(slot="append")
+                  q-input(label="BOTインストールコード" :value="bot.botCode" :type="hideBotCode ? 'password' : 'text'" hint="" readonly)
+                    template(slot="after")
                       q-icon(:name="hideBotCode ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="hideBotCode = !hideBotCode")
                   div
                     q-btn.full-width(color="negative" unelevated @click="onRevokeBtnClicked") 再発行

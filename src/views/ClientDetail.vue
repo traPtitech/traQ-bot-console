@@ -29,8 +29,8 @@
               q-tab-panel(name="cred")
                 p 以下の認証情報の取り扱いに十分注意してください
                 q-form
-                  q-input(label="Client Secret" :value="client.secret" :type="hideSecret ? 'password' : 'text'")
-                    template(slot="append")
+                  q-input(label="Client Secret" :value="client.secret" :type="hideSecret ? 'password' : 'text'" readonly)
+                    template(slot="after")
                       q-icon(:name="hideSecret ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="hideSecret = !hideSecret")
 
     template(v-else)
