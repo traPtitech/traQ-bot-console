@@ -34,7 +34,7 @@
                   q-input(label="Webhook User ID" v-model="webhook.botUserId" readonly hint='')
                   q-input(label="Webhook名" stack-label v-model="name.value" :readonly="!editing" :counter="editing" maxlength="32" :rules="[val => val && val.length > 0 || '必須項目です']")
                   q-input(label="説明" stack-label v-model="description.value" :readonly="!editing" type="textarea" autogrow :rules="[val => val && val.length > 0 || '必須項目です']")
-                  q-select(v-model="channel.value" :readonly="!editing" :clearable="editing" use-input hide-selected input-debounce="0" stack-label label="投稿先チャンネル" :options="channelOptions" option-value="channelName" option-label="channelName"
+                  q-select(v-model="channel.value" :readonly="!editing" :clearable="editing" use-input hide-selected fill-input input-debounce="0" stack-label label="投稿先チャンネル" :options="channelOptions" option-value="channelName" option-label="channelName"
                     :rules="[val => val || '必須項目です']" @filter="channelFilterFn" :loading="loadingChannel" :disable="loadingChannel")
                     template(slot="no-option")
                       q-item
