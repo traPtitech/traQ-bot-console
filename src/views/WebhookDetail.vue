@@ -14,7 +14,8 @@
                       div.col
                         div.q-uploader__title 2MBまでのpng,jpg,gif
                         div.q-uploader__subtitle {{ scope.uploadSizeLabel }} / {{ scope.uploadProgressLabel }}
-                      q-btn(v-if="scope.editable && scope.queuedFiles.length === 0" icon="add_box" @click="scope.pickFiles" round dense flat)
+                      q-btn(v-if="scope.editable && scope.queuedFiles.length === 0" type="a" icon="add_box" round dense flat)
+                        q-uploader-add-trigger
                       q-btn(v-if="scope.editable && scope.queuedFiles.length > 0" icon="cloud_upload" @click="scope.upload" round dense flat)
                 q-img(v-else :src="getUserIconURL(webhook.botUserName)")
               div.col-5.col-md-12.col-sm-12.q-pa-md
