@@ -13,7 +13,7 @@
         :rules="[val => val && val.length > 0 || '必須項目です']" hint="Webhookが投稿したメッセージに表示されます")
       q-input(v-model="description" outlined autogrow stack-label label="説明" type="textarea" hint="使用用途等を入力してください"
         :rules="[val => val && val.length > 0 || '必須項目です']")
-      q-select(v-model="targetChannel" outlined clearable use-input hide-selected input-debounce="0" stack-label label="投稿先チャンネル" :options="channelOptions" option-value="channelName" option-label="channelName"
+      q-select(v-model="targetChannel" outlined clearable use-input hide-selected fill-input input-debounce="0" stack-label label="投稿先チャンネル" :options="channelOptions" option-value="channelName" option-label="channelName"
         :rules="[val => val || '必須項目です']" @filter="channelFilterFn" :loading="loadingChannel" :disable="loadingChannel" hint="プライベートなチャンネルは指定できません")
         template(slot="no-option")
           q-item
