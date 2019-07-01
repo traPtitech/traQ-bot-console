@@ -32,6 +32,8 @@
                   q-badge(v-else color="red") Insecure Webhook
                 q-form.col(@submit="onSubmit")
                   q-input(label="Webhook ID" v-model="webhook.webhookId" readonly hint='')
+                    template(slot="after")
+                      q-icon(name="file_copy" class="cursor-pointer" @click="$copyText(webhook.webhookId)")
                   q-input(label="Webhook User ID" v-model="webhook.botUserId" readonly hint='')
                   q-input(label="Webhook名" stack-label v-model="name.value" :readonly="!editing" :counter="editing" maxlength="32" :rules="[val => val && val.length > 0 || '必須項目です']")
                   q-input(label="説明" stack-label v-model="description.value" :readonly="!editing" type="textarea" autogrow :rules="[val => val && val.length > 0 || '必須項目です']")

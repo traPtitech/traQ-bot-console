@@ -4,6 +4,8 @@ import router from './router'
 import store from './store'
 import './registerServiceWorker'
 
+import VueClipboard from 'vue-clipboard2'
+
 import './styles/quasar.styl'
 import '@quasar/extras/material-icons/material-icons.css'
 import {
@@ -52,6 +54,8 @@ import {
   Loading,
   Dialog
 } from 'quasar'
+
+Vue.use(VueClipboard)
 
 Vue.use(Quasar, {
   config: {},

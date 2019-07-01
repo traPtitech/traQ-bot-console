@@ -43,6 +43,8 @@
                 q-form(@submit="onSubmit")
                   q-input(label="BOT ID" v-model="botId" readonly hint='')
                   q-input(label="BOT User ID" v-model="bot.botUserId" readonly hint='')
+                    template(slot="after")
+                      q-icon(name="file_copy" class="cursor-pointer" @click="$copyText(bot.botUserId)")
                   q-input(label="BOT表示名" stack-label v-model="displayName" :readonly="!editing" :counter="editing" maxlength="32" hide-hint hint="BOTが投稿したメッセージに表示されます"
                     :rules="[val => val && val.length > 0 || '必須項目です']")
                   q-input(label="説明" stack-label v-model="description" :readonly="!editing" autogrow type="textarea" hide-hint hint="使用用途等を入力してください"
@@ -64,12 +66,15 @@
                 q-form
                   q-input(label="Verification Code" :value="bot.verificationCode" :type="hideVerificationCode ? 'password' : 'text'" readonly)
                     template(slot="after")
+                      q-icon(name="file_copy" class="cursor-pointer" :class="{ hidden: hideVerificationCode }" @click="$copyText(bot.verificationCode)")
                       q-icon(:name="hideVerificationCode ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="hideVerificationCode = !hideVerificationCode")
                   q-input(label="BOT Access Token" :value="bot.accessToken" :type="hideAccessToken ? 'password' : 'text'" readonly)
                     template(slot="after")
+                      q-icon(name="file_copy" class="cursor-pointer" :class="{ hidden: hideAccessToken }" @click="$copyText(bot.accessToken)")
                       q-icon(:name="hideAccessToken ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="hideAccessToken = !hideAccessToken")
                   q-input(label="BOTインストールコード" :value="bot.botCode" :type="hideBotCode ? 'password' : 'text'" hint="" readonly)
                     template(slot="after")
+                      q-icon(name="file_copy" class="cursor-pointer" :class="{ hidden: hideBotCode }" @click="$copyText(bot.botCode)")
                       q-icon(:name="hideBotCode ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="hideBotCode = !hideBotCode")
                   div
                     q-btn.full-width(color="negative" unelevated @click="onRevokeBtnClicked") 再発行

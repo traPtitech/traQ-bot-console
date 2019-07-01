@@ -13,6 +13,8 @@
               q-tab-panel(name="info")
                 q-form.col(@submit="onSubmit")
                   q-input(label="Client ID" v-model="client.clientId" readonly hint='')
+                    template(slot="after")
+                      q-icon(name="file_copy" class="cursor-pointer" @click="$copyText(bot.botUserId)")
                   q-input(label="Client名" stack-label v-model="name.value" :readonly="!editing" :counter="editing" maxlength="32" :rules="[val => val && val.length > 0 || '必須項目です']")
                   q-input(label="説明" stack-label v-model="description.value" :readonly="!editing" type="textarea" autogrow :rules="[val => val && val.length > 0 || '必須項目です']")
                   q-input(label="リダイレクト先URL" stack-label v-model="redirectUrl.value" :readonly="!editing" :counter="editing" :rules="[val => val && urlRegex.test(val) || '有効なURLを入力してください']")
@@ -31,6 +33,7 @@
                 q-form
                   q-input(label="Client Secret" :value="client.secret" :type="hideSecret ? 'password' : 'text'" readonly)
                     template(slot="after")
+                      q-icon(name="file_copy" class="cursor-pointer" :class="{ hidden: hideSecret }" @click="$copyText(client.secret)")
                       q-icon(:name="hideSecret ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="hideSecret = !hideSecret")
 
     template(v-else)
