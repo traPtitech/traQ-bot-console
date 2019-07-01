@@ -1,5 +1,5 @@
 # traQ OAuth Client
-traQ OAuth Clientでは、何かができます。
+traQ OAuth Clientでは、traQのデータを利用したアプリケーションを作成することができます。
 
 ==使用する場合は、このマニュアルと、[Client利用ルール](/docs/client/rule)をよく読んでから使用してください。==
 
