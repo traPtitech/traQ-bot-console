@@ -83,6 +83,26 @@ export default new Router({
             {
               path: 'bot/traq-api',
               component: () => import('./docs/bot/traq-api.md')
+            },
+            {
+              path: 'client',
+              component: () => import('./docs/client/client.md')
+            },
+            {
+              path: 'client/rule',
+              component: () => import('./docs/client/rule.md')
+            },
+            {
+              path: 'client/overview',
+              component: () => import('./docs/client/overview.md')
+            },
+            {
+              path: 'client/create',
+              component: () => import('./docs/client/create.md')
+            },
+            {
+              path: 'client/page',
+              component: () => import('./docs/client/page.md')
             }
           ]
         },

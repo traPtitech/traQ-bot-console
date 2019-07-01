@@ -2,14 +2,13 @@
   q-page.q-pa-md.q-gutter-md
     h6 Client新規登録
     q-form.q-gutter-md(@submit="onSubmit")
-      // -
-        q-banner.bg-grey-3.text-black(rounded)
-          template(slot="avatar")
-            q-icon.text-orange(name="warning")
-          router-link(to="/docs/client") Clientマニュアル
-          | と
-          router-link(to="/docs/client/rule") Client利用ルール
-          | をよく読んでから使用してください。
+      q-banner.bg-grey-3.text-black(rounded)
+        template(slot="avatar")
+          q-icon.text-orange(name="warning")
+        router-link(to="/docs/client") Clientマニュアル
+        | と
+        router-link(to="/docs/client/rule") Client利用ルール
+        | をよく読んでから使用してください。
       q-input(v-model="name" outlined stack-label label="Client名" counter maxlength="32"
         :rules="[val => val && val.length > 0 || '必須項目です']" hint="")
       q-input(v-model="description" outlined autogrow stack-label label="説明" type="textarea" hint="使用用途等を入力してください"
