@@ -18,7 +18,7 @@ Insecure方式では、 ==`Webhook ID`を知っている人は誰でもメッセ
     + `https://q.trap.jp/api/1.0/webhooks/{コピーしたWebhook ID}`宛に
     + `Content-Type: text/plain; charset=utf-8`形式で
     + 投稿するメッセージをリクエストボディに含めてHTTP POSTで送信します。
-3. 使用したWebhookに登録してあるチャンネルにメッセージが投稿されます。 
+3. 使用したWebhookに登録してあるチャンネルにメッセージが投稿されます。
 
 #### シェルスクリプト(curl)による送信例
 ```bash
@@ -41,7 +41,7 @@ traQサーバーがWebhookの送信元の正当性を検証します。
     + 投稿するメッセージをリクエストボディに含め、更にリクエストヘッダに、
     + `X-TRAQ-Signature: {メッセージ本文をWebhookシークレットでHMAC-SHA1でハッシュ化した結果をhex形式で表した文字列}`
     + を載せてHTTP POSTで送信します。
-3. 使用したWebhookに登録してあるチャンネルにメッセージが投稿されます。 
+3. 使用したWebhookに登録してあるチャンネルにメッセージが投稿されます。
 
 #### [HMAC-SHA1の計算方法](/docs/webhook/hmacsha1)
 
@@ -53,3 +53,17 @@ signature=$(echo -n "$message" | openssl sha1 -hmac "Webhookシークレット")
 
 curl -X POST -H "Content-Type: text/plain; charset=utf-8" -H "X-TRAQ-Signature: $signature" -d "$message" https://q.trap.jp/api/1.0/webhooks/{コピーしたWebhook ID}
 ```
+
+## 設定したチャンネルとは異なるチャンネルにメッセージを送信する
+Webhookではヘッダを追加することで全てのpublicなチャンネルにメッセージを投稿することができます。
+
+設定したチャンネル以外にメッセージを投稿したい場合は、`X-TRAQ-Channel-Id`ヘッダに投稿したいチャンネルの`Channel ID`を指定してください。
+
+`Channel ID`は以下のような手順でtraQから取得することができます。
+
+1. どこかのチャンネルでチャンネル名を含む投稿を行なう
+2. 投稿したメッセージを編集する
+
+そのときに現れる`!{"type": "channel", "raw": "#gps/null", "id": "4375309e-d1d0-43fe-ba37-5ae476f713f5"}`のid部がそのチャンネルの`Channel ID`です。
+
+この例でいえば`#gps/null`の`Channel ID`は`4375309e-d1d0-43fe-ba37-5ae476f713f5`であるということです。
