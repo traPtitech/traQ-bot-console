@@ -1,13 +1,13 @@
 module.exports = {
   'presets': [
-    '@vue/app'
+    '@vue/cli-plugin-babel/preset'
   ],
   'plugins': [
     [
       'transform-imports',
       {
         'quasar': {
-          'transform': 'quasar/dist/babel-transforms/imports.js',
+          'transform': require('quasar/dist/babel-transforms/imports.js'),
           'preventFullImport': true
         }
       }
