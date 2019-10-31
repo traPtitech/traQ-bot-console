@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { setAuthToken, getUser, getChannels, getMe } from './api'
-import { parseAPIChannelList } from './utils'
+import { setAuthToken, getUser, getChannels, getMe } from '../api'
+import { parseAPIChannelList } from '../utils'
 import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
