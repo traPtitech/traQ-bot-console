@@ -46,7 +46,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { getUserIconURL, revokeAuthToken } from '../api'
+import { traq, getUserIconURL } from '../api'
 
 export default {
   name: 'LayoutDefault',
@@ -64,7 +64,7 @@ export default {
     getUserIconURL,
     async logout () {
       try {
-        await revokeAuthToken(this.$store.state.authToken)
+        await traq.deleteToken(this.$store.state.authToken)
       } catch (e) {
       }
       this.$store.commit('setToken', null)
