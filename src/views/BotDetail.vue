@@ -144,19 +144,10 @@
 import dayjs from 'dayjs'
 import { mapGetters, mapState } from 'vuex'
 import {
+  traq,
   baseURL,
-  getBotDetail,
-  deleteBot,
   getUserIconURL,
-  revokeBotTokens,
-  changeBotEvents,
-  putBotState,
-  getBotInstalledChannels,
-  removeBotFromChannel,
-  addBotToChannel,
-  getBotEventLogs,
-  getUser,
-  patchBot
+  getBotEventLogs
 } from '../api'
 import events from '../botEvents'
 
@@ -256,13 +247,13 @@ export default {
       this.bot = null
       this.$q.loading.show({ delay: 400 })
       try {
-        const bot = (await getBotDetail(this.botId)).data
-        const botUser = (await getUser(bot.botUserId)).data
+        const bot = (await traq.getBotDetail(this.botId)).data
+        const botUser = (await traq.getUser(bot.botUserId)).data
         bot.botUserName = botUser.name
         bot.displayName = botUser.displayName
         bot.creatorName = await this.$store.dispatch('fetchUserName', bot.creatorId)
         this.checkedEvents = [...bot.subscribeEvents]
-        this.installedChannels = (await getBotInstalledChannels(this.botId)).data
+        this.installedChannels = (await traq.getBotChannels(this.botId)).data
         await this.fetchEventLogs()
         this.bot = bot
         this.displayName = bot.displayName
@@ -337,7 +328,7 @@ export default {
         if (this.webhookUrl !== this.bot.postUrl) {
           params['webhookUrl'] = this.webhookUrl
         }
-        await patchBot(this.botId, params)
+        await traq.editBot(this.botId, params)
         await this.fetchData()
         this.$q.notify({
           icon: 'done',
@@ -371,7 +362,7 @@ export default {
       this.loading = true
       this.$q.loading.show({ delay: 400 })
       try {
-        await changeBotEvents(this.botId, this.checkedEvents)
+        await traq.changeBotEvents(this.botId, { events: this.checkedEvents })
         this.bot.subscribeEvents = this.checkedEvents
         this.$q.notify({
           icon: 'done',
@@ -407,7 +398,7 @@ export default {
       }).onOk(async () => {
         this.$q.loading.show({ delay: 400 })
         try {
-          await putBotState(this.botId, 'active')
+          await traq.changeBotState(this.botId, { state: 'active' })
           this.$q.notify({
             icon: 'done',
             color: 'primary',
@@ -442,7 +433,7 @@ export default {
       }).onOk(async () => {
         this.$q.loading.show({ delay: 400 })
         try {
-          await putBotState(this.botId, 'inactive')
+          await traq.changeBotState(this.botId, { state: 'inactive' })
           await this.fetchData()
         } catch (e) {
           console.error(e)
@@ -472,7 +463,7 @@ export default {
       }).onOk(async () => {
         this.$q.loading.show({ delay: 400 })
         try {
-          await deleteBot(this.botId)
+          await traq.deleteBot(this.botId)
           this.$router.push('/bots', () => {
             this.$q.notify({
               icon: 'done',
@@ -509,7 +500,7 @@ export default {
       }).onOk(async () => {
         this.$q.loading.show({ delay: 400 })
         try {
-          await revokeBotTokens(this.botId)
+          await traq.reissueBotTokens(this.botId)
           await this.fetchData()
           this.$q.notify({
             icon: 'done',
@@ -546,8 +537,8 @@ export default {
       }).onOk(async () => {
         this.$q.loading.show({ delay: 400 })
         try {
-          await removeBotFromChannel(this.botId, channelId)
-          this.installedChannels = (await getBotInstalledChannels(this.botId)).data
+          await traq.removeChannelBot(channelId, this.botId)
+          this.installedChannels = (await traq.getBotChannels(this.botId)).data
         } catch (e) {
           console.error(e)
           this.$q.notify({
@@ -577,8 +568,8 @@ export default {
       }).onOk(async () => {
         this.$q.loading.show({ delay: 400 })
         try {
-          await addBotToChannel(this.bot.botCode, channelId)
-          this.installedChannels = (await getBotInstalledChannels(this.botId)).data
+          await traq.addChannelBot(channelId, { code: this.bot.botCode })
+          this.installedChannels = (await traq.getBotChannels(this.botId)).data
           this.addingChannel = null
         } catch (e) {
           console.error(e)

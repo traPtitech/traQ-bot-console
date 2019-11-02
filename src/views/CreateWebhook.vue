@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { createWebhook } from '../api'
+import { traq } from '../api'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -87,7 +87,12 @@ export default {
       } else {
         this.$q.loading.show({ delay: 400 })
         try {
-          const res = await createWebhook(this.name, this.description, this.targetChannel.channelId, this.secret)
+          const res = await traq.createWebhooks({
+            name: this.name,
+            description: this.description,
+            channelId: this.targetChannel.channelId,
+            secret: this.secret
+          })
           this.$router.push(`/webhooks/${res.data.webhookId}`, () => {
             this.$q.notify({
               icon: 'done',

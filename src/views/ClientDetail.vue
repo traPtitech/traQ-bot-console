@@ -42,7 +42,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { getClientDetail, deleteClient, patchClient } from '../api'
+import { traq } from '../api'
 import scopeOptions from '../clientScopes'
 
 export default {
@@ -88,7 +88,7 @@ export default {
       this.client = null
       this.$q.loading.show({ delay: 400 })
       try {
-        const client = (await getClientDetail(this.$route.params.id)).data
+        const client = (await traq.getClientDetail(this.$route.params.id)).data
         client.creatorName = await this.$store.dispatch('fetchUserName', client.creatorId)
         this.name.value = client.name
         this.description.value = client.description
@@ -122,7 +122,7 @@ export default {
       }).onOk(async () => {
         this.$q.loading.show({ delay: 400 })
         try {
-          await deleteClient(this.client.clientId)
+          await traq.deleteClient(this.client.clientId)
           this.$router.push('/clients', () => {
             this.$q.notify({
               icon: 'done',
@@ -164,7 +164,7 @@ export default {
           description: this.description.value,
           redirectUri: this.redirectUrl.value
         }
-        await patchClient(this.client.clientId, params)
+        await traq.patchClient(this.client.clientId, params)
         await this.fetchData()
         this.$q.notify({
           icon: 'done',

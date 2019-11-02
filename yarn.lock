@@ -8339,6 +8339,12 @@ tough-cookie@~2.4.3:
     psl "^1.1.24"
     punycode "^1.4.1"
 
+traq-api@traPtitech/node-traq, traq-api@traPtitech/node-traq#2.7.9-0:
+  version "2.7.9-0"
+  resolved "https://codeload.github.com/traPtitech/node-traq/tar.gz/b7f89282ceb5cdedae46f447239da916ef98cf63"
+  dependencies:
+    axios "^0.19.0"
+
 tryer@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/tryer/-/tryer-1.0.1.tgz#f2c85406800b9b0f74c9f7465b81eaad241252f8"

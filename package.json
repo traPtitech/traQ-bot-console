@@ -15,6 +15,7 @@
     "github-markdown-css": "^3.0.1",
     "quasar": "^1.2.7",
     "register-service-worker": "^1.6.2",
+    "traq-api": "traPtitech/node-traq#2.7.9-0",
     "vue": "^2.6.10",
     "vue-clipboard2": "^0.3.1",
     "vue-router": "^3.1.3",
