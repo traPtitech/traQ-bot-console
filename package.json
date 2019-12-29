@@ -13,7 +13,7 @@
     "core-js": "^3.6.1",
     "dayjs": "^1.8.18",
     "github-markdown-css": "^3.0.1",
-    "quasar": "^1.2.7",
+    "quasar": "^1.5.11",
     "register-service-worker": "^1.6.2",
     "traq-api": "traPtitech/node-traq#2.8.1-4",
     "vue": "^2.6.11",
@@ -45,7 +45,7 @@
     "pug-plain-loader": "^1.0.0",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
-    "vue-cli-plugin-quasar": "^1.0.0",
+    "vue-cli-plugin-quasar": "^2.0.0",
     "vue-template-compiler": "^2.6.11",
     "ware-loader": "^0.2.4"
   },
