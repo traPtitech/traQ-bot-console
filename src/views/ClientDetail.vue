@@ -18,9 +18,9 @@
                   q-input(label="Client名" stack-label v-model="name.value" :readonly="!editing" :counter="editing" maxlength="32" :rules="[val => val && val.length > 0 || '必須項目です']")
                   q-input(label="説明" stack-label v-model="description.value" :readonly="!editing" type="textarea" autogrow :rules="[val => val && val.length > 0 || '必須項目です']")
                   q-input(label="リダイレクト先URL" stack-label v-model="redirectUrl.value" :readonly="!editing" :counter="editing" :rules="[val => val && urlRegex.test(val) || '有効なURLを入力してください']")
-                  q-field(label="権限" stack-label :value="client.scopes" readonly hint='' style="cursor: not-allowed")
+                  q-field(label="権限" stack-label :value="client.scopes" readonly hint='')
                     template(v-slot:control)
-                      q-option-group(v-model="client.scopes" :options="scopeOptions" type="checkbox" hint='')
+                      q-option-group(v-model="client.scopes" :options="scopeOptions" type="checkbox" disable hint='')
                   q-input(v-if="client.creatorId !== userInfo.userId" label="作成者" hint='' v-model="client.creatorName" readonly)
                   div.row.q-gutter-sm(v-if="editing")
                     q-btn.col.btn-fixed-width(label="キャンセル" unelevated @click="cancelEditing")
@@ -42,7 +42,8 @@
 
 <script>
 import { mapState } from 'vuex'
-import { getClientDetail, deleteClient, patchClient } from '../api'
+import { copyToClipboard } from 'quasar'
+import { traq } from '../api'
 import scopeOptions from '../clientScopes'
 
 export default {
@@ -80,7 +81,7 @@ export default {
     await this.fetchData()
   },
   watch: {
-    '$route': 'fetchData'
+    $route: 'fetchData'
   },
   methods: {
     async fetchData () {
@@ -88,7 +89,7 @@ export default {
       this.client = null
       this.$q.loading.show({ delay: 400 })
       try {
-        const client = (await getClientDetail(this.$route.params.id)).data
+        const client = (await traq.getClientDetail(this.$route.params.id)).data
         client.creatorName = await this.$store.dispatch('fetchUserName', client.creatorId)
         this.name.value = client.name
         this.description.value = client.description
@@ -122,7 +123,7 @@ export default {
       }).onOk(async () => {
         this.$q.loading.show({ delay: 400 })
         try {
-          await deleteClient(this.client.clientId)
+          await traq.deleteClient(this.client.clientId)
           this.$router.push('/clients', () => {
             this.$q.notify({
               icon: 'done',
@@ -164,7 +165,7 @@ export default {
           description: this.description.value,
           redirectUri: this.redirectUrl.value
         }
-        await patchClient(this.client.clientId, params)
+        await traq.patchClient(this.client.clientId, params)
         await this.fetchData()
         this.$q.notify({
           icon: 'done',
@@ -187,7 +188,7 @@ export default {
     },
     async copyText (str) {
       try {
-        await this.$copyText(str)
+        await copyToClipboard(str)
         this.$q.notify({
           icon: 'done',
           color: 'primary',

@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { createClient } from '../api'
+import { traq } from '../api'
 import scopeOptions from '../clientScopes'
 
 export default {
@@ -54,7 +54,12 @@ export default {
       } else {
         this.$q.loading.show({ delay: 400 })
         try {
-          const res = await createClient(this.name, this.description, this.redirectUrl, this.scopes)
+          const res = await traq.createClient({
+            name: this.name,
+            description: this.description,
+            redirectUri: this.redirectUrl,
+            scopes: this.scopes
+          })
           this.$router.push(`/clients/${res.data.clientId}`, () => {
             this.$q.notify({
               icon: 'done',

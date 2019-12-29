@@ -26,7 +26,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { getClients, getUserIconURL } from '../api'
+import { traq, getUserIconURL } from '../api'
 
 export default {
   name: 'Clients',
@@ -55,8 +55,8 @@ export default {
       this.loading = true
       this.$q.loading.show({ delay: 400 })
       try {
-        const res = await getClients()
-        for (let cl of res.data) {
+        const res = await traq.getClients()
+        for (const cl of res.data) {
           cl.creatorName = await this.$store.dispatch('fetchUserName', cl.creatorId)
         }
         this.clients = res.data

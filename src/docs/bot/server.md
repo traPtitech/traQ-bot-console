@@ -1,9 +1,19 @@
 # BOTサーバーを建てる
-執筆者募集中。書いてくれる方は#team/SysAd/randomチャンネルまで
 
+traQサーバーからイベントが発生するたびに以下のようなHTTPリクエストが送られてきます。
 
-Go用補助ライブラリ
-https://github.com/traPtitech/traq-bot
++ body
+  + JSON
++ header
+  + `X-TRAQ-BOT-TOKEN`: `VerificationToken`
+  + `X-TRAQ-BOT-EVENT`: イベント名
 
-Hubot(JavaScript, CoffeeScript)拡張
-https://github.com/sapphi-red/hubot-traq
+イベントの名前とbodyに送られてくるJSONは[BOTイベントリファレンス](/docs/bot/events)を参照してください。
+
+このHTTPリクエストを処理してtraQサーバーへリクエストを送るようにします。
+
+traQのAPIについては[traQ APIリファレンス](/docs/bot/traq-api)を参照してください。
+
+## ライブラリ
++ [Go用補助ライブラリ](https://github.com/traPtitech/traq-bot)
++ [Hubot(JavaScript, CoffeeScript)拡張](https://github.com/sapphi-red/hubot-traq)

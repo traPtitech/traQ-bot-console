@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { setAuthToken, getUser, getChannels, getMe } from '../api'
+import { traq, setAuthToken } from '../api'
 import { parseAPIChannelList } from '../utils'
 import createPersistedState from 'vuex-persistedstate'
 
@@ -16,7 +16,7 @@ export default new Vuex.Store({
   getters: {
     getChannelArray: state => state.channelList.filter(c => c.visibility && !c.private),
     getChannel: state => id => {
-      for (let channel of state.channelList) {
+      for (const channel of state.channelList) {
         if (channel.channelId === id) {
           return channel
         }
@@ -41,7 +41,7 @@ export default new Vuex.Store({
   },
   actions: {
     async fetchUserInfo ({ commit }) {
-      const res = await getMe()
+      const res = await traq.getMe()
       commit('setUserInfo', res.data)
     },
     async fetchUserName ({ state, commit }, id) {
@@ -49,7 +49,7 @@ export default new Vuex.Store({
       if (name) return name
 
       try {
-        const res = await getUser(id)
+        const res = await traq.getUser(id)
         name = res.data.name
       } catch (e) {
         console.error(e)
@@ -59,7 +59,7 @@ export default new Vuex.Store({
       return name
     },
     async updateChannelList ({ commit }) {
-      const res = await getChannels()
+      const res = await traq.getChannels()
       const list = parseAPIChannelList(res.data)
       commit('putChannelList', list)
     }

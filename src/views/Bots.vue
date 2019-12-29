@@ -62,7 +62,7 @@ export default {
       this.$q.loading.show({ delay: 400 })
       try {
         const res = await getBots()
-        for (let bot of res.data) {
+        for (const bot of res.data) {
           bot.botUserName = await this.$store.dispatch('fetchUserName', bot.botUserId)
           bot.creatorName = await this.$store.dispatch('fetchUserName', bot.creatorId)
         }

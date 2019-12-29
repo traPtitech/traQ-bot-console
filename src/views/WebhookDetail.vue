@@ -73,7 +73,8 @@
 <script>
 import dayjs from 'dayjs'
 import { mapGetters, mapState } from 'vuex'
-import { getWebhook, deleteWebhook, getUserIconURL, patchWebhook, getWebhookMessages, baseURL } from '../api'
+import { copyToClipboard } from 'quasar'
+import { traq, getUserIconURL, getWebhookMessages, baseURL } from '../api'
 
 export default {
   name: 'WebhookDetail',
@@ -125,7 +126,7 @@ export default {
     await this.fetchData()
   },
   watch: {
-    '$route': 'fetchData'
+    $route: 'fetchData'
   },
   methods: {
     async fetchData () {
@@ -133,7 +134,7 @@ export default {
       this.webhook = null
       this.$q.loading.show({ delay: 400 })
       try {
-        const webhook = (await getWebhook(this.$route.params.id)).data
+        const webhook = (await traq.getWebhook(this.$route.params.id)).data
         webhook.botUserName = await this.$store.dispatch('fetchUserName', webhook.botUserId)
         webhook.creatorName = await this.$store.dispatch('fetchUserName', webhook.creatorId)
         this.name.value = webhook.displayName
@@ -200,7 +201,7 @@ export default {
       }).onOk(async () => {
         this.$q.loading.show({ delay: 400 })
         try {
-          await deleteWebhook(this.webhook.webhookId)
+          await traq.deleteWebhook(this.webhook.webhookId)
           this.$router.push('/webhooks', () => {
             this.$q.notify({
               icon: 'done',
@@ -251,7 +252,7 @@ export default {
         if (this.secret.editing) {
           params.secret = this.secret.value
         }
-        await patchWebhook(this.webhook.webhookId, params)
+        await traq.editWebhook(this.webhook.webhookId, params)
         await this.fetchData()
         this.$q.notify({
           icon: 'done',
@@ -292,7 +293,7 @@ export default {
     },
     async copyText (str) {
       try {
-        this.$copyText(str)
+        copyToClipboard(str)
         this.$q.notify({
           icon: 'done',
           color: 'primary',

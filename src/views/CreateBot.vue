@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { createBot } from '../api'
+import { traq } from '../api'
 
 export default {
   name: 'CreateBot',
@@ -51,7 +51,12 @@ export default {
       } else {
         this.$q.loading.show({ delay: 400 })
         try {
-          const res = await createBot(this.name, this.displayName, this.description, this.webhookUrl)
+          const res = await traq.createBots({
+            name: this.name,
+            displayName: this.displayName,
+            description: this.description,
+            webhookUrl: this.webhookUrl
+          })
           this.$router.push(`/bots/${res.data.botId}`, () => {
             this.$q.notify({
               icon: 'done',

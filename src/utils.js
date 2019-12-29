@@ -49,12 +49,12 @@ export function parseAPIChannelList (channels) {
 
   function flatMap (channels) {
     const children = channels.flatMap(c => flatMap(c.children))
-    channels.forEach(c => { delete c['children'] })
+    channels.forEach(c => { delete c.children })
     return [...channels, ...children]
   }
 
-  let pool = {}
-  let root = ''
+  const pool = {}
+  const root = ''
   channels.filter(c => !c.dm).forEach(c => {
     pool[c.channelId] = {
       channelId: c.channelId,
