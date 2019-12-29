@@ -7,7 +7,7 @@
 
     q-drawer(v-model="left" persistent show-if-above)
       q-scroll-area.fit(style="border-right: 1px solid #ddd")
-        q-img(v-if="userInfo !== null" src="https://cdn.quasar-framework.org/img/material.png" style="height: 150px")
+        q-img(v-if="userInfo !== null" src="/material.png" style="height: 150px")
           div.absolute-bottom.bg-transparent
             q-avatar.q-mb-sm(size="56px")
               img(:src="getUserIconURL(userInfo.name)")
