@@ -21,7 +21,6 @@ export default new Router({
         },
         {
           path: 'docs/',
-          name: 'docs',
           component: () => import('../layouts/Docs'),
           children: [
             {
