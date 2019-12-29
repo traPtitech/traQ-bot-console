@@ -14,18 +14,13 @@ md.renderer.rules.link_close = function (tokens, idx, options, env, self) {
   const token = tokens[idx - 2]
   const href = token.attrs[token.attrIndex('href')][1]
   if (href.startsWith('/')) {
-    return `</router-link>`
+    return '</router-link>'
   } else {
-    return `</a>`
+    return '</a>'
   }
 }
 
 module.exports = {
-  pluginOptions: {
-    quasar: {
-      treeShake: true
-    }
-  },
   configureWebpack: {
     module: {
       rules: [
@@ -47,9 +42,7 @@ module.exports = {
       ]
     }
   },
-  transpileDependencies: [
-    /[\\/]node_modules[\\/]quasar[\\/]/
-  ],
+
   pwa: {
     workboxOptions: {
       skipWaiting: true,
@@ -64,5 +57,16 @@ module.exports = {
       maskIcon: 'img/icons/safari-pinned-tab.svg',
       msTileImage: 'img/icons/mstile-150x150.png'
     }
-  }
+  },
+
+  pluginOptions: {
+    quasar: {
+      importStrategy: 'kebab',
+      rtlSupport: false
+    }
+  },
+
+  transpileDependencies: [
+    'quasar'
+  ]
 }

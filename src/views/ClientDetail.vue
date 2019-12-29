@@ -42,6 +42,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import { copyToClipboard } from 'quasar'
 import { traq } from '../api'
 import scopeOptions from '../clientScopes'
 
@@ -80,7 +81,7 @@ export default {
     await this.fetchData()
   },
   watch: {
-    '$route': 'fetchData'
+    $route: 'fetchData'
   },
   methods: {
     async fetchData () {
@@ -187,7 +188,7 @@ export default {
     },
     async copyText (str) {
       try {
-        await this.$copyText(str)
+        await copyToClipboard(str)
         this.$q.notify({
           icon: 'done',
           color: 'primary',

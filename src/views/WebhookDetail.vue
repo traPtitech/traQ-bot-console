@@ -73,6 +73,7 @@
 <script>
 import dayjs from 'dayjs'
 import { mapGetters, mapState } from 'vuex'
+import { copyToClipboard } from 'quasar'
 import { traq, getUserIconURL, getWebhookMessages, baseURL } from '../api'
 
 export default {
@@ -125,7 +126,7 @@ export default {
     await this.fetchData()
   },
   watch: {
-    '$route': 'fetchData'
+    $route: 'fetchData'
   },
   methods: {
     async fetchData () {
@@ -292,7 +293,7 @@ export default {
     },
     async copyText (str) {
       try {
-        this.$copyText(str)
+        copyToClipboard(str)
         this.$q.notify({
           icon: 'done',
           color: 'primary',

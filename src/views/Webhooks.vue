@@ -62,7 +62,7 @@ export default {
       this.$q.loading.show({ delay: 400 })
       try {
         const res = await traq.getWebhooks()
-        for (let wh of res.data) {
+        for (const wh of res.data) {
           wh.botUserName = await this.$store.dispatch('fetchUserName', wh.botUserId)
           wh.creatorName = await this.$store.dispatch('fetchUserName', wh.creatorId)
         }
