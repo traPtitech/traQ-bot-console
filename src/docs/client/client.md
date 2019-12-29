@@ -6,6 +6,6 @@ traQ OAuth Clientでは、traQのデータを利用したアプリケーショ�
 ## [traQ OAuth Client概要](/docs/client/overview)
 traQ OAuth Clientの全体的な構成や、OAuth Clientを実際に利用するまでの大まかな手順はこちらをご覧ください。
 
-## [Clientを作成する](/docs/client/create)
+## [Clientを新規登録する](/docs/client/create)
 
 ## [Clientページを作成する](/docs/client/page)
