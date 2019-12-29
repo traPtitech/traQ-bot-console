@@ -16,7 +16,7 @@ export default new Vuex.Store({
   getters: {
     getChannelArray: state => state.channelList.filter(c => c.visibility && !c.private),
     getChannel: state => id => {
-      for (let channel of state.channelList) {
+      for (const channel of state.channelList) {
         if (channel.channelId === id) {
           return channel
         }

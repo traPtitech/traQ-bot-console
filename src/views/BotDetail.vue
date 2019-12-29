@@ -238,7 +238,7 @@ export default {
     await this.fetchData()
   },
   watch: {
-    '$route': 'fetchData'
+    $route: 'fetchData'
   },
   methods: {
     async fetchData () {
@@ -320,13 +320,13 @@ export default {
       try {
         const params = {}
         if (this.displayName !== this.bot.displayName) {
-          params['displayName'] = this.displayName
+          params.displayName = this.displayName
         }
         if (this.description !== this.bot.description) {
-          params['description'] = this.description
+          params.description = this.description
         }
         if (this.webhookUrl !== this.bot.postUrl) {
-          params['webhookUrl'] = this.webhookUrl
+          params.webhookUrl = this.webhookUrl
         }
         await traq.editBot(this.botId, params)
         await this.fetchData()

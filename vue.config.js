@@ -14,9 +14,9 @@ md.renderer.rules.link_close = function (tokens, idx, options, env, self) {
   const token = tokens[idx - 2]
   const href = token.attrs[token.attrIndex('href')][1]
   if (href.startsWith('/')) {
-    return `</router-link>`
+    return '</router-link>'
   } else {
-    return `</a>`
+    return '</a>'
   }
 }
 

@@ -125,7 +125,7 @@ export default {
     await this.fetchData()
   },
   watch: {
-    '$route': 'fetchData'
+    $route: 'fetchData'
   },
   methods: {
     async fetchData () {

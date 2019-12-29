@@ -56,7 +56,7 @@ export default {
       this.$q.loading.show({ delay: 400 })
       try {
         const res = await traq.getClients()
-        for (let cl of res.data) {
+        for (const cl of res.data) {
           cl.creatorName = await this.$store.dispatch('fetchUserName', cl.creatorId)
         }
         this.clients = res.data
