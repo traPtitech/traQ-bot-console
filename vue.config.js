@@ -21,11 +21,6 @@ md.renderer.rules.link_close = function (tokens, idx, options, env, self) {
 }
 
 module.exports = {
-  pluginOptions: {
-    quasar: {
-      treeShake: true
-    }
-  },
   configureWebpack: {
     module: {
       rules: [
@@ -47,9 +42,7 @@ module.exports = {
       ]
     }
   },
-  transpileDependencies: [
-    /[\\/]node_modules[\\/]quasar[\\/]/
-  ],
+
   pwa: {
     workboxOptions: {
       skipWaiting: true,
@@ -64,5 +57,16 @@ module.exports = {
       maskIcon: 'img/icons/safari-pinned-tab.svg',
       msTileImage: 'img/icons/mstile-150x150.png'
     }
-  }
+  },
+
+  pluginOptions: {
+    quasar: {
+      importStrategy: 'kebab',
+      rtlSupport: false
+    }
+  },
+
+  transpileDependencies: [
+    'quasar'
+  ]
 }

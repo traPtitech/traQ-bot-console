@@ -5,104 +5,24 @@ import store from './store'
 import './registerServiceWorker'
 
 import './styles/quasar.styl'
+import lang from 'quasar/lang/ja.js'
 import '@quasar/extras/material-icons/material-icons.css'
-import {
-  Quasar,
-  QLayout,
-  QHeader,
-  QDrawer,
-  QPageContainer,
-  QPage,
-  QToolbar,
-  QToolbarTitle,
-  QBtn,
-  QIcon,
-  QList,
-  QItem,
-  QItemSection,
-  QItemLabel,
-  QSeparator,
-  QScrollArea,
-  QAvatar,
-  QSpace,
-  QBanner,
-  QForm,
-  QInput,
-  QSelect,
-  QImg,
-  QCheckbox,
-  QUploader,
-  QUploaderAddTrigger,
-  QSpinner,
-  QBreadcrumbs,
-  QBreadcrumbsEl,
-  QBadge,
-  QTabs,
-  QTab,
-  QTabPanels,
-  QTabPanel,
-  QTooltip,
-  QTable,
-  QTh,
-  QTr,
-  QTd,
-  QOptionGroup,
-  QField,
-  Notify,
-  Loading,
-  Dialog
-} from 'quasar'
+import { Quasar, Notify, Loading, Dialog } from 'quasar'
 
 Vue.use(Quasar, {
   config: {},
   components: {
-    QLayout,
-    QHeader,
-    QDrawer,
-    QPageContainer,
-    QPage,
-    QToolbar,
-    QToolbarTitle,
-    QBtn,
-    QIcon,
-    QList,
-    QItem,
-    QItemSection,
-    QItemLabel,
-    QSeparator,
-    QScrollArea,
-    QAvatar,
-    QSpace,
-    QBanner,
-    QForm,
-    QInput,
-    QSelect,
-    QImg,
-    QCheckbox,
-    QUploader,
-    QUploaderAddTrigger,
-    QSpinner,
-    QBreadcrumbs,
-    QBreadcrumbsEl,
-    QBadge,
-    QTabs,
-    QTab,
-    QTabPanels,
-    QTabPanel,
-    QTooltip,
-    QTable,
-    QTh,
-    QTr,
-    QTd,
-    QOptionGroup,
-    QField
+    /* not needed if importStrategy is not 'manual' */
   },
-  directives: {},
+  directives: {
+    /* not needed if importStrategy is not 'manual' */
+  },
   plugins: {
     Notify,
     Loading,
     Dialog
-  }
+  },
+  lang
 })
 
 Vue.config.productionTip = false
