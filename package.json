@@ -17,7 +17,6 @@
     "register-service-worker": "^1.6.2",
     "traq-api": "traPtitech/node-traq#2.8.1-4",
     "vue": "^2.6.11",
-    "vue-clipboard2": "^0.3.1",
     "vue-router": "^3.1.3",
     "vuex": "^3.1.2",
     "vuex-persistedstate": "^2.7.0"

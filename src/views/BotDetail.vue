@@ -141,6 +141,7 @@
 </template>
 
 <script>
+import { copyToClipboard } from 'quasar'
 import dayjs from 'dayjs'
 import { mapGetters, mapState } from 'vuex'
 import {
@@ -615,7 +616,7 @@ export default {
     },
     async copyText (str) {
       try {
-        await this.$copyText(str)
+        await copyToClipboard(str)
         this.$q.notify({
           icon: 'done',
           color: 'primary',
