@@ -1,6 +1,20 @@
 <template lang="pug">
   q-page.q-pa-md.q-gutter-md
-    template(v-if="webhook !== null")
+    template(v-if="webhook === null")
+      q-skeleton(tag="h6" type="text")
+
+      div.q-gutter-md
+        div.row.q-col-gutter-md
+          div.col.col-md-2.col-sm-3
+            div.row
+              span.col-4.col-sm-12
+                q-skeleton(type="rect" style="height: 6em")
+              div.col-5.col-md-12.col-sm-12.q-pa-md
+                q-skeleton(type="rect")
+          div.col-12.col-md-10.col-sm-9
+            q-skeleton(type="rect" style="height: 40em")
+
+    template(v-else)
       h6 {{ webhook.displayName }} Webhookの詳細
       div.q-gutter-md
         div.row.q-col-gutter-md
@@ -65,9 +79,6 @@
                       q-item-label(caption style="white-space:pre-wrap; word-wrap:break-word;") {{ m.content }}
                     q-item-section(side top)
                       q-item-label(caption) {{ dayjs(m.createdAt).format('YY/MM/DD HH:mm:ss')  }}
-
-    template(v-else)
-      span 読み込み中...
 </template>
 
 <script>
@@ -132,7 +143,6 @@ export default {
     async fetchData () {
       this.loading = true
       this.webhook = null
-      this.$q.loading.show({ delay: 400 })
       try {
         const webhook = (await traq.getWebhook(this.$route.params.id)).data
         webhook.botUserName = await this.$store.dispatch('fetchUserName', webhook.botUserId)
@@ -156,7 +166,6 @@ export default {
         })
       } finally {
         this.loading = false
-        this.$q.loading.hide()
       }
     },
     async fetchChannels () {

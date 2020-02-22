@@ -3,7 +3,16 @@
     q-list(bordered)
       q-item-label(header) あなたが作成したWebhook / Bot / Client
 
-      q-item(v-for="datum in data" :key="datum.type + datum.id" :to="datum.link" clickable)
+      q-item(v-if="data === null")
+        q-item-section(avatar)
+          q-skeleton(type="QAvatar")
+        q-item-section
+          q-item-label
+            q-skeleton(type="text")
+          q-item-label(caption)
+            q-skeleton(type="text")
+
+      q-item(v-else v-for="datum in data" :key="datum.type + datum.id" :to="datum.link" clickable)
         q-item-section(avatar)
           q-avatar.icon(v-if="datum.iconUrl")
             img(:src="datum.iconUrl")
@@ -34,7 +43,7 @@ export default {
   name: 'PageHome',
   data () {
     return {
-      data: []
+      data: null
     }
   },
   async mounted () {

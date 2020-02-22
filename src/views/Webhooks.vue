@@ -1,29 +1,37 @@
 <template lang="pug">
   q-page.q-pa-md.q-gutter-md
-    template(v-if="!loading")
-      q-list.rounded-borders(bordered separator)
-        q-item-label(header) あなたが作成したWebhook
+    q-list.rounded-borders(bordered separator)
+      q-item-label(header) あなたが作成したWebhook
 
-        q-item(v-for="wh in myWebhooks" :key="wh.webhookId" clickable :to="`/webhooks/${wh.webhookId}`")
-          q-item-section(avatar)
-            q-avatar
-              img(:src="getUserIconURL(wh.botUserName)")
-          q-item-section
-            q-item-label {{ wh.displayName }}
-            q-item-label(caption lines="1") {{ wh.description }}
+      q-item(v-if="loading")
+        q-item-section(avatar)
+          q-skeleton(type="QAvatar")
+        q-item-section
+          q-item-label
+            q-skeleton(type="text")
+          q-item-label(caption lines="1")
+            q-skeleton(type="text")
 
-      q-list.rounded-borders(bordered separator v-if="othersWebhooks.length > 0")
-        q-item-label(header) 他の人が作成したWebhook (管理者権限による表示)
+      q-item(v-else v-for="wh in myWebhooks" :key="wh.webhookId" clickable :to="`/webhooks/${wh.webhookId}`")
+        q-item-section(avatar)
+          q-avatar
+            img(:src="getUserIconURL(wh.botUserName)")
+        q-item-section
+          q-item-label {{ wh.displayName }}
+          q-item-label(caption lines="1") {{ wh.description }}
 
-        q-item(v-for="wh in othersWebhooks" :key="wh.webhookId" clickable :to="`/webhooks/${wh.webhookId}`")
-          q-item-section(avatar)
-            q-avatar
-              img(:src="getUserIconURL(wh.botUserName)")
-          q-item-section
-            q-item-label {{ wh.displayName }}
-            q-item-label(caption lines="1") {{ wh.description }}
-          q-item-section(side top)
-            q-item-label(caption) @{{ wh.creatorName }}によって作成
+    q-list.rounded-borders(bordered separator v-if="!loading && othersWebhooks.length > 0")
+      q-item-label(header) 他の人が作成したWebhook (管理者権限による表示)
+
+      q-item(v-for="wh in othersWebhooks" :key="wh.webhookId" clickable :to="`/webhooks/${wh.webhookId}`")
+        q-item-section(avatar)
+          q-avatar
+            img(:src="getUserIconURL(wh.botUserName)")
+        q-item-section
+          q-item-label {{ wh.displayName }}
+          q-item-label(caption lines="1") {{ wh.description }}
+        q-item-section(side top)
+          q-item-label(caption) @{{ wh.creatorName }}によって作成
 
     div.q-pa-md
       q-btn.full-width(color="primary" unelevated to="/webhooks/create") 新規作成
@@ -59,7 +67,6 @@ export default {
   methods: {
     async getWebhooks () {
       this.loading = true
-      this.$q.loading.show({ delay: 400 })
       try {
         const res = await traq.getWebhooks()
         for (const wh of res.data) {
@@ -77,7 +84,6 @@ export default {
         })
       } finally {
         this.loading = false
-        this.$q.loading.hide()
       }
     },
     getUserIconURL

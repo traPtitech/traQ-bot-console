@@ -1,6 +1,21 @@
 <template lang="pug">
   q-page.q-pa-md.q-gutter-md
-    template(v-if="bot !== null")
+    template(v-if="bot === null")
+      q-skeleton(tag="h6" type="text" style="margin-bottom: 0")
+      q-skeleton(type="QBadge" style="margin-top: 0; margin-bottom: 3em")
+
+      div.q-gutter-md
+        div.row.q-col-gutter-md
+          div.col.col-md-2.col-sm-3
+            div.row
+              span.col-4.col-sm-12
+                q-skeleton(type="rect" style="height: 6em")
+              div.col-5.col-md-12.col-sm-12.q-pa-md
+                q-skeleton(type="rect")
+          div.col-12.col-md-10.col-sm-9
+            q-skeleton(type="rect" style="height: 30em")
+
+    template(v-else)
       h6 {{ bot.displayName }} (@{{ bot.botUserName }})の詳細
         q-space
         div.q-gutter-sm
@@ -135,9 +150,6 @@
                   div.text-caption.float-left
                     q-badge(color="negative") NG
                     span {{ ' エラー' }}
-
-    template(v-else)
-      span 読み込み中
 </template>
 
 <script>
@@ -246,7 +258,6 @@ export default {
       this.loading = true
       this.editing = false
       this.bot = null
-      this.$q.loading.show({ delay: 400 })
       try {
         const bot = (await traq.getBotDetail(this.botId)).data
         const botUser = (await traq.getUser(bot.botUserId)).data
@@ -270,7 +281,6 @@ export default {
         })
       } finally {
         this.loading = false
-        this.$q.loading.hide()
       }
     },
     async fetchChannels () {
