@@ -70,6 +70,7 @@
                   q-btn.col.btn-fixed-width(color="primary" unelevated :to='`/webhooks/tester?id=${webhook.webhookId}`') テスト
                   q-btn.col.btn-fixed-width(color="secondary" unelevated @click="startEditing") 編集
                   q-btn.col.btn-fixed-width(color="negative" unelevated @click="onDeleteBtnClicked") 削除
+                  q-btn.col.btn-fixed-width(color='warning' unelevated @click="onTransferBtnClicked") 移譲
               q-tab-panel(name="messages")
                 | このWebhookが投稿した最新のメッセージ10件を見ることができます。
                 q-list(separator)
@@ -85,7 +86,7 @@
 import dayjs from 'dayjs'
 import { mapGetters, mapState } from 'vuex'
 import { copyToClipboard } from 'quasar'
-import { traq, getUserIconURL, getWebhookMessages, baseURL } from '../api'
+import { traq, getUserIconURL, getWebhookMessages, baseURL, getUsersOptionItems } from '../api'
 
 export default {
   name: 'WebhookDetail',
@@ -230,6 +231,56 @@ export default {
         } finally {
           this.$q.loading.hide()
         }
+      })
+    },
+    async onTransferBtnClicked () {
+      const items = await getUsersOptionItems(this.webhook.creatorId)
+      this.$q.dialog({
+        title: '移譲',
+        message: '誰に移譲しますか？',
+        options: {
+          type: 'radio',
+          model: items[0].value,
+          items
+        },
+        cancel: true,
+        persistent: true
+      }).onOk(async user => {
+        this.$q.dialog({
+          title: '移譲',
+          message: `本当に@${user.name}に移譲しますか？`,
+          ok: {
+            color: 'negative',
+            unelevated: true
+          },
+          cancel: {
+            unelevated: true
+          },
+          persistent: true
+        }).onOk(async () => {
+          this.$q.loading.show({ delay: 400 })
+          try {
+            await traq.editWebhook(this.webhook.webhookId, { creatorId: user.userId })
+            this.$router.push('/webhooks', () => {
+              this.$q.notify({
+                icon: 'done',
+                color: 'primary',
+                textColor: 'white',
+                message: '移譲に成功しました'
+              })
+            })
+          } catch (e) {
+            console.error(e)
+            this.$q.notify({
+              icon: 'error_outline',
+              color: 'red-5',
+              textColor: 'white',
+              message: '移譲時にエラーが発生しました'
+            })
+          } finally {
+            this.$q.loading.hide()
+          }
+        })
       })
     },
     getUserIconURL,
