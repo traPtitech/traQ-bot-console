@@ -76,6 +76,7 @@
                       q-btn.col.btn-fixed-width(v-else unelevated color="primary" @click="onActivateBtnClicked") アクティベーション
                     q-btn.col.btn-fixed-width(color="secondary" unelevated @click="startEditing") 基本情報編集
                     q-btn.col.btn-fixed-width(unelevated color='negative' @click="onDeleteBtnClicked") 削除
+                    q-btn.col.btn-fixed-width(unelevated color='warning' @click="onTransferBtnClicked") 移譲
               q-tab-panel(name="cred")
                 p 以下の認証情報の取り扱いに十分注意してください
                 q-form
@@ -160,7 +161,8 @@ import {
   traq,
   baseURL,
   getUserIconURL,
-  getBotEventLogs
+  getBotEventLogs,
+  getUsersOptionItems
 } from '../api'
 import events from '../botEvents'
 
@@ -494,6 +496,56 @@ export default {
         } finally {
           this.$q.loading.hide()
         }
+      })
+    },
+    async onTransferBtnClicked () {
+      const items = await getUsersOptionItems(this.bot.creatorId)
+      this.$q.dialog({
+        title: '移譲',
+        message: '誰に移譲しますか？',
+        options: {
+          type: 'radio',
+          model: items[0].value,
+          items
+        },
+        cancel: true,
+        persistent: true
+      }).onOk(async user => {
+        this.$q.dialog({
+          title: '移譲',
+          message: `本当に@${user.name}に移譲しますか？`,
+          ok: {
+            color: 'negative',
+            unelevated: true
+          },
+          cancel: {
+            unelevated: true
+          },
+          persistent: true
+        }).onOk(async () => {
+          this.$q.loading.show({ delay: 400 })
+          try {
+            await traq.editBot(this.botId, { creatorId: user.userId })
+            this.$router.push('/bots', () => {
+              this.$q.notify({
+                icon: 'done',
+                color: 'primary',
+                textColor: 'white',
+                message: '移譲に成功しました'
+              })
+            })
+          } catch (e) {
+            console.error(e)
+            this.$q.notify({
+              icon: 'error_outline',
+              color: 'red-5',
+              textColor: 'white',
+              message: '移譲時にエラーが発生しました'
+            })
+          } finally {
+            this.$q.loading.hide()
+          }
+        })
       })
     },
     onRevokeBtnClicked () {
