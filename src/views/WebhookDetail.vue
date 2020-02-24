@@ -1,6 +1,20 @@
 <template lang="pug">
   q-page.q-pa-md.q-gutter-md
-    template(v-if="webhook !== null")
+    template(v-if="webhook === null")
+      q-skeleton(tag="h6" type="text")
+
+      div.q-gutter-md
+        div.row.q-col-gutter-md
+          div.col.col-md-2.col-sm-3
+            div.row
+              span.col-4.col-sm-12
+                q-skeleton(type="rect" style="height: 6em")
+              div.col-5.col-md-12.col-sm-12.q-pa-md
+                q-skeleton(type="rect")
+          div.col-12.col-md-10.col-sm-9
+            q-skeleton(type="rect" style="height: 40em")
+
+    template(v-else)
       h6 {{ webhook.displayName }} Webhookの詳細
       div.q-gutter-md
         div.row.q-col-gutter-md
@@ -56,6 +70,7 @@
                   q-btn.col.btn-fixed-width(color="primary" unelevated :to='`/webhooks/tester?id=${webhook.webhookId}`') テスト
                   q-btn.col.btn-fixed-width(color="secondary" unelevated @click="startEditing") 編集
                   q-btn.col.btn-fixed-width(color="negative" unelevated @click="onDeleteBtnClicked") 削除
+                  q-btn.col.btn-fixed-width(color='warning' unelevated @click="onTransferBtnClicked") 移譲
               q-tab-panel(name="messages")
                 | このWebhookが投稿した最新のメッセージ10件を見ることができます。
                 q-list(separator)
@@ -65,16 +80,13 @@
                       q-item-label(caption style="white-space:pre-wrap; word-wrap:break-word;") {{ m.content }}
                     q-item-section(side top)
                       q-item-label(caption) {{ dayjs(m.createdAt).format('YY/MM/DD HH:mm:ss')  }}
-
-    template(v-else)
-      span 読み込み中...
 </template>
 
 <script>
 import dayjs from 'dayjs'
 import { mapGetters, mapState } from 'vuex'
 import { copyToClipboard } from 'quasar'
-import { traq, getUserIconURL, getWebhookMessages, baseURL } from '../api'
+import { traq, getUserIconURL, getWebhookMessages, baseURL, getUsersOptionItems } from '../api'
 
 export default {
   name: 'WebhookDetail',
@@ -132,7 +144,6 @@ export default {
     async fetchData () {
       this.loading = true
       this.webhook = null
-      this.$q.loading.show({ delay: 400 })
       try {
         const webhook = (await traq.getWebhook(this.$route.params.id)).data
         webhook.botUserName = await this.$store.dispatch('fetchUserName', webhook.botUserId)
@@ -156,7 +167,6 @@ export default {
         })
       } finally {
         this.loading = false
-        this.$q.loading.hide()
       }
     },
     async fetchChannels () {
@@ -221,6 +231,56 @@ export default {
         } finally {
           this.$q.loading.hide()
         }
+      })
+    },
+    async onTransferBtnClicked () {
+      const items = await getUsersOptionItems(this.webhook.creatorId)
+      this.$q.dialog({
+        title: '移譲',
+        message: '誰に移譲しますか？',
+        options: {
+          type: 'radio',
+          model: items[0].value,
+          items
+        },
+        cancel: true,
+        persistent: true
+      }).onOk(async user => {
+        this.$q.dialog({
+          title: '移譲',
+          message: `本当に@${user.name}に移譲しますか？`,
+          ok: {
+            color: 'negative',
+            unelevated: true
+          },
+          cancel: {
+            unelevated: true
+          },
+          persistent: true
+        }).onOk(async () => {
+          this.$q.loading.show({ delay: 400 })
+          try {
+            await traq.editWebhook(this.webhook.webhookId, { creatorId: user.userId })
+            this.$router.push('/webhooks', () => {
+              this.$q.notify({
+                icon: 'done',
+                color: 'primary',
+                textColor: 'white',
+                message: '移譲に成功しました'
+              })
+            })
+          } catch (e) {
+            console.error(e)
+            this.$q.notify({
+              icon: 'error_outline',
+              color: 'red-5',
+              textColor: 'white',
+              message: '移譲時にエラーが発生しました'
+            })
+          } finally {
+            this.$q.loading.hide()
+          }
+        })
       })
     },
     getUserIconURL,
