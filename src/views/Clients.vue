@@ -1,18 +1,25 @@
 <template lang="pug">
   q-page.q-pa-md.q-gutter-md
-    template(v-if="!loading")
-      q-list.rounded-borders(bordered separator)
-        q-item-label(header) あなたが作成したClient
+    q-list.rounded-borders(bordered separator)
+      q-item-label(header) あなたが作成したClient
 
-        q-item(v-for="cl in myClients" :key="cl.clientId" clickable :to="`/clients/${cl.clientId}`")
-          q-item-section
-            q-item-label {{ cl.name }}
-            q-item-label(caption lines="1") {{ cl.description }}
+      q-item(v-if="loading")
+        q-item-section
+          q-item-label
+            q-skeleton(type="text")
+          q-item-label(caption lines="1")
+            q-skeleton(type="text")
 
-      q-list.rounded-borders(bordered separator v-if="othersClients.length > 0")
-        q-item-label(header) 他の人が作成したWebhook (管理者権限による表示)
+      q-item(v-else v-for="cl in myClients" :key="cl.clientId" clickable :to="`/clients/${cl.clientId}`")
+        q-item-section
+          q-item-label {{ cl.name }}
+          q-item-label(caption lines="1") {{ cl.description }}
 
-        q-item(v-for="cl in othersClients" :key="cl.webhookId" clickable :to="`/clients/${cl.clientId}`")
+    // -
+      q-list.rounded-borders(bordered separator v-if="!loading && othersClients.length > 0")
+        q-item-label(header) 他の人が作成したClient (管理者権限による表示)
+
+        q-item(v-for="cl in othersClients" :key="cl.clientId" clickable :to="`/clients/${cl.clientId}`")
           q-item-section
             q-item-label {{ cl.name }}
             q-item-label(caption lines="1") {{ cl.description }}
@@ -41,11 +48,13 @@ export default {
   },
   computed: {
     myClients () {
-      return this.clients.filter(w => w.creatorId === this.userInfo.userId)
+      return this.clients// .filter(w => w.creatorId === this.userInfo.userId)
     },
+    /*
     othersClients () {
       return this.clients.filter(w => w.creatorId !== this.userInfo.userId)
     },
+    */
     ...mapState([
       'userInfo'
     ])
@@ -53,7 +62,6 @@ export default {
   methods: {
     async getClients () {
       this.loading = true
-      this.$q.loading.show({ delay: 400 })
       try {
         const res = await traq.getClients()
         for (const cl of res.data) {
@@ -70,7 +78,6 @@ export default {
         })
       } finally {
         this.loading = false
-        this.$q.loading.hide()
       }
     },
     getUserIconURL

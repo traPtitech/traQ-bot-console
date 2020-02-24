@@ -1,6 +1,14 @@
 <template lang="pug">
   q-page.q-pa-md.q-gutter-md
-    template(v-if="client !== null")
+    template(v-if="client === null")
+      q-skeleton(tag="h6" type="text")
+
+      div.q-gutter-md
+        div.row.q-col-gutter-md
+          div.col-12
+            q-skeleton(type="rect" style="height: 40em")
+
+    template(v-else)
       h6 {{ client.name }} Clientの詳細
       div.q-gutter-md
         div.row.q-col-gutter-md
@@ -35,9 +43,6 @@
                     template(slot="after")
                       q-icon(name="file_copy" class="cursor-pointer" :class="{ hidden: hideSecret }" @click="copyText(client.secret)")
                       q-icon(:name="hideSecret ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="hideSecret = !hideSecret")
-
-    template(v-else)
-      span 読み込み中...
 </template>
 
 <script>
@@ -87,7 +92,6 @@ export default {
     async fetchData () {
       this.loading = true
       this.client = null
-      this.$q.loading.show({ delay: 400 })
       try {
         const client = (await traq.getClientDetail(this.$route.params.id)).data
         client.creatorName = await this.$store.dispatch('fetchUserName', client.creatorId)
@@ -105,7 +109,6 @@ export default {
         })
       } finally {
         this.loading = false
-        this.$q.loading.hide()
       }
     },
     onDeleteBtnClicked () {

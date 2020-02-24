@@ -51,6 +51,14 @@ export function getUserIconURL (name) {
   return `${baseURL}/public/icon/${encodeURIComponent(name)}`
 }
 
+export async function getWebhooks () {
+  return traq.getWebhooks({
+    params: {
+      all: 1
+    }
+  })
+}
+
 export function getWebhookMessages (id) {
   return traq.axios.get(`${baseURL}/webhooks/${id}/messages`, {
     params: { limit: 10 },
@@ -78,4 +86,14 @@ export async function getBotEventLogs (botId, limit, offset) {
       Authorization: `Bearer ${token}`
     }
   })
+}
+
+export async function getUsersOptionItems (ownerId) {
+  const users = (await traq.getUsers()).data
+  const items = users
+    .filter(user =>
+      !user.name.startsWith('Webhook#') && !user.name.startsWith('BOT_') && user.userId !== ownerId
+    ).map(user => ({ label: `@${user.name}`, value: user }))
+  items.sort((a, b) => a.value.name.toLowerCase() > b.value.name.toLowerCase() ? 1 : -1)
+  return items
 }

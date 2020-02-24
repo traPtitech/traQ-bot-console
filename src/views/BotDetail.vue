@@ -1,6 +1,21 @@
 <template lang="pug">
   q-page.q-pa-md.q-gutter-md
-    template(v-if="bot !== null")
+    template(v-if="bot === null")
+      q-skeleton(tag="h6" type="text" style="margin-bottom: 0")
+      q-skeleton(type="QBadge" style="margin-top: 0; margin-bottom: 3em")
+
+      div.q-gutter-md
+        div.row.q-col-gutter-md
+          div.col.col-md-2.col-sm-3
+            div.row
+              span.col-4.col-sm-12
+                q-skeleton(type="rect" style="height: 6em")
+              div.col-5.col-md-12.col-sm-12.q-pa-md
+                q-skeleton(type="rect")
+          div.col-12.col-md-10.col-sm-9
+            q-skeleton(type="rect" style="height: 30em")
+
+    template(v-else)
       h6 {{ bot.displayName }} (@{{ bot.botUserName }})の詳細
         q-space
         div.q-gutter-sm
@@ -61,6 +76,7 @@
                       q-btn.col.btn-fixed-width(v-else unelevated color="primary" @click="onActivateBtnClicked") アクティベーション
                     q-btn.col.btn-fixed-width(color="secondary" unelevated @click="startEditing") 基本情報編集
                     q-btn.col.btn-fixed-width(unelevated color='negative' @click="onDeleteBtnClicked") 削除
+                    q-btn.col.btn-fixed-width(unelevated color='warning' @click="onTransferBtnClicked") 移譲
               q-tab-panel(name="cred")
                 p 以下の認証情報の取り扱いに十分注意してください
                 q-form
@@ -135,9 +151,6 @@
                   div.text-caption.float-left
                     q-badge(color="negative") NG
                     span {{ ' エラー' }}
-
-    template(v-else)
-      span 読み込み中
 </template>
 
 <script>
@@ -148,7 +161,8 @@ import {
   traq,
   baseURL,
   getUserIconURL,
-  getBotEventLogs
+  getBotEventLogs,
+  getUsersOptionItems
 } from '../api'
 import events from '../botEvents'
 
@@ -246,7 +260,6 @@ export default {
       this.loading = true
       this.editing = false
       this.bot = null
-      this.$q.loading.show({ delay: 400 })
       try {
         const bot = (await traq.getBotDetail(this.botId)).data
         const botUser = (await traq.getUser(bot.botUserId)).data
@@ -270,7 +283,6 @@ export default {
         })
       } finally {
         this.loading = false
-        this.$q.loading.hide()
       }
     },
     async fetchChannels () {
@@ -484,6 +496,56 @@ export default {
         } finally {
           this.$q.loading.hide()
         }
+      })
+    },
+    async onTransferBtnClicked () {
+      const items = await getUsersOptionItems(this.bot.creatorId)
+      this.$q.dialog({
+        title: '移譲',
+        message: '誰に移譲しますか？',
+        options: {
+          type: 'radio',
+          model: items[0].value,
+          items
+        },
+        cancel: true,
+        persistent: true
+      }).onOk(async user => {
+        this.$q.dialog({
+          title: '移譲',
+          message: `本当に@${user.name}に移譲しますか？`,
+          ok: {
+            color: 'negative',
+            unelevated: true
+          },
+          cancel: {
+            unelevated: true
+          },
+          persistent: true
+        }).onOk(async () => {
+          this.$q.loading.show({ delay: 400 })
+          try {
+            await traq.editBot(this.botId, { creatorId: user.userId })
+            this.$router.push('/bots', () => {
+              this.$q.notify({
+                icon: 'done',
+                color: 'primary',
+                textColor: 'white',
+                message: '移譲に成功しました'
+              })
+            })
+          } catch (e) {
+            console.error(e)
+            this.$q.notify({
+              icon: 'error_outline',
+              color: 'red-5',
+              textColor: 'white',
+              message: '移譲時にエラーが発生しました'
+            })
+          } finally {
+            this.$q.loading.hide()
+          }
+        })
       })
     },
     onRevokeBtnClicked () {
