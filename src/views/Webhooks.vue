@@ -40,7 +40,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { traq, getUserIconURL } from '../api'
+import { getWebhooks, getUserIconURL } from '../api'
 
 export default {
   name: 'Webhooks',
@@ -68,7 +68,7 @@ export default {
     async getWebhooks () {
       this.loading = true
       try {
-        const res = await traq.getWebhooks()
+        const res = await getWebhooks()
         for (const wh of res.data) {
           wh.botUserName = await this.$store.dispatch('fetchUserName', wh.botUserId)
           wh.creatorName = await this.$store.dispatch('fetchUserName', wh.creatorId)

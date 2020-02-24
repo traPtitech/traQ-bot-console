@@ -51,6 +51,14 @@ export function getUserIconURL (name) {
   return `${baseURL}/public/icon/${encodeURIComponent(name)}`
 }
 
+export async function getWebhooks () {
+  return traq.getWebhooks({
+    params: {
+      all: 1
+    }
+  })
+}
+
 export function getWebhookMessages (id) {
   return traq.axios.get(`${baseURL}/webhooks/${id}/messages`, {
     params: { limit: 10 },
