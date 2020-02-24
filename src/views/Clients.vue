@@ -15,15 +15,16 @@
           q-item-label {{ cl.name }}
           q-item-label(caption lines="1") {{ cl.description }}
 
-    q-list.rounded-borders(bordered separator v-if="!loading && othersClients.length > 0")
-      q-item-label(header) 他の人が作成したWebhook (管理者権限による表示)
+    // -
+      q-list.rounded-borders(bordered separator v-if="!loading && othersClients.length > 0")
+        q-item-label(header) 他の人が作成したClient (管理者権限による表示)
 
-      q-item(v-for="cl in othersClients" :key="cl.webhookId" clickable :to="`/clients/${cl.clientId}`")
-        q-item-section
-          q-item-label {{ cl.name }}
-          q-item-label(caption lines="1") {{ cl.description }}
-        q-item-section(side top)
-          q-item-label(caption) @{{ cl.creatorName }}によって作成
+        q-item(v-for="cl in othersClients" :key="cl.clientId" clickable :to="`/clients/${cl.clientId}`")
+          q-item-section
+            q-item-label {{ cl.name }}
+            q-item-label(caption lines="1") {{ cl.description }}
+          q-item-section(side top)
+            q-item-label(caption) @{{ cl.creatorName }}によって作成
 
     div.q-pa-md
       q-btn.full-width(color="primary" unelevated to="/clients/create") 新規作成
@@ -47,11 +48,13 @@ export default {
   },
   computed: {
     myClients () {
-      return this.clients.filter(w => w.creatorId === this.userInfo.userId)
+      return this.clients// .filter(w => w.creatorId === this.userInfo.userId)
     },
+    /*
     othersClients () {
       return this.clients.filter(w => w.creatorId !== this.userInfo.userId)
     },
+    */
     ...mapState([
       'userInfo'
     ])
