@@ -99,6 +99,19 @@ export async function getClients () {
   })
 }
 
+export async function editClient (clientId, { developerId }) {
+  return traq.axios.patch(`${baseURL.replace('/api/1.0', '/api/v3')}/clients/${clientId}`,
+    {
+      developerId
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  )
+}
+
 export async function getUsersOptionItems (ownerId) {
   const users = (await traq.getUsers()).data
   const items = users
