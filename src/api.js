@@ -88,6 +88,17 @@ export async function getBotEventLogs (botId, limit, offset) {
   })
 }
 
+export async function getClients () {
+  return traq.axios.get(`${baseURL.replace('/api/1.0', '/api/v3')}/clients`, {
+    params: {
+      all: 1
+    },
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+}
+
 export async function getUsersOptionItems (ownerId) {
   const users = (await traq.getUsers()).data
   const items = users

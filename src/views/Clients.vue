@@ -10,21 +10,20 @@
           q-item-label(caption lines="1")
             q-skeleton(type="text")
 
-      q-item(v-else v-for="cl in myClients" :key="cl.clientId" clickable :to="`/clients/${cl.clientId}`")
+      q-item(v-else v-for="cl in myClients" :key="cl.id" clickable :to="`/clients/${cl.id}`")
         q-item-section
           q-item-label {{ cl.name }}
           q-item-label(caption lines="1") {{ cl.description }}
 
-    // -
-      q-list.rounded-borders(bordered separator v-if="!loading && othersClients.length > 0")
-        q-item-label(header) 他の人が作成したClient (管理者権限による表示)
+    q-list.rounded-borders(bordered separator v-if="!loading && othersClients.length > 0")
+      q-item-label(header) 他の人が作成したClient (管理者権限による表示)
 
-        q-item(v-for="cl in othersClients" :key="cl.clientId" clickable :to="`/clients/${cl.clientId}`")
-          q-item-section
-            q-item-label {{ cl.name }}
-            q-item-label(caption lines="1") {{ cl.description }}
-          q-item-section(side top)
-            q-item-label(caption) @{{ cl.creatorName }}によって作成
+      q-item(v-for="cl in othersClients" :key="cl.id" clickable :to="`/clients/${cl.id}`")
+        q-item-section
+          q-item-label {{ cl.name }}
+          q-item-label(caption lines="1") {{ cl.description }}
+        q-item-section(side top)
+          q-item-label(caption) @{{ cl.developerName }}によって作成
 
     div.q-pa-md
       q-btn.full-width(color="primary" unelevated to="/clients/create") 新規作成
@@ -33,7 +32,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { traq, getUserIconURL } from '../api'
+import { getClients, getUserIconURL } from '../api'
 
 export default {
   name: 'Clients',
@@ -48,13 +47,11 @@ export default {
   },
   computed: {
     myClients () {
-      return this.clients// .filter(w => w.creatorId === this.userInfo.userId)
+      return this.clients.filter(w => w.developerId === this.userInfo.userId)
     },
-    /*
     othersClients () {
-      return this.clients.filter(w => w.creatorId !== this.userInfo.userId)
+      return this.clients.filter(w => w.developerId !== this.userInfo.userId)
     },
-    */
     ...mapState([
       'userInfo'
     ])
@@ -63,9 +60,9 @@ export default {
     async getClients () {
       this.loading = true
       try {
-        const res = await traq.getClients()
+        const res = await getClients()
         for (const cl of res.data) {
-          cl.creatorName = await this.$store.dispatch('fetchUserName', cl.creatorId)
+          cl.developerName = await this.$store.dispatch('fetchUserName', cl.developerId)
         }
         this.clients = res.data
       } catch (e) {
