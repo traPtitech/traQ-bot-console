@@ -89,7 +89,13 @@ export async function getBotEventLogs (botId, limit, offset) {
 }
 
 export async function getClients () {
-  return traq.axios.get(`${baseURL.replace('/api/1.0', '/api/v3')}/clients`, {
+  const meRes = await traq.axios.get(`${baseURL.replace('/api/1.0', '/api/v3')}/users/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  const isAdmin = meRes.data.permissions.includes('manage_others_client')
+  const clientsRes = await traq.axios.get(`${baseURL.replace('/api/1.0', '/api/v3')}/clients`, {
     params: {
       all: 1
     },
@@ -97,6 +103,10 @@ export async function getClients () {
       Authorization: `Bearer ${token}`
     }
   })
+  if (!isAdmin) {
+    clientsRes.data = clientsRes.data.filter(client => client.developerId === meRes.data.id)
+  }
+  return clientsRes
 }
 
 export async function editClient (clientId, { developerId }) {
