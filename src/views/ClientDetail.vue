@@ -36,6 +36,7 @@
                 div.row.q-gutter-sm(v-if="!editing")
                   q-btn.col.btn-fixed-width(color="secondary" unelevated @click="startEditing") 編集
                   q-btn.col.btn-fixed-width(color="negative" unelevated @click="onDeleteBtnClicked") 削除
+                  q-btn.col.btn-fixed-width(color='warning' unelevated @click="onTransferBtnClicked") 移譲
               q-tab-panel(name="cred")
                 p 以下の認証情報の取り扱いに十分注意してください
                 q-form
@@ -48,7 +49,7 @@
 <script>
 import { mapState } from 'vuex'
 import { copyToClipboard } from 'quasar'
-import { traq } from '../api'
+import { traq, editClient, getUsersOptionItems } from '../api'
 import scopeOptions from '../clientScopes'
 
 export default {
@@ -146,6 +147,56 @@ export default {
         } finally {
           this.$q.loading.hide()
         }
+      })
+    },
+    async onTransferBtnClicked () {
+      const items = await getUsersOptionItems(this.client.creatorId)
+      this.$q.dialog({
+        title: '移譲',
+        message: '誰に移譲しますか？',
+        options: {
+          type: 'radio',
+          model: items[0].value,
+          items
+        },
+        cancel: true,
+        persistent: true
+      }).onOk(async user => {
+        this.$q.dialog({
+          title: '移譲',
+          message: `本当に@${user.name}に移譲しますか？`,
+          ok: {
+            color: 'negative',
+            unelevated: true
+          },
+          cancel: {
+            unelevated: true
+          },
+          persistent: true
+        }).onOk(async () => {
+          this.$q.loading.show({ delay: 400 })
+          try {
+            await editClient(this.client.clientId, { developerId: user.userId })
+            this.$router.push('/clients', () => {
+              this.$q.notify({
+                icon: 'done',
+                color: 'primary',
+                textColor: 'white',
+                message: '移譲に成功しました'
+              })
+            })
+          } catch (e) {
+            console.error(e)
+            this.$q.notify({
+              icon: 'error_outline',
+              color: 'red-5',
+              textColor: 'white',
+              message: '移譲時にエラーが発生しました'
+            })
+          } finally {
+            this.$q.loading.hide()
+          }
+        })
       })
     },
     startEditing () {
