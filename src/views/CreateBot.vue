@@ -15,7 +15,7 @@
         :rules="[val => val && val.length > 0 || '必須項目です']" hint="BOTが投稿したメッセージに表示されます")
       q-input(v-model="description" outlined autogrow stack-label label="説明" type="textarea" hint="使用用途等を入力してください"
         :rules="[val => val && val.length > 0 || '必須項目です']")
-      q-input(v-model="webhookUrl" outlined stack-label label="BOTサーバーエンドポイント" hint="traQのイベント送信先のURLを入力してください"
+      q-input(v-model="endpoint" outlined stack-label label="BOTサーバーエンドポイント" hint="traQのイベント送信先のURLを入力してください"
         :rules="[val => val && urlRegex.test(val) || '有効なURLを入力してください']")
       q-checkbox(v-model="accept" label="BOT利用ルールに同意する")
       div
@@ -33,7 +33,7 @@ export default {
       name: '',
       displayName: '',
       description: '',
-      webhookUrl: '',
+      endpoint: '',
       accept: false,
       urlRegex: /http(s)?:\/\/([\w-]+.)+[\w-]+(\/[\w- ./?%&=]*)?/i,
       botNameRegex: /^[a-zA-Z0-9_-]{1,16}$/i
@@ -51,13 +51,13 @@ export default {
       } else {
         this.$q.loading.show({ delay: 400 })
         try {
-          const res = await traq.createBots({
+          const res = await traq.createBot({
             name: this.name,
             displayName: this.displayName,
             description: this.description,
-            webhookUrl: this.webhookUrl
+            endpoint: this.endpoint
           })
-          this.$router.push(`/bots/${res.data.botId}`, () => {
+          this.$router.push(`/bots/${res.data.id}`, () => {
             this.$q.notify({
               icon: 'done',
               color: 'primary',
@@ -73,7 +73,7 @@ export default {
               textColor: 'white',
               message: '既に使われているIDです'
             })
-          } else if (e.response && e.response.data.message === 'prohibited webhook host') {
+          } else if (e.response && e.response.data.message === 'endpoint: must not be internal url.') {
             this.$q.notify({
               icon: 'error_outline',
               color: 'red-5',

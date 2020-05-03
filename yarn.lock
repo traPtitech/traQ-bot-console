@@ -1054,6 +1054,13 @@
   resolved "https://registry.yarnpkg.com/@soda/get-current-script/-/get-current-script-1.0.0.tgz#623aa40623550e3b94767cffeb096a6fb597ed09"
   integrity sha512-9GvTek+7cVw7r+L7TNGOG1astZJWXz2h5q4BqMXl28KN+24iSCm1xo+RhZOZvwdT3bzNe9hD7riJc/lBoO7mgg==
 
+"@traptitech/traq@^3.0.1-0":
+  version "3.0.1-0"
+  resolved "https://registry.yarnpkg.com/@traptitech/traq/-/traq-3.0.1-0.tgz#ae0d4d17e995391d8373a65a1bc201e4e9fbc272"
+  integrity sha512-MvM1w9vfg2Rfh+PolpgsTYLi7cEPmS58gIhQN5wL191Jtqd+Ueeyo8riUIgUXiZMqa3kaqJFmwzcdE/S9o+BMg==
+  dependencies:
+    axios "^0.19.2"
+
 "@types/babel-types@*", "@types/babel-types@^7.0.0":
   version "7.0.7"
   resolved "https://registry.yarnpkg.com/@types/babel-types/-/babel-types-7.0.7.tgz#667eb1640e8039436028055737d2b9986ee336e3"

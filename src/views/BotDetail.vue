@@ -56,7 +56,7 @@
             q-tab-panels(v-model="tab" animated)
               q-tab-panel(name="info")
                 q-form(@submit="onSubmit")
-                  q-input(label="BOT ID" v-model="botId" readonly hint='')
+                  q-input(label="BOT ID" v-model="id" readonly hint='')
                   q-input(label="BOT User ID" v-model="bot.botUserId" readonly hint='')
                     template(slot="after")
                       q-icon(name="file_copy" class="cursor-pointer" @click="copyText(bot.botUserId)")
@@ -64,7 +64,7 @@
                     :rules="[val => val && val.length > 0 || '必須項目です']")
                   q-input(label="説明" stack-label v-model="description" :readonly="!editing" autogrow type="textarea" hide-hint hint="使用用途等を入力してください"
                     :rules="[val => val && val.length > 0 || '必須項目です']")
-                  q-input(label="BOTサーバーエンドポイント" stack-label v-model="webhookUrl" :readonly="!editing" hide-hint  hint="traQのイベント送信先のURLを入力してください"
+                  q-input(label="BOTサーバーエンドポイント" stack-label v-model="endpoint" :readonly="!editing" hide-hint  hint="traQのイベント送信先のURLを入力してください"
                     :rules="[val => val && urlRegex.test(val) || '有効なURLを入力してください']")
                   div.row.q-gutter-sm(v-if="editing")
                     q-btn.col.btn-fixed-width(label="キャンセル" unelevated @click="cancelEditing")
@@ -80,18 +80,14 @@
               q-tab-panel(name="cred")
                 p 以下の認証情報の取り扱いに十分注意してください
                 q-form
-                  q-input(label="Verification Code" :value="bot.verificationCode" :type="hideVerificationCode ? 'password' : 'text'" readonly)
+                  q-input(label="Verification Token" :value="bot.tokens.verificationToken" :type="hideVerificationToken ? 'password' : 'text'" readonly)
                     template(slot="after")
-                      q-icon(name="file_copy" class="cursor-pointer" :class="{ hidden: hideVerificationCode }" @click="copyText(bot.verificationCode)")
-                      q-icon(:name="hideVerificationCode ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="hideVerificationCode = !hideVerificationCode")
-                  q-input(label="BOT Access Token" :value="bot.accessToken" :type="hideAccessToken ? 'password' : 'text'" readonly)
+                      q-icon(name="file_copy" class="cursor-pointer" :class="{ hidden: hideVerificationToken }" @click="copyText(bot.tokens.verificationToken)")
+                      q-icon(:name="hideVerificationToken ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="hideVerificationToken = !hideVerificationToken")
+                  q-input(label="BOT Access Token" :value="bot.tokens.accessToken" :type="hideAccessToken ? 'password' : 'text'" readonly)
                     template(slot="after")
-                      q-icon(name="file_copy" class="cursor-pointer" :class="{ hidden: hideAccessToken }" @click="copyText(bot.accessToken)")
+                      q-icon(name="file_copy" class="cursor-pointer" :class="{ hidden: hideAccessToken }" @click="copyText(bot.tokens.accessToken)")
                       q-icon(:name="hideAccessToken ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="hideAccessToken = !hideAccessToken")
-                  q-input(label="BOTインストールコード" :value="bot.botCode" :type="hideBotCode ? 'password' : 'text'" hint="" readonly)
-                    template(slot="after")
-                      q-icon(name="file_copy" class="cursor-pointer" :class="{ hidden: hideBotCode }" @click="copyText(bot.botCode)")
-                      q-icon(:name="hideBotCode ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="hideBotCode = !hideBotCode")
                   div
                     q-btn.full-width(color="negative" unelevated @click="onRevokeBtnClicked") 再発行
               q-tab-panel(name="events")
@@ -126,7 +122,7 @@
                         template(slot="append")
                           q-btn(round dense flat icon="refresh" @click="fetchChannels")
                         template(slot="after")
-                          q-btn(:disable="addingChannel === null" round dense flat icon="add" @click="onAddBotToChannelBtnClicked(addingChannel.channelId)")
+                          q-btn(:disable="addingChannel === null" round dense flat icon="add" @click="onAddBotToChannelBtnClicked(addingChannel.id)")
               q-tab-panel(name="logs")
                 q-table(:columns="eventLogsColumns" :data="eventLogs" :loading="loadingEventLogs" flat row-key="requestId" title="最近のBOTイベント")
                   template(#top-right)
@@ -161,7 +157,6 @@ import {
   traq,
   baseURL,
   getUserIconURL,
-  getBotEventLogs,
   getUsersOptionItems
 } from '../api'
 import events from '../botEvents'
@@ -179,7 +174,7 @@ export default {
       addingChannel: null,
       checkedEvents: [],
       editingIcon: false,
-      hideVerificationCode: true,
+      hideVerificationToken: true,
       hideAccessToken: true,
       hideBotCode: true,
       eventLogsColumns: [
@@ -189,7 +184,7 @@ export default {
           field: 'code'
         },
         {
-          name: 'id',
+          name: 'requestId',
           label: 'Request ID',
           field: 'requestId',
           align: 'left'
@@ -210,7 +205,7 @@ export default {
       loadingEventLogs: false,
       displayName: '',
       description: '',
-      webhookUrl: '',
+      endpoint: '',
       editing: false,
       urlRegex: /http(s)?:\/\/([\w-]+.)+[\w-]+(\/[\w- ./?%&=]*)?/i
     }
@@ -225,12 +220,12 @@ export default {
       'userInfo'
     ]),
     iconUploadURL () {
-      return `${baseURL}/bots/${this.botId}/icon`
+      return `${baseURL}/bots/${this.id}/icon`
     },
     iconUploadHeaders () {
       return [{ name: 'Authorization', value: `Bearer ${this.authToken}` }]
     },
-    botId () {
+    id () {
       return this.$route.params.id
     },
     events () {
@@ -261,18 +256,18 @@ export default {
       this.editing = false
       this.bot = null
       try {
-        const bot = (await traq.getBotDetail(this.botId)).data
+        const bot = (await traq.getBot(this.id, true)).data
         const botUser = (await traq.getUser(bot.botUserId)).data
         bot.botUserName = botUser.name
         bot.displayName = botUser.displayName
-        bot.creatorName = await this.$store.dispatch('fetchUserName', bot.creatorId)
+        bot.developerName = await this.$store.dispatch('fetchUserName', bot.developerId)
         this.checkedEvents = [...bot.subscribeEvents]
-        this.installedChannels = (await traq.getBotChannels(this.botId)).data
+        this.installedChannels = bot.channels
         await this.fetchEventLogs()
         this.bot = bot
         this.displayName = bot.displayName
         this.description = bot.description
-        this.webhookUrl = bot.postUrl
+        this.endpoint = bot.endpoint
       } catch (e) {
         console.error(e)
         this.$q.notify({
@@ -305,7 +300,7 @@ export default {
     async fetchEventLogs () {
       this.loadingEventLogs = true
       try {
-        this.eventLogs = (await getBotEventLogs(this.botId, 0, 0)).data
+        this.eventLogs = (await traq.getBotLogs(this.id)).data
       } catch (e) {
         console.error(e)
         this.$q.notify({
@@ -324,7 +319,7 @@ export default {
       } else {
         update(() => {
           const l = val.toLowerCase()
-          this.channelOptions = this.getChannelArray.filter(v => v.channelName.toLowerCase().indexOf(l) > -1)
+          this.channelOptions = this.getChannelArray.filter(v => v.channelName.toLowerCase().includes(l))
         })
       }
     },
@@ -338,10 +333,10 @@ export default {
         if (this.description !== this.bot.description) {
           params.description = this.description
         }
-        if (this.webhookUrl !== this.bot.postUrl) {
-          params.webhookUrl = this.webhookUrl
+        if (this.endpoint !== this.bot.endpoint) {
+          params.endpoint = this.endpoint
         }
-        await traq.editBot(this.botId, params)
+        await traq.editBot(this.id, params)
         await this.fetchData()
         this.$q.notify({
           icon: 'done',
@@ -375,7 +370,7 @@ export default {
       this.loading = true
       this.$q.loading.show({ delay: 400 })
       try {
-        await traq.changeBotEvents(this.botId, { events: this.checkedEvents })
+        await traq.editBot(this.id, { subscribeEvents: this.checkedEvents })
         this.bot.subscribeEvents = this.checkedEvents
         this.$q.notify({
           icon: 'done',
@@ -411,7 +406,7 @@ export default {
       }).onOk(async () => {
         this.$q.loading.show({ delay: 400 })
         try {
-          await traq.changeBotState(this.botId, { state: 'active' })
+          await traq.activateBot(this.id)
           this.$q.notify({
             icon: 'done',
             color: 'primary',
@@ -446,7 +441,7 @@ export default {
       }).onOk(async () => {
         this.$q.loading.show({ delay: 400 })
         try {
-          await traq.changeBotState(this.botId, { state: 'inactive' })
+          await traq.inactivateBot(this.id)
           await this.fetchData()
         } catch (e) {
           console.error(e)
@@ -476,7 +471,7 @@ export default {
       }).onOk(async () => {
         this.$q.loading.show({ delay: 400 })
         try {
-          await traq.deleteBot(this.botId)
+          await traq.deleteBot(this.id)
           this.$router.push('/bots', () => {
             this.$q.notify({
               icon: 'done',
@@ -499,7 +494,7 @@ export default {
       })
     },
     async onTransferBtnClicked () {
-      const items = await getUsersOptionItems(this.bot.creatorId)
+      const items = await getUsersOptionItems(this.bot.developerId)
       this.$q.dialog({
         title: '移譲',
         message: '誰に移譲しますか？',
@@ -525,7 +520,7 @@ export default {
         }).onOk(async () => {
           this.$q.loading.show({ delay: 400 })
           try {
-            await traq.editBot(this.botId, { creatorId: user.userId })
+            await traq.editBot(this.id, { developerId: user.id })
             this.$router.push('/bots', () => {
               this.$q.notify({
                 icon: 'done',
@@ -563,7 +558,7 @@ export default {
       }).onOk(async () => {
         this.$q.loading.show({ delay: 400 })
         try {
-          await traq.reissueBotTokens(this.botId)
+          await traq.reissueBot(this.id)
           await this.fetchData()
           this.$q.notify({
             icon: 'done',
@@ -600,8 +595,8 @@ export default {
       }).onOk(async () => {
         this.$q.loading.show({ delay: 400 })
         try {
-          await traq.removeChannelBot(channelId, this.botId)
-          this.installedChannels = (await traq.getBotChannels(this.botId)).data
+          await traq.letBotLeaveChannel(this.id, { channelId })
+          this.installedChannels = this.installedChannels.filter(cId => cId !== channelId)
         } catch (e) {
           console.error(e)
           this.$q.notify({
@@ -631,8 +626,8 @@ export default {
       }).onOk(async () => {
         this.$q.loading.show({ delay: 400 })
         try {
-          await traq.addChannelBot(channelId, { code: this.bot.botCode })
-          this.installedChannels = (await traq.getBotChannels(this.botId)).data
+          await traq.letBotJoinChannel(this.id, { channelId })
+          this.installedChannels = [...this.installedChannels, channelId]
           this.addingChannel = null
         } catch (e) {
           console.error(e)
@@ -667,13 +662,13 @@ export default {
     startEditing () {
       this.displayName = this.bot.displayName
       this.description = this.bot.description
-      this.webhookUrl = this.bot.postUrl
+      this.endpoint = this.bot.endpoint
       this.editing = true
     },
     cancelEditing () {
       this.displayName = this.bot.displayName
       this.description = this.bot.description
-      this.webhookUrl = this.bot.postUrl
+      this.endpoint = this.bot.endpoint
       this.editing = false
     },
     async copyText (str) {

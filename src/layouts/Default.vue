@@ -64,7 +64,7 @@ export default {
     getUserIconURL,
     async logout () {
       try {
-        await traq.deleteToken(this.$store.state.authToken)
+        await traq.revokeOAuth2Token({ token: this.$store.state.authToken })
       } catch (e) {
       }
       this.$store.commit('setToken', null)

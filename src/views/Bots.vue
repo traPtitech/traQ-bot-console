@@ -12,7 +12,7 @@
           q-item-label(caption lines="1")
             q-skeleton(type="text")
 
-      q-item(v-else v-for="b in myBots" :key="b.botId" :to="`/bots/${b.botId}`" clickable)
+      q-item(v-else v-for="b in myBots" :key="b.id" :to="`/bots/${b.id}`" clickable)
         q-item-section(avatar)
           q-avatar
             img(:src="getUserIconURL(b.botUserName)")
@@ -23,7 +23,7 @@
     q-list.rounded-borders(v-if="!loading && othersBots.length > 0" bordered separator)
       q-item-label(header) 他の人が登録したBOT (管理者権限による表示)
 
-      q-item(v-for="b in othersBots" :key="b.botId" :to="`/bots/${b.botId}`" clickable)
+      q-item(v-for="b in othersBots" :key="b.id" :to="`/bots/${b.id}`" clickable)
         q-item-section(avatar)
           q-avatar
             img(:src="getUserIconURL(b.botUserName)")
@@ -31,7 +31,7 @@
           q-item-label @{{ b.botUserName }}
           q-item-label(caption lines="1") {{ b.description }}
         q-item-section(side top)
-          q-item-label(caption) @{{ b.creatorName }}によって登録
+          q-item-label(caption) @{{ b.developerName }}によって登録
 
     div.q-pa-md
       q-btn.full-width(color="primary" unelevated to="/bots/create") 新規登録
@@ -39,7 +39,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { getBots, getUserIconURL } from '../api'
+import { traq, getUserIconURL } from '../api'
 
 export default {
   name: 'Bots',
@@ -54,10 +54,10 @@ export default {
   },
   computed: {
     myBots () {
-      return this.bots.filter(w => w.creatorId === this.userInfo.userId)
+      return this.bots.filter(b => b.developerId === this.userInfo.id)
     },
     othersBots () {
-      return this.bots.filter(w => w.creatorId !== this.userInfo.userId)
+      return this.bots.filter(b => b.developerId !== this.userInfo.id)
     },
     ...mapState([
       'userInfo'
@@ -68,10 +68,10 @@ export default {
     async getBots () {
       this.loading = true
       try {
-        const res = await getBots()
+        const res = await traq.getBots(this.userInfo.permissions.includes('access_others_bot'))
         for (const bot of res.data) {
           bot.botUserName = await this.$store.dispatch('fetchUserName', bot.botUserId)
-          bot.creatorName = await this.$store.dispatch('fetchUserName', bot.creatorId)
+          bot.developerName = await this.$store.dispatch('fetchUserName', bot.developerId)
         }
         this.bots = res.data
       } catch (e) {
