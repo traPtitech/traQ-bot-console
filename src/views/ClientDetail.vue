@@ -20,16 +20,16 @@
             q-tab-panels(v-model="tab" animated)
               q-tab-panel(name="info")
                 q-form.col(@submit="onSubmit")
-                  q-input(label="Client ID" v-model="client.clientId" readonly hint='')
+                  q-input(label="Client ID" v-model="client.id" readonly hint='')
                     template(slot="after")
-                      q-icon(name="file_copy" class="cursor-pointer" @click="copyText(client.clientId)")
+                      q-icon(name="file_copy" class="cursor-pointer" @click="copyText(client.id)")
                   q-input(label="Client名" stack-label v-model="name.value" :readonly="!editing" :counter="editing" maxlength="32" :rules="[val => val && val.length > 0 || '必須項目です']")
                   q-input(label="説明" stack-label v-model="description.value" :readonly="!editing" type="textarea" autogrow :rules="[val => val && val.length > 0 || '必須項目です']")
-                  q-input(label="リダイレクト先URL" stack-label v-model="redirectUrl.value" :readonly="!editing" :counter="editing" :rules="[val => val && urlRegex.test(val) || '有効なURLを入力してください']")
+                  q-input(label="リダイレクト先URL" stack-label v-model="callbackUrl.value" :readonly="!editing" :counter="editing" :rules="[val => val && urlRegex.test(val) || '有効なURLを入力してください']")
                   q-field(label="権限" stack-label :value="client.scopes" readonly hint='')
                     template(v-slot:control)
                       q-option-group(v-model="client.scopes" :options="scopeOptions" type="checkbox" disable hint='')
-                  q-input(v-if="client.creatorId !== userInfo.userId" label="作成者" hint='' v-model="client.creatorName" readonly)
+                  q-input(v-if="client.developerId !== userInfo.id" label="作成者" hint='' v-model="client.developerName" readonly)
                   div.row.q-gutter-sm(v-if="editing")
                     q-btn.col.btn-fixed-width(label="キャンセル" unelevated @click="cancelEditing")
                     q-btn.col.btn-fixed-width(label="送信" color="primary" type="submit" unelevated)
@@ -49,7 +49,7 @@
 <script>
 import { mapState } from 'vuex'
 import { copyToClipboard } from 'quasar'
-import { traq, editClient, getUsersOptionItems } from '../api'
+import { traq, getUsersOptionItems } from '../api'
 import scopeOptions from '../clientScopes'
 
 export default {
@@ -69,7 +69,7 @@ export default {
         value: '',
         temp: ''
       },
-      redirectUrl: {
+      callbackUrl: {
         value: '',
         temp: ''
       },
@@ -94,11 +94,11 @@ export default {
       this.loading = true
       this.client = null
       try {
-        const client = (await traq.getClientDetail(this.$route.params.id)).data
-        client.creatorName = await this.$store.dispatch('fetchUserName', client.creatorId)
+        const client = (await traq.getClient(this.$route.params.id, true)).data
+        client.developerName = await this.$store.dispatch('fetchUserName', client.developerId)
         this.name.value = client.name
         this.description.value = client.description
-        this.redirectUrl.value = client.redirectUri
+        this.callbackUrl.value = client.callbackUrl
         this.client = client
       } catch (e) {
         console.error(e)
@@ -127,7 +127,7 @@ export default {
       }).onOk(async () => {
         this.$q.loading.show({ delay: 400 })
         try {
-          await traq.deleteClient(this.client.clientId)
+          await traq.deleteClient(this.client.id)
           this.$router.push('/clients', () => {
             this.$q.notify({
               icon: 'done',
@@ -150,7 +150,7 @@ export default {
       })
     },
     async onTransferBtnClicked () {
-      const items = await getUsersOptionItems(this.client.creatorId)
+      const items = await getUsersOptionItems(this.client.developerId)
       this.$q.dialog({
         title: '移譲',
         message: '誰に移譲しますか？',
@@ -176,7 +176,7 @@ export default {
         }).onOk(async () => {
           this.$q.loading.show({ delay: 400 })
           try {
-            await editClient(this.client.clientId, { developerId: user.userId })
+            await traq.editClient(this.client.id, { developerId: user.id })
             this.$router.push('/clients', () => {
               this.$q.notify({
                 icon: 'done',
@@ -202,13 +202,13 @@ export default {
     startEditing () {
       this.name.temp = this.name.value
       this.description.temp = this.description.value
-      this.redirectUrl.temp = this.redirectUrl.value
+      this.callbackUrl.temp = this.callbackUrl.value
       this.editing = true
     },
     cancelEditing () {
       this.name.value = this.name.temp
       this.description.value = this.description.temp
-      this.redirectUrl.value = this.redirectUrl.temp
+      this.callbackUrl.value = this.callbackUrl.temp
       this.editing = false
     },
     async onSubmit () {
@@ -217,9 +217,9 @@ export default {
         const params = {
           name: this.name.value,
           description: this.description.value,
-          redirectUri: this.redirectUrl.value
+          callbackUrl: this.callbackUrl.value
         }
-        await traq.patchClient(this.client.clientId, params)
+        await traq.editClient(this.client.id, params)
         await this.fetchData()
         this.$q.notify({
           icon: 'done',

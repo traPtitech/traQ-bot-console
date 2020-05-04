@@ -13,7 +13,7 @@
         :rules="[val => val && val.length > 0 || '必須項目です']" hint="")
       q-input(v-model="description" outlined autogrow stack-label label="説明" type="textarea" hint="使用用途等を入力してください"
         :rules="[val => val && val.length > 0 || '必須項目です']")
-      q-input(v-model="redirectUrl" outlined stack-label label="リダイレクト先URL" hint="OAuth承認後のリダイレクト先のURLを入力してください"
+      q-input(v-model="callbackUrl" outlined stack-label label="リダイレクト先URL" hint="OAuth承認後のリダイレクト先のURLを入力してください"
         :rules="[val => val && urlRegex.test(val) || '有効なURLを入力してください']")
       q-field(:value="scopes" outlined stack-label label="権限" hint="Client登録後変更することはできません"
           :rules="[val => val && val.length > 0 || '一つ以上選択してください']")
@@ -35,7 +35,7 @@ export default {
     return {
       name: '',
       description: '',
-      redirectUrl: '',
+      callbackUrl: '',
       scopes: [],
       scopeOptions,
       accept: false,
@@ -57,10 +57,10 @@ export default {
           const res = await traq.createClient({
             name: this.name,
             description: this.description,
-            redirectUri: this.redirectUrl,
+            callbackUrl: this.callbackUrl,
             scopes: this.scopes
           })
-          this.$router.push(`/clients/${res.data.clientId}`, () => {
+          this.$router.push(`/clients/${res.data.id}`, () => {
             this.$q.notify({
               icon: 'done',
               color: 'primary',

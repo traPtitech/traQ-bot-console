@@ -87,13 +87,13 @@ export default {
       } else {
         this.$q.loading.show({ delay: 400 })
         try {
-          const res = await traq.createWebhooks({
+          const res = await traq.createWebhook({
             name: this.name,
             description: this.description,
             channelId: this.targetChannel.channelId,
             secret: this.secret
           })
-          this.$router.push(`/webhooks/${res.data.webhookId}`, () => {
+          this.$router.push(`/webhooks/${res.data.id}`, () => {
             this.$q.notify({
               icon: 'done',
               color: 'primary',

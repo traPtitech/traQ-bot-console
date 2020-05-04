@@ -1,20 +1,18 @@
-import { Apis as TraQ } from 'traq-api'
+import { Apis as TraQ } from '@traptitech/traq'
 import { randomString, pkce, hmacsha1 } from './utils'
 
 export const baseURL =
-  process.env.VUE_APP_API_ENDPOINT || 'https://traq-dev.tokyotech.org/api/1.0'
+  process.env.VUE_APP_API_ENDPOINT || 'https://traq-s-dev.tokyotech.org/api/v3'
 
 export let traq = new TraQ({
   basePath: baseURL
 })
-let token = ''
 
-export function setAuthToken (token_) {
+export function setAuthToken (token) {
   traq = new TraQ({
     basePath: baseURL,
-    accessToken: token_
+    accessToken: token
   })
-  token = token_
 }
 
 export async function redirectAuthorizationEndpoint () {
@@ -38,7 +36,7 @@ export async function redirectAuthorizationEndpoint () {
 }
 
 export function fetchAuthToken (code, verifier) {
-  return traq.postOauth2Token(
+  return traq.postOAuth2Token(
     'authorization_code',
     code,
     undefined,
@@ -51,82 +49,16 @@ export function getUserIconURL (name) {
   return `${baseURL}/public/icon/${encodeURIComponent(name)}`
 }
 
-export async function getWebhooks () {
-  return traq.getWebhooks({
-    params: {
-      all: 1
-    }
-  })
-}
-
-export function getWebhookMessages (id) {
-  return traq.axios.get(`${baseURL}/webhooks/${id}/messages`, {
-    params: { limit: 10 },
-    headers: { Authorization: `Bearer ${token}` }
-  })
-}
-
 export async function postWebhookMessage (id, message, secret = '') {
   const signature = secret !== '' ? await hmacsha1(message, secret) : undefined
-  return traq.postWebhook(id, message, undefined, signature)
-}
-
-export async function getBots () {
-  return traq.getBots({
-    params: {
-      all: 1
-    }
-  })
-}
-
-export async function getBotEventLogs (botId, limit, offset) {
-  return traq.axios.get(`${baseURL}/bots/${botId}/events/logs`, {
-    params: { limit, offset },
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  })
-}
-
-export async function getClients () {
-  const meRes = await traq.axios.get(`${baseURL.replace('/api/1.0', '/api/v3')}/users/me`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  })
-  const isAdmin = meRes.data.permissions.includes('manage_others_client')
-  const clientsRes = await traq.axios.get(`${baseURL.replace('/api/1.0', '/api/v3')}/clients`, {
-    params: {
-      all: 1
-    },
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  })
-  if (!isAdmin) {
-    clientsRes.data = clientsRes.data.filter(client => client.developerId === meRes.data.id)
-  }
-  return clientsRes
-}
-
-export async function editClient (clientId, { developerId }) {
-  return traq.axios.patch(`${baseURL.replace('/api/1.0', '/api/v3')}/clients/${clientId}`,
-    {
-      developerId
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }
-  )
+  return traq.postWebhook(id, signature, undefined, undefined, message)
 }
 
 export async function getUsersOptionItems (ownerId) {
   const users = (await traq.getUsers()).data
   const items = users
     .filter(user =>
-      !user.name.startsWith('Webhook#') && !user.name.startsWith('BOT_') && user.userId !== ownerId
+      !user.name.startsWith('Webhook#') && !user.name.startsWith('BOT_') && user.id !== ownerId
     ).map(user => ({ label: `@${user.name}`, value: user }))
   items.sort((a, b) => a.value.name.toLowerCase() > b.value.name.toLowerCase() ? 1 : -1)
   return items
