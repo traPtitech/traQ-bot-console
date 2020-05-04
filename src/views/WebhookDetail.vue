@@ -74,9 +74,9 @@
               q-tab-panel(name="messages")
                 | このWebhookが投稿した最新のメッセージ10件を見ることができます。
                 q-list(separator)
-                  q-item(v-for="m in messages" :key="m.messageId")
+                  q-item(v-for="m in messages" :key="m.id")
                     q-item-section
-                      q-item-label {{ getChannel(m.parentChannelId).channelName }}
+                      q-item-label {{ getChannel(m.channelId).channelName }}
                       q-item-label(caption style="white-space:pre-wrap; word-wrap:break-word;") {{ m.content }}
                     q-item-section(side top)
                       q-item-label(caption) {{ dayjs(m.createdAt).format('YY/MM/DD HH:mm:ss')  }}
