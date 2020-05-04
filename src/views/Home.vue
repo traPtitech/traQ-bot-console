@@ -55,22 +55,19 @@ export default {
 
     for (const webhook of webhooks) {
       webhook.type = 'webhook'
-      webhook.id = webhook.webhookId
       webhook.name = webhook.displayName
       webhook.iconUrl = getUserIconURL(webhook.botUserName)
-      webhook.link = `/webhooks/${webhook.webhookId}`
+      webhook.link = `/webhooks/${webhook.id}`
     }
     for (const bot of bots) {
       bot.type = 'bot'
-      bot.id = bot.botId
       bot.name = `@${bot.botUserName}`
       bot.iconUrl = getUserIconURL(bot.botUserName)
-      bot.link = `/bots/${bot.botId}`
+      bot.link = `/bots/${bot.id}`
     }
     for (const client of clients) {
       client.type = 'client'
-      client.id = client.clientId
-      client.link = `/clients/${client.clientId}`
+      client.link = `/clients/${client.id}`
       client.scopes = client.scopes.map(
         scope => clientScopes.find(s => s.value === scope).label
       )

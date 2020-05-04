@@ -45,9 +45,9 @@
                   q-badge(v-if="webhook.secure" color="blue") Secure Webhook
                   q-badge(v-else color="red") Insecure Webhook
                 q-form.col(@submit="onSubmit")
-                  q-input(label="Webhook ID" v-model="webhook.webhookId" readonly hint='')
+                  q-input(label="Webhook ID" v-model="webhook.id" readonly hint='')
                     template(slot="after")
-                      q-icon(name="file_copy" class="cursor-pointer" @click="copyText(webhook.webhookId)")
+                      q-icon(name="file_copy" class="cursor-pointer" @click="copyText(webhook.id)")
                   q-input(label="Webhook User ID" v-model="webhook.botUserId" readonly hint='')
                   q-input(label="Webhook名" stack-label v-model="name.value" :readonly="!editing" :counter="editing" maxlength="32" :rules="[val => val && val.length > 0 || '必須項目です']")
                   q-input(label="説明" stack-label v-model="description.value" :readonly="!editing" type="textarea" autogrow :rules="[val => val && val.length > 0 || '必須項目です']")
@@ -61,22 +61,22 @@
                   q-input(v-model="secret.value" stack-label label="Webhookシークレット" :readonly="!editing" hide-hint hint="Webhookシークレットを変更する場合は左のチェックを入れてください")
                     template(v-if="editing" slot="before")
                       q-checkbox(v-model="secret.editing")
-                  q-input(v-if="webhook.creatorId !== userInfo.userId" label="作成者" hint='' v-model="webhook.creatorName" readonly)
+                  q-input(v-if="webhook.ownerId !== userInfo.id" label="作成者" hint='' v-model="webhook.ownerName" readonly)
                   q-input(label="作成日時" hint='' v-model="webhook.createdAt" readonly)
                   div.row.q-gutter-sm(v-if="editing")
                     q-btn.col.btn-fixed-width(label="キャンセル" unelevated @click="cancelEditing")
                     q-btn.col.btn-fixed-width(label="送信" color="primary" type="submit" unelevated)
                 div.row.q-gutter-sm(v-if="!editing")
-                  q-btn.col.btn-fixed-width(color="primary" unelevated :to='`/webhooks/tester?id=${webhook.webhookId}`') テスト
+                  q-btn.col.btn-fixed-width(color="primary" unelevated :to='`/webhooks/tester?id=${webhook.id}`') テスト
                   q-btn.col.btn-fixed-width(color="secondary" unelevated @click="startEditing") 編集
                   q-btn.col.btn-fixed-width(color="negative" unelevated @click="onDeleteBtnClicked") 削除
                   q-btn.col.btn-fixed-width(color='warning' unelevated @click="onTransferBtnClicked") 移譲
               q-tab-panel(name="messages")
                 | このWebhookが投稿した最新のメッセージ10件を見ることができます。
                 q-list(separator)
-                  q-item(v-for="m in messages" :key="m.messageId")
+                  q-item(v-for="m in messages" :key="m.id")
                     q-item-section
-                      q-item-label {{ getChannel(m.parentChannelId).channelName }}
+                      q-item-label {{ getChannel(m.channelId).channelName }}
                       q-item-label(caption style="white-space:pre-wrap; word-wrap:break-word;") {{ m.content }}
                     q-item-section(side top)
                       q-item-label(caption) {{ dayjs(m.createdAt).format('YY/MM/DD HH:mm:ss')  }}
@@ -86,7 +86,7 @@
 import dayjs from 'dayjs'
 import { mapGetters, mapState } from 'vuex'
 import { copyToClipboard } from 'quasar'
-import { traq, getUserIconURL, getWebhookMessages, baseURL, getUsersOptionItems } from '../api'
+import { traq, getUserIconURL, baseURL, getUsersOptionItems } from '../api'
 
 export default {
   name: 'WebhookDetail',
@@ -147,7 +147,7 @@ export default {
       try {
         const webhook = (await traq.getWebhook(this.$route.params.id)).data
         webhook.botUserName = await this.$store.dispatch('fetchUserName', webhook.botUserId)
-        webhook.creatorName = await this.$store.dispatch('fetchUserName', webhook.creatorId)
+        webhook.ownerName = await this.$store.dispatch('fetchUserName', webhook.ownerId)
         this.name.value = webhook.displayName
         this.description.value = webhook.description
         this.webhook = webhook
@@ -156,7 +156,7 @@ export default {
           await this.$store.dispatch('updateChannelList')
           this.channel = this.$store.getters.getChannel(webhook.channelId)
         }
-        this.messages = (await getWebhookMessages(this.$route.params.id)).data
+        this.messages = (await traq.getWebhookMessages(this.$route.params.id, 10)).data
       } catch (e) {
         console.error(e)
         this.$q.notify({
@@ -211,7 +211,7 @@ export default {
       }).onOk(async () => {
         this.$q.loading.show({ delay: 400 })
         try {
-          await traq.deleteWebhook(this.webhook.webhookId)
+          await traq.deleteWebhook(this.webhook.id)
           this.$router.push('/webhooks', () => {
             this.$q.notify({
               icon: 'done',
@@ -234,7 +234,7 @@ export default {
       })
     },
     async onTransferBtnClicked () {
-      const items = await getUsersOptionItems(this.webhook.creatorId)
+      const items = await getUsersOptionItems(this.webhook.ownerId)
       this.$q.dialog({
         title: '移譲',
         message: '誰に移譲しますか？',
@@ -260,7 +260,7 @@ export default {
         }).onOk(async () => {
           this.$q.loading.show({ delay: 400 })
           try {
-            await traq.editWebhook(this.webhook.webhookId, { creatorId: user.userId })
+            await traq.editWebhook(this.webhook.id, { ownerId: user.id })
             this.$router.push('/webhooks', () => {
               this.$q.notify({
                 icon: 'done',
@@ -312,7 +312,7 @@ export default {
         if (this.secret.editing) {
           params.secret = this.secret.value
         }
-        await traq.editWebhook(this.webhook.webhookId, params)
+        await traq.editWebhook(this.webhook.id, params)
         await this.fetchData()
         this.$q.notify({
           icon: 'done',

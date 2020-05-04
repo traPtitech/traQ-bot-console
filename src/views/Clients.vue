@@ -32,7 +32,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { getClients, getUserIconURL } from '../api'
+import { traq, getUserIconURL } from '../api'
 
 export default {
   name: 'Clients',
@@ -47,10 +47,10 @@ export default {
   },
   computed: {
     myClients () {
-      return this.clients.filter(w => w.developerId === this.userInfo.userId)
+      return this.clients.filter(w => w.developerId === this.userInfo.id)
     },
     othersClients () {
-      return this.clients.filter(w => w.developerId !== this.userInfo.userId)
+      return this.clients.filter(w => w.developerId !== this.userInfo.id)
     },
     ...mapState([
       'userInfo'
@@ -60,7 +60,7 @@ export default {
     async getClients () {
       this.loading = true
       try {
-        const res = await getClients()
+        const res = await traq.getClients(this.userInfo.permissions.includes('manage_others_client'))
         for (const cl of res.data) {
           cl.developerName = await this.$store.dispatch('fetchUserName', cl.developerId)
         }

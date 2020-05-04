@@ -14,15 +14,8 @@ export default new Vuex.Store({
     channelList: []
   },
   getters: {
-    getChannelArray: state => state.channelList.filter(c => c.visibility && !c.private),
-    getChannel: state => id => {
-      for (const channel of state.channelList) {
-        if (channel.channelId === id) {
-          return channel
-        }
-      }
-      return null
-    }
+    getChannelArray: state => state.channelList.filter(c => !c.archived),
+    getChannel: state => id => state.channelList.find(c => c.id === id)
   },
   mutations: {
     setUserInfo (state, info) {
@@ -60,7 +53,7 @@ export default new Vuex.Store({
     },
     async updateChannelList ({ commit }) {
       const res = await traq.getChannels()
-      const list = parseAPIChannelList(res.data)
+      const list = parseAPIChannelList(res.data.public)
       commit('putChannelList', list)
     }
   },

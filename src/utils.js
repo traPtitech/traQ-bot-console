@@ -53,33 +53,39 @@ export function parseAPIChannelList (channels) {
     return [...channels, ...children]
   }
 
-  const pool = {}
-  const root = ''
-  channels.filter(c => !c.dm).forEach(c => {
-    pool[c.channelId] = {
-      channelId: c.channelId,
-      name: c.name,
-      channelName: c.name,
-      children: [],
-      visibility: c.visibility,
-      private: c.private,
-      parent: c.parent
-    }
-  })
+  const pool = Object.fromEntries(channels.map(
+    c => [
+      c.id,
+      {
+        ...c,
+        channelName: c.name,
+        children: [],
+        parentId: c.parentId ?? ''
+      }
+    ]
+  ))
+  // add root
+  pool[''] = {
+    id: '',
+    name: '',
+    children: []
+  }
+
   Object.keys(pool)
-    .filter(id => pool[id].channelId !== '')
-    .forEach(id => { pool[pool[id].parent].children.push(pool[id]) })
+    .filter(id => id !== '')
+    .forEach(id => { pool[pool[id].parentId].children.push(pool[id]) })
   Object.keys(pool)
+    .filter(id => id !== '')
     .forEach(id => {
-      pool[pool[id].parent].children.sort((lhs, rhs) => {
+      pool[pool[id].parentId].children.sort((lhs, rhs) => {
         if (lhs.name < rhs.name) return -1
         if (lhs.name > rhs.name) return 1
         return 0
       })
     })
-  pool[root].children.forEach(e => dfs(e, '#'))
+  pool[''].children.forEach(e => dfs(e, '#'))
 
-  return flatMap(pool[root].children).sort((lhs, rhs) => {
+  return flatMap(pool[''].children).sort((lhs, rhs) => {
     if (lhs.channelName < rhs.channelName) return -1
     if (lhs.channelName > rhs.channelName) return 1
     return 0

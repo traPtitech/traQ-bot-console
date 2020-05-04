@@ -12,7 +12,7 @@
           q-item-label(caption lines="1")
             q-skeleton(type="text")
 
-      q-item(v-else v-for="wh in myWebhooks" :key="wh.webhookId" clickable :to="`/webhooks/${wh.webhookId}`")
+      q-item(v-else v-for="wh in myWebhooks" :key="wh.id" clickable :to="`/webhooks/${wh.id}`")
         q-item-section(avatar)
           q-avatar
             img(:src="getUserIconURL(wh.botUserName)")
@@ -23,7 +23,7 @@
     q-list.rounded-borders(bordered separator v-if="!loading && othersWebhooks.length > 0")
       q-item-label(header) 他の人が作成したWebhook (管理者権限による表示)
 
-      q-item(v-for="wh in othersWebhooks" :key="wh.webhookId" clickable :to="`/webhooks/${wh.webhookId}`")
+      q-item(v-for="wh in othersWebhooks" :key="wh.id" clickable :to="`/webhooks/${wh.id}`")
         q-item-section(avatar)
           q-avatar
             img(:src="getUserIconURL(wh.botUserName)")
@@ -31,7 +31,7 @@
           q-item-label {{ wh.displayName }}
           q-item-label(caption lines="1") {{ wh.description }}
         q-item-section(side top)
-          q-item-label(caption) @{{ wh.creatorName }}によって作成
+          q-item-label(caption) @{{ wh.ownerName }}によって作成
 
     div.q-pa-md
       q-btn.full-width(color="primary" unelevated to="/webhooks/create") 新規作成
@@ -40,7 +40,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { getWebhooks, getUserIconURL } from '../api'
+import { traq, getUserIconURL } from '../api'
 
 export default {
   name: 'Webhooks',
@@ -55,10 +55,10 @@ export default {
   },
   computed: {
     myWebhooks () {
-      return this.webhooks.filter(w => w.creatorId === this.userInfo.userId)
+      return this.webhooks.filter(w => w.ownerId === this.userInfo.id)
     },
     othersWebhooks () {
-      return this.webhooks.filter(w => w.creatorId !== this.userInfo.userId)
+      return this.webhooks.filter(w => w.ownerId !== this.userInfo.id)
     },
     ...mapState([
       'userInfo'
@@ -68,10 +68,10 @@ export default {
     async getWebhooks () {
       this.loading = true
       try {
-        const res = await getWebhooks()
+        const res = await traq.getWebhooks(this.userInfo.permissions.includes('access_others_webhook'))
         for (const wh of res.data) {
           wh.botUserName = await this.$store.dispatch('fetchUserName', wh.botUserId)
-          wh.creatorName = await this.$store.dispatch('fetchUserName', wh.creatorId)
+          wh.ownerName = await this.$store.dispatch('fetchUserName', wh.ownerId)
         }
         this.webhooks = res.data
       } catch (e) {
