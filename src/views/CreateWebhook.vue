@@ -90,7 +90,7 @@ export default {
           const res = await traq.createWebhook({
             name: this.name,
             description: this.description,
-            channelId: this.targetChannel.channelId,
+            channelId: this.targetChannel.id,
             secret: this.secret
           })
           this.$router.push(`/webhooks/${res.data.id}`, () => {
