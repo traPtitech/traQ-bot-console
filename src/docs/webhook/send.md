@@ -15,14 +15,14 @@ Insecure方式では、 ==`Webhook ID`を知っている人は誰でもメッセ
 #### 使用方法
 1. 使用するWebhookの詳細画面から、Webhookの`Webhook ID`をコピーします。
 2. Webhookを送信するサービス・アプリケーションから、
-    + `https://q.trap.jp/api/1.0/webhooks/{コピーしたWebhook ID}`宛に
+    + `https://q.trap.jp/api/v3/webhooks/{コピーしたWebhook ID}`宛に
     + `Content-Type: text/plain; charset=utf-8`形式で
     + 投稿するメッセージをリクエストボディに含めてHTTP POSTで送信します。
 3. 使用したWebhookに登録してあるチャンネルにメッセージが投稿されます。
 
 #### シェルスクリプト(curl)による送信例
 ```bash
-curl -X POST -H "Content-Type: text/plain; charset=utf-8" -d "メッセージ本文" https://q.trap.jp/api/1.0/webhooks/{コピーしたWebhook ID}
+curl -X POST -H "Content-Type: text/plain; charset=utf-8" -d "メッセージ本文" https://q.trap.jp/api/v3/webhooks/{コピーしたWebhook ID}
 ```
 
 ## Secure方式
@@ -36,7 +36,7 @@ traQサーバーがWebhookの送信元の正当性を検証します。
 #### 使用方法
 1. 使用するWebhookの詳細画面から、Webhookの`Webhook ID`をコピーします。
 2. Webhookを送信するサービス・アプリケーションから、
-    + `https://q.trap.jp/api/1.0/webhooks/{コピーしたWebhook ID}`宛に
+    + `https://q.trap.jp/api/v3/webhooks/{コピーしたWebhook ID}`宛に
     + `Content-Type: text/plain; charset=utf-8`形式で
     + 投稿するメッセージをリクエストボディに含め、更にリクエストヘッダに、
     + `X-TRAQ-Signature: {メッセージ本文をWebhookシークレットでHMAC-SHA1でハッシュ化した結果をhex形式で表した文字列}`
@@ -51,7 +51,7 @@ traQサーバーがWebhookの送信元の正当性を検証します。
 message="メッセージ本文"
 signature=$(echo -n "$message" | openssl sha1 -hmac "Webhookシークレット")
 
-curl -X POST -H "Content-Type: text/plain; charset=utf-8" -H "X-TRAQ-Signature: $signature" -d "$message" https://q.trap.jp/api/1.0/webhooks/{コピーしたWebhook ID}
+curl -X POST -H "Content-Type: text/plain; charset=utf-8" -H "X-TRAQ-Signature: $signature" -d "$message" https://q.trap.jp/api/v3/webhooks/{コピーしたWebhook ID}
 ```
 
 ## 設定したチャンネルとは異なるチャンネルにメッセージを送信する
