@@ -9,7 +9,7 @@ OAuth 2.0では4つの認可フローが存在します。
 
 ログインボタンを用意して、そのボタンをクリック時に
 ```
-https://q.trap.jp/api/1.0/oauth2/authorize
+https://q.trap.jp/api/v3/oauth2/authorize
 ```
 に以下のパラメータをつけて`GET`あるいは`POST`リクエストを行います。
 `POST`の場合は`x-www-form-urlencoded`形式で送ります。
@@ -34,7 +34,7 @@ scopeは付与すると取得するtokenのスコープを狭められます。
 
 先ほどの`code`を利用して
 ```
-https://q.trap.jp/api/1.0/oauth2/token
+https://q.trap.jp/api/v3/oauth2/token
 ```
 に以下のパラメータを`x-www-form-urlencoded`形式でつけて`POST`リクエストを行います。
 
