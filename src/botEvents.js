@@ -45,5 +45,13 @@ export default {
   STAMP_CREATED: {
     category: 'スタンプ',
     description: 'スタンプが作成された'
+  },
+  TAG_ADDED: {
+    category: 'タグ',
+    description: 'BOTにタグが追加された'
+  },
+  TAG_REMOVED: {
+    category: 'タグ',
+    description: 'BOTからタグが削除された'
   }
 }
