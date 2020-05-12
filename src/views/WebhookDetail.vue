@@ -307,7 +307,7 @@ export default {
         const params = {
           name: this.name.value,
           description: this.description.value,
-          channelId: this.channel.value.channelId
+          channelId: this.channel.value.id
         }
         if (this.secret.editing) {
           params.secret = this.secret.value
