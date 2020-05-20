@@ -8,18 +8,17 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@quasar/extras": "^1.7.0",
+    "@quasar/extras": "^1.8.1",
     "@traptitech/traq": "^3.0.1-0",
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
-    "dayjs": "^1.8.26",
+    "dayjs": "^1.8.27",
     "github-markdown-css": "^4.0.0",
-    "quasar": "^1.10.0",
+    "quasar": "^1.11.3",
     "register-service-worker": "^1.7.1",
-    "traq-api": "traPtitech/node-traq#2.8.1-4",
     "vue": "^2.6.11",
-    "vue-router": "^3.1.6",
-    "vuex": "^3.3.0",
+    "vue-router": "^3.2.0",
+    "vuex": "^3.4.0",
     "vuex-persistedstate": "^3.0.1"
   },
   "devDependencies": {
@@ -38,16 +37,19 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-vue": "^6.2.2",
-    "markdown-it": "^10.0.0",
+    "markdown-it": "^11.0.0",
     "markdown-it-mark": "^3.0.0",
     "pug": "^2.0.4",
     "pug-loader": "^2.4.0",
     "pug-plain-loader": "^1.0.0",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
-    "vue-cli-plugin-quasar": "^2.0.1",
+    "vue-cli-plugin-quasar": "^2.0.2",
     "vue-template-compiler": "^2.6.11",
     "ware-loader": "^0.2.4"
+  },
+  "resolutions": {
+    "kind-of": "^6.0.3"
   },
   "eslintConfig": {
     "root": true,
