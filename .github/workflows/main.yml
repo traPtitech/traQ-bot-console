@@ -1,0 +1,22 @@
+name: check yarn install & build
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  run:
+    name: check yarn install
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v1
+      - name: setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+          registry-url: 'https://registry.npmjs.org'
+      - name: check yarn install
+        run: yarn install
+      - name: yarn build
+        run: yarn build
