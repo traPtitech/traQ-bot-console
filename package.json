@@ -48,6 +48,9 @@
     "vue-template-compiler": "^2.6.11",
     "ware-loader": "^0.2.4"
   },
+  "resolutions": {
+    "kind-of": "^6.0.3"
+  },
   "eslintConfig": {
     "root": true,
     "env": {
