@@ -1,6 +1,7 @@
 # traq-bot-console
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/bf81b35b-92e3-4f3b-99c7-a1a46c48388c/deploy-status)](https://app.netlify.com/sites/traq-bot-console/deploys)
+![check yarn install & build](https://github.com/traPtitech/traQ-bot-console/workflows/check%20yarn%20install%20&%20build/badge.svg)
 
 ## Project setup
 ```
