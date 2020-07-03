@@ -126,8 +126,8 @@ export default {
   border-radius: 50%
   background-color: var(--q-color-primary)
   font-size: 0.8em
-  height: 1.4em
-  width: 1.4em
+  height: 1em
+  width: 1em
   padding: 0.2em
 }
 
