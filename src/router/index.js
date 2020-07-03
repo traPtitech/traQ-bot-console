@@ -68,16 +68,36 @@ export default new Router({
               component: () => import('../docs/bot/settings.md')
             },
             {
-              path: 'bot/settings',
-              component: () => import('../docs/bot/settings.md')
-            },
-            {
               path: 'bot/server',
               component: () => import('../docs/bot/server.md')
             },
             {
               path: 'bot/events',
-              component: () => import('../docs/bot/events.md')
+              component: () => import('../docs/bot/events/index.md')
+            },
+            {
+              path: 'bot/events/system',
+              component: () => import('../docs/bot/events/system.md')
+            },
+            {
+              path: 'bot/events/message',
+              component: () => import('../docs/bot/events/message.md')
+            },
+            {
+              path: 'bot/events/channel',
+              component: () => import('../docs/bot/events/channel.md')
+            },
+            {
+              path: 'bot/events/user',
+              component: () => import('../docs/bot/events/user.md')
+            },
+            {
+              path: 'bot/events/stamp',
+              component: () => import('../docs/bot/events/stamp.md')
+            },
+            {
+              path: 'bot/events/tag',
+              component: () => import('../docs/bot/events/tag.md')
             },
             {
               path: 'bot/traq-api',

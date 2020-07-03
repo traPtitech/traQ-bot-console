@@ -19,6 +19,14 @@ export default {
     description:
       'チャンネルにメッセージが投稿された。このイベントは参加チャンネルに投稿されたメンションを含みます。'
   },
+  MESSAGE_DELETED: {
+    category: 'メッセージ',
+    description: 'チャンネルのメッセージが削除された'
+  },
+  MESSAGE_UPDATED: {
+    category: 'メッセージ',
+    description: 'チャンネルのメッセージが編集された'
+  },
   MENTION_MESSAGE_CREATED: {
     category: 'メッセージ',
     description:
@@ -27,6 +35,14 @@ export default {
   DIRECT_MESSAGE_CREATED: {
     category: 'メッセージ',
     description: 'BOTに対してダイレクトメッセージが投稿された'
+  },
+  DIRECT_MESSAGE_DELETED: {
+    category: 'メッセージ',
+    description: 'BOTに対してのダイレクトメッセージが削除された'
+  },
+  DIRECT_MESSAGE_UPDATED: {
+    category: 'メッセージ',
+    description: 'BOTに対してのダイレクトメッセージが編集された'
   },
   CHANNEL_CREATED: {
     category: 'チャンネル',
