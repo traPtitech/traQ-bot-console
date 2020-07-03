@@ -19,4 +19,4 @@ BOTに与えられている権限は以下の通りです。
 + ファイルのダウンロード
 
 ### 備考
-最新情報は[ソース](https://github.com/traPtitech/traQ/blob/master/rbac/role/bot.go)を参照してください。
+最新情報は[ソース](https://github.com/traPtitech/traQ/blob/master/service/rbac/role/bot.go)を参照してください。

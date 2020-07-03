@@ -84,6 +84,6 @@ Clientの利用する権限です。
 
 #### 備考
 各権限で行えることの最新情報は以下のソースを参照してください。
-+ [読み取り(read)](https://github.com/traPtitech/traQ/blob/master/rbac/role/read.go)
-+ [書き込み(write)](https://github.com/traPtitech/traQ/blob/master/rbac/role/write.go)
-+ [BOT管理(manage_bot)](https://github.com/traPtitech/traQ/blob/master/rbac/role/manage_bot.go)
++ [読み取り(read)](https://github.com/traPtitech/traQ/blob/master/service/rbac/role/read.go)
++ [書き込み(write)](https://github.com/traPtitech/traQ/blob/master/service/rbac/role/write.go)
++ [BOT管理(manage_bot)](https://github.com/traPtitech/traQ/blob/master/service/rbac/role/manage_bot.go)
