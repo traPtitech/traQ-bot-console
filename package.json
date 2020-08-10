@@ -14,7 +14,7 @@
     "core-js": "^3.6.5",
     "dayjs": "^1.8.33",
     "github-markdown-css": "^4.0.0",
-    "quasar": "^1.12.8",
+    "quasar": "^1.12.13",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
     "vue-router": "^3.4.2",
