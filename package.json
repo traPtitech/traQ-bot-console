@@ -10,7 +10,7 @@
   "dependencies": {
     "@quasar/extras": "^1.9.4",
     "@traptitech/traq": "^3.0.1-0",
-    "axios": "^0.19.2",
+    "axios": "^0.20.0",
     "core-js": "^3.6.5",
     "dayjs": "^1.8.33",
     "github-markdown-css": "^4.0.0",
