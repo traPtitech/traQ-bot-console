@@ -1138,10 +1138,10 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
-"@quasar/extras@^1.9.4":
-  version "1.9.4"
-  resolved "https://registry.yarnpkg.com/@quasar/extras/-/extras-1.9.4.tgz#2978e45dc8cb2802172c6cddafe383b55cd46037"
-  integrity sha512-g0a39r4ejpTBsrygSfvc1gcZEhnGMl0Rj/xSH6kvmn42NtAwkKiORqFckhhHJ3ZsubE1c5F2jAFcpWAaaC/t8A==
+"@quasar/extras@^1.9.5":
+  version "1.9.5"
+  resolved "https://registry.yarnpkg.com/@quasar/extras/-/extras-1.9.5.tgz#266663cb728d71706038fa7eaaa7e6a2c97218f7"
+  integrity sha512-eUJrYw51qWtJfw12Ha2VBK8wBqkperHh8iaktQoMUrda4goUZ8nYpbfq/ZQdmsDiBku/kpUIrr0pPRmjzVJwkQ==
 
 "@soda/friendly-errors-webpack-plugin@^1.7.1":
   version "1.7.1"
