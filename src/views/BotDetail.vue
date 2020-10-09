@@ -144,9 +144,11 @@
                   div.text-caption.float-left
                     q-badge(color="negative") NE
                     span {{ ' ネットワークエラー' }}
+                    q-tooltip traQサーバーからBOTサーバーへのリクエストに失敗しました
                   div.text-caption.float-left
                     q-badge(color="negative") NG
                     span {{ ' エラー' }}
+                    q-tooltip BOTサーバーのレスポンスが不正でした
 </template>
 
 <script>
