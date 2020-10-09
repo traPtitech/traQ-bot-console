@@ -9217,10 +9217,10 @@ void-elements@^2.0.1:
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
   integrity sha1-wGavtYK7HLQSjWDqkjkulNXp2+w=
 
-vue-cli-plugin-quasar@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/vue-cli-plugin-quasar/-/vue-cli-plugin-quasar-2.0.2.tgz#4cb843baada5570c3b9cc5449641e6aa6890b35d"
-  integrity sha512-wHtjjKEpTq1vAhiRHRids/DDx1r1A53q/LVc2PgeI7sycbBLDdGhY3+XnysmME+OMReecqOP1IhNC7b8hL09tA==
+vue-cli-plugin-quasar@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/vue-cli-plugin-quasar/-/vue-cli-plugin-quasar-3.0.1.tgz#b9bf493adb57e9e36b3f6646cb74bc049129e80b"
+  integrity sha512-D+0TecjLDhp1IzGh6foHml8C+ICwofei8wpAbvObhjeE93HZXJsDHtWV9iiHKD0Um2jI8gZp9gUO621i4zOSyw==
 
 vue-eslint-parser@^7.1.0:
   version "7.1.0"
