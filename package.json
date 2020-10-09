@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.9.7",
-    "@traptitech/traq": "^3.0.1-0",
+    "@traptitech/traq": "^3.4.5-1",
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
     "dayjs": "^1.9.1",
