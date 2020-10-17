@@ -32,6 +32,11 @@ export default {
     description:
       'BOTに対してメンションされた。このイベントはMESSAGE_CREATEDとして配信されます。'
   },
+  BOT_MESSAGE_STAMPS_CREATED: {
+    category: 'メッセージ',
+    description:
+      'BOTが投稿したメッセージに押されているスタンプが変化した。このイベントは１秒間スロットリングされます。'
+  },
   DIRECT_MESSAGE_CREATED: {
     category: 'メッセージ',
     description: 'BOTに対してダイレクトメッセージが投稿された'
