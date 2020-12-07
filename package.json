@@ -60,7 +60,9 @@
       "plugin:vue/essential",
       "@vue/standard"
     ],
-    "rules": {},
+    "rules": {
+      "vue/custom-event-name-casing": "error"
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }
