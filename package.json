@@ -41,7 +41,7 @@
     "markdown-it-mark": "^3.0.0",
     "pug": "^2.0.4",
     "pug-loader": "^2.4.0",
-    "pug-plain-loader": "^1.0.0",
+    "pug-plain-loader": "^1.1.0",
     "stylus": "^0.54.8",
     "stylus-loader": "^3.0.2",
     "vue-cli-plugin-quasar": "^3.0.1",
