@@ -11,5 +11,5 @@ OAuth 2.0に存在する4つの認可フローのうち、Authorization Code Flo
 ## Clientページの作成
 traQへのアクセスを許可するかどうかのページへ遷移したり、
 許可されたあとに実際にトークンを取得する処理をします。  
-詳細は[Clientページを作成する](/docs/client/create)を参照してください。  
+詳細は[Clientページを作成する](/docs/client/page)を参照してください。  
 一般的なOAuthクライアントの利用も可能です。  
