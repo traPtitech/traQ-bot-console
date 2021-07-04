@@ -136,7 +136,7 @@
                         q-badge(v-else color="warning") {{ props.row.code }}
                       q-td(key="requestId" auto-width) {{ props.row.requestId }}
                       q-td(key="event") {{ props.row.event }}
-                      q-td(key="dateTime") {{ dayjs(props.row.dateTime).format('YY/MM/DD HH:mm:ss.SSS') }}
+                      q-td(key="datetime") {{ dayjs(props.row.datetime).format('YY/MM/DD HH:mm:ss.SSS') }}
                 div.q-gutter-sm
                   div.text-caption.float-left
                     q-badge(color="primary") OK
@@ -200,7 +200,7 @@ export default {
         {
           name: 'datetime',
           label: '日時',
-          field: 'dateTime'
+          field: 'datetime'
         }
       ],
       eventLogs: [],
