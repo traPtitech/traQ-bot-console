@@ -11,7 +11,7 @@
     "@quasar/extras": "^1.9.13",
     "@traptitech/traq": "^3.4.5-1",
     "axios": "^0.21.1",
-    "core-js": "^3.16.1",
+    "core-js": "^3.16.2",
     "dayjs": "^1.10.6",
     "github-markdown-css": "^4.0.0",
     "quasar": "^1.15.0",
