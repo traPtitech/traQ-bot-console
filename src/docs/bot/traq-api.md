@@ -1,6 +1,6 @@
 # traQ APIリファレンス
 
-[traQ APIリファレンス](https://traptitech.github.io/traQ/)
+[traQ APIリファレンス](https://apis.trap.jp/)
 
 ## 権限
 BOTに与えられている権限は以下の通りです。
