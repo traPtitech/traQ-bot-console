@@ -29,3 +29,9 @@ WebSocket Modeでは、WebSocket経由でtraQサーバーからイベントを�
 コマンドの形式が間違っていた場合は、ERRORイベントが非同期で配信されます。
 
 詳細な送信形式は[traQ API リファレンス](https://apis.trap.jp/#/bot/connectBotWS)を参考にしてください。
+
+## ライブラリ
+
+ライブラリを使用すると、簡単にWebSocket BOTを作ることができます。
+
++ [traPtitech/traq-ws-bot: traQ WebSocket BOT用ライブラリ](https://github.com/traPtitech/traq-ws-bot)
