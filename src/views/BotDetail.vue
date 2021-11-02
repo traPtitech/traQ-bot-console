@@ -64,7 +64,9 @@
                     :rules="[val => val && val.length > 0 || '必須項目です']")
                   q-input(label="説明" stack-label v-model="description" :readonly="!editing" autogrow type="textarea" hide-hint hint="使用用途等を入力してください"
                     :rules="[val => val && val.length > 0 || '必須項目です']")
-                  q-input(label="BOTサーバーエンドポイント" stack-label v-model="endpoint" :readonly="!editing" hide-hint  hint="traQのイベント送信先のURLを入力してください"
+                  q-select(label="動作モード" stack-label v-model="mode" :readonly="!editing" hide-hint hint="動作モードを選択してください"
+                    :options="modeOptions")
+                  q-input(label="BOTサーバーエンドポイント" stack-label v-model="endpoint" :readonly="!editing" v-if="mode === 'HTTP'" hide-hint  hint="traQのイベント送信先のURLを入力してください"
                     :rules="[val => val && urlRegex.test(val) || '有効なURLを入力してください']")
                   div.row.q-gutter-sm(v-if="editing")
                     q-btn.col.btn-fixed-width(label="キャンセル" unelevated @click="cancelEditing")
@@ -179,6 +181,7 @@ export default {
       hideVerificationToken: true,
       hideAccessToken: true,
       hideBotCode: true,
+      modeOptions: ['HTTP', 'WebSocket'],
       eventLogsColumns: [
         {
           name: 'code',
@@ -207,6 +210,7 @@ export default {
       loadingEventLogs: false,
       displayName: '',
       description: '',
+      mode: '',
       endpoint: '',
       editing: false,
       urlRegex: /http(s)?:\/\/([\w-]+.)+[\w-]+(\/[\w- ./?%&=]*)?/i
@@ -269,6 +273,7 @@ export default {
         this.bot = bot
         this.displayName = bot.displayName
         this.description = bot.description
+        this.mode = bot.mode
         this.endpoint = bot.endpoint
       } catch (e) {
         console.error(e)
@@ -334,6 +339,9 @@ export default {
         }
         if (this.description !== this.bot.description) {
           params.description = this.description
+        }
+        if (this.mode !== this.bot.mode) {
+          params.mode = this.mode
         }
         if (this.endpoint !== this.bot.endpoint) {
           params.endpoint = this.endpoint
