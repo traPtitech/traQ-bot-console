@@ -35,3 +35,4 @@ WebSocket Modeでは、WebSocket経由でtraQサーバーからイベントを�
 ライブラリを使用すると、簡単にWebSocket BOTを作ることができます。
 
 + [traPtitech/traq-ws-bot: traQ WebSocket BOT用ライブラリ](https://github.com/traPtitech/traq-ws-bot)
++ [motoki317/traq-ws-bot4j: traQ WebSocket bot library for Java](https://github.com/motoki317/traq-ws-bot4j)
