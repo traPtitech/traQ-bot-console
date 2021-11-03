@@ -33,7 +33,7 @@ BOTが登録したメッセージやユーザー一覧の名前部分に表示�
 ### BOTサーバーエンドポイント
 
 traQがHTTP Mode BOTに対してイベントを送信する際に使う送信先のURLです。
-HTTP Modeの場合は必須ですが、WebSocket Modeの場合は必要無いため空でも構いません。
+HTTP Modeの場合にのみ入力が必要です。
 
 HTTP BOTサーバーはこのURLに対するHTTPリクエスト(POST)を受け付けるようにしなければなりません。
 HTTP BOTサーバーに関する説明は[こちら](/docs/bot/http-server)を参照してください。
