@@ -672,12 +672,14 @@ export default {
     startEditing () {
       this.displayName = this.bot.displayName
       this.description = this.bot.description
+      this.mode = this.bot.mode
       this.endpoint = this.bot.endpoint
       this.editing = true
     },
     cancelEditing () {
       this.displayName = this.bot.displayName
       this.description = this.bot.description
+      this.mode = this.bot.mode
       this.endpoint = this.bot.endpoint
       this.editing = false
     },
