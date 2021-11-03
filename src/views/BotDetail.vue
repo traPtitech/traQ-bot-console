@@ -66,7 +66,7 @@
                     :rules="[val => val && val.length > 0 || '必須項目です']")
                   q-select(label="動作モード" stack-label v-model="mode" :readonly="!editing" hide-hint hint="動作モードを選択してください"
                     :options="modeOptions")
-                  q-input(label="BOTサーバーエンドポイント" stack-label v-model="endpoint" :readonly="!editing" v-if="mode === 'HTTP'" hide-hint  hint="traQのイベント送信先のURLを入力してください"
+                  q-input(v-if="mode === 'HTTP'" label="BOTサーバーエンドポイント" stack-label v-model="endpoint" :readonly="!editing" hide-hint  hint="traQのイベント送信先のURLを入力してください"
                     :rules="[val => val && urlRegex.test(val) || '有効なURLを入力してください']")
                   div.row.q-gutter-sm(v-if="editing")
                     q-btn.col.btn-fixed-width(label="キャンセル" unelevated @click="cancelEditing")
