@@ -132,9 +132,10 @@
                   template(#body="props")
                     q-tr.text-right(:props="props")
                       q-td(key="code" auto-width)
-                        q-badge(v-if="props.row.result === 'ne'" color="negative") NE
-                        q-badge(v-else-if="props.row.result === 'ok'" color="primary") OK
+                        q-badge(v-if="props.row.result === 'ok'" color="primary") OK
+                        q-badge(v-else-if="props.row.result === 'ne'" color="negative") NE
                         q-badge(v-else-if="props.row.result === 'ng'" color="negative") NG
+                        q-badge(v-else-if="props.row.result === 'dp'" color="warning") DP
                         q-badge(v-else color="warning") {{ props.row.result }}
                       q-td(key="requestId" auto-width) {{ props.row.requestId }}
                       q-td(key="event") {{ props.row.event }}
@@ -151,6 +152,10 @@
                     q-badge(color="negative") NG
                     span {{ ' エラー' }}
                     q-tooltip BOTサーバーのレスポンスが不正でした
+                  div.text-caption.float-left
+                    q-badge(color="warning") DP
+                    span {{ ' ドロップ' }}
+                    q-tooltip (WebSocket Mode) 接続しているセッションが無かったため、イベントが送信されませんでした
 </template>
 
 <script>
