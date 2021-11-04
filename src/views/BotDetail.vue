@@ -64,7 +64,9 @@
                     :rules="[val => val && val.length > 0 || '必須項目です']")
                   q-input(label="説明" stack-label v-model="description" :readonly="!editing" autogrow type="textarea" hide-hint hint="使用用途等を入力してください"
                     :rules="[val => val && val.length > 0 || '必須項目です']")
-                  q-input(label="BOTサーバーエンドポイント" stack-label v-model="endpoint" :readonly="!editing" hide-hint  hint="traQのイベント送信先のURLを入力してください"
+                  q-select(label="動作モード" stack-label v-model="mode" :readonly="!editing" hide-hint hint="動作モードを選択してください"
+                    :options="modeOptions")
+                  q-input(v-if="mode === 'HTTP'" label="BOTサーバーエンドポイント" stack-label v-model="endpoint" :readonly="!editing" hide-hint  hint="traQのイベント送信先のURLを入力してください"
                     :rules="[val => val && urlRegex.test(val) || '有効なURLを入力してください']")
                   div.row.q-gutter-sm(v-if="editing")
                     q-btn.col.btn-fixed-width(label="キャンセル" unelevated @click="cancelEditing")
@@ -130,10 +132,11 @@
                   template(#body="props")
                     q-tr.text-right(:props="props")
                       q-td(key="code" auto-width)
-                        q-badge(v-if="props.row.code === -1" color="negative") NE
-                        q-badge(v-else-if="props.row.code === 204" color="primary") OK
-                        q-badge(v-else-if="props.row.code >= 400 || props.row.code < 200" color="negative") NG
-                        q-badge(v-else color="warning") {{ props.row.code }}
+                        q-badge(v-if="props.row.result === 'ok'" color="primary") OK
+                        q-badge(v-else-if="props.row.result === 'ne'" color="negative") NE
+                        q-badge(v-else-if="props.row.result === 'ng'" color="negative") NG
+                        q-badge(v-else-if="props.row.result === 'dp'" color="warning") DP
+                        q-badge(v-else color="warning") {{ props.row.result }}
                       q-td(key="requestId" auto-width) {{ props.row.requestId }}
                       q-td(key="event") {{ props.row.event }}
                       q-td(key="datetime") {{ dayjs(props.row.datetime).format('YY/MM/DD HH:mm:ss.SSS') }}
@@ -149,6 +152,10 @@
                     q-badge(color="negative") NG
                     span {{ ' エラー' }}
                     q-tooltip BOTサーバーのレスポンスが不正でした
+                  div.text-caption.float-left
+                    q-badge(color="warning") DP
+                    span {{ ' ドロップ' }}
+                    q-tooltip (WebSocket Mode) 接続しているセッションが無かったため、イベントが送信されませんでした
 </template>
 
 <script>
@@ -179,6 +186,7 @@ export default {
       hideVerificationToken: true,
       hideAccessToken: true,
       hideBotCode: true,
+      modeOptions: ['HTTP', 'WebSocket'],
       eventLogsColumns: [
         {
           name: 'code',
@@ -207,6 +215,7 @@ export default {
       loadingEventLogs: false,
       displayName: '',
       description: '',
+      mode: '',
       endpoint: '',
       editing: false,
       urlRegex: /http(s)?:\/\/([\w-]+.)+[\w-]+(\/[\w- ./?%&=]*)?/i
@@ -269,6 +278,7 @@ export default {
         this.bot = bot
         this.displayName = bot.displayName
         this.description = bot.description
+        this.mode = bot.mode
         this.endpoint = bot.endpoint
       } catch (e) {
         console.error(e)
@@ -334,6 +344,9 @@ export default {
         }
         if (this.description !== this.bot.description) {
           params.description = this.description
+        }
+        if (this.mode !== this.bot.mode) {
+          params.mode = this.mode
         }
         if (this.endpoint !== this.bot.endpoint) {
           params.endpoint = this.endpoint
@@ -664,12 +677,14 @@ export default {
     startEditing () {
       this.displayName = this.bot.displayName
       this.description = this.bot.description
+      this.mode = this.bot.mode
       this.endpoint = this.bot.endpoint
       this.editing = true
     },
     cancelEditing () {
       this.displayName = this.bot.displayName
       this.description = this.bot.description
+      this.mode = this.bot.mode
       this.endpoint = this.bot.endpoint
       this.editing = false
     },

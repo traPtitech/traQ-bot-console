@@ -68,8 +68,12 @@ export default new Router({
               component: () => import('../docs/bot/settings.md')
             },
             {
-              path: 'bot/server',
-              component: () => import('../docs/bot/server.md')
+              path: 'bot/http-server',
+              component: () => import('../docs/bot/http-server.md')
+            },
+            {
+              path: 'bot/ws-server',
+              component: () => import('../docs/bot/ws-server.md')
             },
             {
               path: 'bot/events',

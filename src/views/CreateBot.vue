@@ -15,8 +15,10 @@
         :rules="[val => val && val.length > 0 || '必須項目です']" hint="BOTが投稿したメッセージに表示されます")
       q-input(v-model="description" outlined autogrow stack-label label="説明" type="textarea" hint="使用用途等を入力してください"
         :rules="[val => val && val.length > 0 || '必須項目です']")
-      q-input(v-model="endpoint" outlined stack-label label="BOTサーバーエンドポイント" hint="traQのイベント送信先のURLを入力してください"
-        :rules="[val => val && urlRegex.test(val) || '有効なURLを入力してください']")
+      q-select(v-model="mode" outlined stack-label label="動作モード" hint="動作モードを選択してください"
+        :options="modeOptions" :rules="[val => val && modeOptions.includes(val) || '選択してください']")
+      q-input(v-if="mode === 'HTTP'" v-model="endpoint" outlined stack-label label="BOTサーバーエンドポイント" hint="traQのイベント送信先のURLを入力してください"
+        :rules="[modeRule]" reactive-rules)
       q-checkbox(v-model="accept" label="BOT利用ルールに同意する")
       div
         q-btn.float-right(label="登録" color="primary" type="submit" unelevated)
@@ -33,10 +35,23 @@ export default {
       name: '',
       displayName: '',
       description: '',
+      mode: '',
       endpoint: '',
       accept: false,
+      modeOptions: ['HTTP', 'WebSocket'],
       urlRegex: /http(s)?:\/\/([\w-]+.)+[\w-]+(\/[\w- ./?%&=]*)?/i,
       botNameRegex: /^[a-zA-Z0-9_-]{1,16}$/i
+    }
+  },
+  computed: {
+    modeRule () {
+      return val => {
+        if (this.mode === 'HTTP') {
+          return (val && this.urlRegex.test(val)) || '有効なURLを入力してください'
+        } else {
+          return true
+        }
+      }
     }
   },
   methods: {
@@ -51,12 +66,16 @@ export default {
       } else {
         this.$q.loading.show({ delay: 400 })
         try {
-          const res = await traq.createBot({
+          const params = {
             name: this.name,
             displayName: this.displayName,
             description: this.description,
-            endpoint: this.endpoint
-          })
+            mode: this.mode
+          }
+          if (this.mode === 'HTTP') {
+            params.endpoint = this.endpoint
+          }
+          const res = await traq.createBot(params)
           this.$router.push(`/bots/${res.data.id}`, () => {
             this.$q.notify({
               icon: 'done',
