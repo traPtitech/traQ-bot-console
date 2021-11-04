@@ -30,3 +30,4 @@ traQからの`PING`イベントに`204 No Content`で返答するようにBOTサ
 
 + [traPtitech/traq-bot: traQ BOT用Goライブラリ](https://github.com/traPtitech/traq-bot)
 + [sapphi-red/hubot-traq: Hubot adapter for traQ](https://github.com/sapphi-red/hubot-traq) (JavaScript, CoffeeScript)
++ [motoki317/traq-bot4j: traQ HTTP bot library for Java](https://github.com/motoki317/traq-bot4j)
