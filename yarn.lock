@@ -2719,12 +2719,7 @@ caniuse-api@^3.0.0:
     lodash.memoize "^4.1.2"
     lodash.uniq "^4.5.0"
 
-caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001043:
-  version "1.0.30001275"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001275.tgz"
-  integrity sha512-ihJVvj8RX0kn9GgP43HKhb5q9s2XQn4nEQhdldEJvZhCsuiB2XOq6fAMYQZaN6FPWfsr2qU0cdL0CSbETwbJAg==
-
-caniuse-lite@^1.0.30001109:
+caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001043, caniuse-lite@^1.0.30001109:
   version "1.0.30001275"
   resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001275.tgz"
   integrity sha512-ihJVvj8RX0kn9GgP43HKhb5q9s2XQn4nEQhdldEJvZhCsuiB2XOq6fAMYQZaN6FPWfsr2qU0cdL0CSbETwbJAg==
@@ -7786,10 +7781,10 @@ qs@~6.5.2:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
   integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
 
-quasar@^1.15.0:
-  version "1.15.0"
-  resolved "https://registry.yarnpkg.com/quasar/-/quasar-1.15.0.tgz#aa4896e3dab46342986a79617e26c2da0db8ea4d"
-  integrity sha512-GTIz/8AgzpHKPsbrQfO32dPPEGjDSFDWRE4dvt3AHh2LtRRAE5QJwPMqCy11GYGhyLMeZaRl76AuCUVb0BYTzA==
+quasar@^2.5.5:
+  version "2.5.5"
+  resolved "https://registry.yarnpkg.com/quasar/-/quasar-2.5.5.tgz#942996e10a548c5f8a368b51d3432da21043d25a"
+  integrity sha512-7UntzqIBih+xZLCB/f9pxuvNP3EBgexfQDbf8r9p58DHWAiSQwamLjcRHKqmujjp0uX1QChtp6oUxEkK+sFKtA==
 
 query-string@^4.1.0:
   version "4.3.4"
