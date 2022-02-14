@@ -118,12 +118,11 @@
                   q-item
                     q-item-section
                       q-select(v-model="addingChannel" dense borderless clearable use-input hide-selected input-debounce="0" :options="channelOptions" option-value="channelName" option-label="channelName" @filter="channelFilterFn" :loading="loadingChannels" :disable="loadingChannels")
-                        template(slot="no-option")
+                        template(#no-option)
                           q-item
                             q-item-section.text-grey チャンネルが表示されない場合は右の更新ボタンを押してください
-                        template(slot="append")
+                        template(#after)
                           q-btn(round dense flat icon="refresh" @click="fetchChannels")
-                        template(slot="after")
                           q-btn(:disable="addingChannel === null" round dense flat icon="add" @click="onAddBotToChannelBtnClicked(addingChannel.id)")
               q-tab-panel(name="logs")
                 q-table(:columns="eventLogsColumns" :data="eventLogs" :loading="loadingEventLogs" flat row-key="requestId" title="最近のBOTイベント")
