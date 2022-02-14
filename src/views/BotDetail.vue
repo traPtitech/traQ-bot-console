@@ -117,7 +117,7 @@
                         q-btn(size="12px" flat dense round icon="delete" @click="onRemoveBotFromChannelBtnClicked(id)")
                   q-item
                     q-item-section
-                      q-select(v-model="addingChannel" dense borderless clearable use-input hide-selected input-debounce="0" :options="channelOptions" option-value="channelName" option-label="channelName" @filter="channelFilterFn" :loading="loadingChannels" :disable="loadingChannels")
+                      q-select(v-model="addingChannel" dense borderless clearable use-input input-debounce="0" :options="channelOptions" option-value="channelName" option-label="channelName" @filter="channelFilterFn" :loading="loadingChannels" :disable="loadingChannels")
                         template(#no-option)
                           q-item
                             q-item-section.text-grey チャンネルが表示されない場合は右の更新ボタンを押してください
