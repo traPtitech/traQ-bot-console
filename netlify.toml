@@ -7,7 +7,7 @@ VUE_APP_API_ENDPOINT = 'https://q.trap.jp/api/v3'
 VUE_APP_API_CLIENT_ID = 'lkEl3HAUIqFm5mUvxmWIanbWO7EBd9ttwBaW'
 
 [context.dev.environment]
-VUE_APP_API_ENDPOINT = 'https://traq-s-dev.tokyotech.org/api/v3'
+VUE_APP_API_ENDPOINT = 'https://q-dev.trapti.tech/api/v3'
 VUE_APP_API_CLIENT_ID = '4yRM7RQvfLD71BbTwKfWzga2EgedPb22Vo6e'
 
 [[redirects]]

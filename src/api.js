@@ -2,7 +2,7 @@ import { Apis as TraQ } from '@traptitech/traq'
 import { randomString, pkce, hmacsha1 } from './utils'
 
 export const baseURL =
-  process.env.VUE_APP_API_ENDPOINT || 'https://traq-s-dev.tokyotech.org/api/v3'
+  process.env.VUE_APP_API_ENDPOINT || 'https://q-dev.trapti.tech/api/v3'
 
 export let traq = new TraQ({
   basePath: baseURL
