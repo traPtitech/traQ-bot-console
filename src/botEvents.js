@@ -74,5 +74,37 @@ export default {
   TAG_REMOVED: {
     category: 'タグ',
     description: 'BOTからタグが削除された'
+  },
+  USER_GROUP_CREATED: {
+    category: 'ユーザーグループ',
+    description: 'ユーザーグループが作成された'
+  },
+  USER_GROUP_UPDATED: {
+    category: 'ユーザーグループ',
+    description: 'ユーザーグループが更新された'
+  },
+  USER_GROUP_DELETED: {
+    category: 'ユーザーグループ',
+    description: 'ユーザーグループが削除された'
+  },
+  USER_GROUP_MEMBER_ADDED: {
+    category: 'ユーザーグループ',
+    description: 'ユーザーグループにメンバーが追加された'
+  },
+  USER_GROUP_MEMBER_UPDATED: {
+    category: 'ユーザーグループ',
+    description: 'ユーザーグループのメンバー情報が更新された'
+  },
+  USER_GROUP_MEMBER_REMOVED: {
+    category: 'ユーザーグループ',
+    description: 'ユーザーグループのメンバーが削除された'
+  },
+  USER_GROUP_ADMIN_ADDED: {
+    category: 'ユーザーグループ',
+    description: 'ユーザーグループに管理者が追加された'
+  },
+  USER_GROUP_ADMIN_REMOVED: {
+    category: 'ユーザーグループ',
+    description: 'ユーザーグループの管理者が削除された'
   }
 }
