@@ -54,6 +54,18 @@ signature=$(echo -n "$message" | openssl sha1 -hmac "Webhookシークレット")
 curl -X POST -H "Content-Type: text/plain; charset=utf-8" -H "X-TRAQ-Signature: $signature" -d "$message" https://q.trap.jp/api/v3/webhooks/{コピーしたWebhook ID}
 ```
 
+## メッセージの埋め込みについて
+
+URLのクエリパラメーター`embed`に次のうちいずれかの値を与えることでメッセージの埋め込みが有効になります。
+
+    1, t, T, True, TRUE, true
+
+すなわち、次のようなURLでは埋め込みが有効になります。
+
+    https://q.trap.jp/api/v3/webhooks/{コピーしたWebhook ID}?embed=true
+
+埋め込みが有効になると、`#`始まりのチャンネル名、`@`始まりのユーザー名が自動的に適切なリンクに置き換わります。
+
 ## 設定したチャンネルとは異なるチャンネルにメッセージを送信する
 Webhookではヘッダを追加することで全てのpublicなチャンネルにメッセージを投稿することができます。
 
