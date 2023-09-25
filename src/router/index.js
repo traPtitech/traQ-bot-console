@@ -96,6 +96,10 @@ export default new Router({
               component: () => import('../docs/bot/events/user.md')
             },
             {
+              path: 'bot/events/user-group',
+              component: () => import('../docs/bot/events/user-group.md')
+            },
+            {
               path: 'bot/events/stamp',
               component: () => import('../docs/bot/events/stamp.md')
             },
