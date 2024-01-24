@@ -63,6 +63,11 @@ export default {
     description: 'ユーザーが作成された',
     privileged: true
   },
+  USER_ACTIVATED: {
+    category: 'ユーザー',
+    description: 'ユーザーの凍結が解除された',
+    privileged: true
+  },
   STAMP_CREATED: {
     category: 'スタンプ',
     description: 'スタンプが作成された'
