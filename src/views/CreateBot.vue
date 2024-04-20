@@ -3,7 +3,7 @@
     h6 BOT新規登録
     q-form.q-gutter-md(@submit="onSubmit")
       q-banner.bg-grey-3.text-black(rounded)
-        template(slot="avatar")
+        template(#avatar)
           q-icon.text-orange(name="warning")
         router-link(to="/docs/bot") BOTマニュアル
         | と

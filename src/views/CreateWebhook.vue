@@ -3,7 +3,7 @@
     h6 Webhook新規作成
     q-form.q-gutter-md(@submit="onSubmit")
       q-banner.bg-grey-3.text-black(rounded)
-        template(slot="avatar")
+        template(#avatar)
           q-icon.text-orange(name="warning")
         router-link(to="/docs/webhook") Webhookマニュアル
         | と
@@ -15,10 +15,10 @@
         :rules="[val => val && val.length > 0 || '必須項目です']")
       q-select(v-model="targetChannel" outlined clearable use-input hide-selected fill-input input-debounce="0" stack-label label="投稿先チャンネル" :options="channelOptions" option-value="channelName" option-label="channelName"
         :rules="[val => val || '必須項目です']" @filter="channelFilterFn" :loading="loadingChannel" :disable="loadingChannel" hint="プライベートなチャンネルは指定できません")
-        template(slot="no-option")
+        template(#no-option)
           q-item
             q-item-section.text-grey チャンネルが表示されない場合は右の更新ボタンを押してください
-        template(slot="after")
+        template(#after)
           q-btn(round dense flat icon="refresh" @click="fetchChannels")
       q-input(v-model="secret" outlined stack-label label="Webhookシークレット" hint="Secure Webhookを使用しない場合は空欄にしてください。シークレットは後から見ることはできないので、記録しておいてください。")
       q-checkbox(v-model="accept" label="Webhook利用ルールに同意する")

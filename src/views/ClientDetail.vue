@@ -21,12 +21,12 @@
               q-tab-panel(name="info")
                 q-form.col(@submit="onSubmit")
                   q-input(label="Client ID" v-model="client.id" readonly hint='')
-                    template(slot="after")
+                    template(#after)
                       q-icon(name="file_copy" class="cursor-pointer" @click="copyText(client.id)")
                   q-input(label="Client名" stack-label v-model="name.value" :readonly="!editing" :counter="editing" maxlength="32" :rules="[val => val && val.length > 0 || '必須項目です']")
                   q-input(label="説明" stack-label v-model="description.value" :readonly="!editing" type="textarea" autogrow :rules="[val => val && val.length > 0 || '必須項目です']")
                   q-input(label="リダイレクト先URL" stack-label v-model="callbackUrl.value" :readonly="!editing" :counter="editing" :rules="[val => val && urlRegex.test(val) || '有効なURLを入力してください']")
-                  q-field(label="権限" stack-label :value="client.scopes" readonly hint='')
+                  q-field(label="権限" stack-label v-model="client.scopes" readonly hint='')
                     template(v-slot:control)
                       q-option-group(v-model="client.scopes" :options="scopeOptions" type="checkbox" disable hint='')
                   q-input(v-if="client.developerId !== userInfo.id" label="作成者" hint='' v-model="client.developerName" readonly)
@@ -40,8 +40,8 @@
               q-tab-panel(name="cred")
                 p 以下の認証情報の取り扱いに十分注意してください
                 q-form
-                  q-input(label="Client Secret" :value="client.secret" :type="hideSecret ? 'password' : 'text'" readonly)
-                    template(slot="after")
+                  q-input(label="Client Secret" v-model="client.secret" :type="hideSecret ? 'password' : 'text'" readonly)
+                    template(#after)
                       q-icon(name="file_copy" class="cursor-pointer" :class="{ hidden: hideSecret }" @click="copyText(client.secret)")
                       q-icon(:name="hideSecret ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="hideSecret = !hideSecret")
 </template>
@@ -83,11 +83,11 @@ export default {
       'userInfo'
     ])
   },
-  async created () {
-    await this.fetchData()
-  },
   watch: {
     $route: 'fetchData'
+  },
+  async created () {
+    await this.fetchData()
   },
   methods: {
     async fetchData () {
