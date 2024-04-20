@@ -32,16 +32,7 @@
           div.col.col-md-2.col-sm-3
             div.row
               span.col-4.col-sm-12
-                q-uploader(v-if="editingIcon" flat style="max-width: 100%" :multiple="false" accept="image/jpeg, image/png, image/gif" :max-file-size="2048*1024" method="PUT" :url="iconUploadURL" :headers="iconUploadHeaders" field-name="file" @uploaded="onUploadIconSuccess" @failed="onUploadIconFailed")
-                  template(slot="header" slot-scope="scope")
-                    div.row.no-wrap.items-center.q-pa-sm.q-gutter-xs
-                      q-spinner(v-if="scope.isUploading" class="q-uploader__spinner")
-                      div.col
-                        div.q-uploader__title 2MBまでのpng,jpg,gif
-                        div.q-uploader__subtitle {{ scope.uploadSizeLabel }} / {{ scope.uploadProgressLabel }}
-                      q-btn(v-if="scope.editable && scope.queuedFiles.length === 0" type="a" icon="add_box" round dense flat)
-                        q-uploader-add-trigger
-                      q-btn(v-if="scope.editable && scope.queuedFiles.length > 0" icon="cloud_upload" @click="scope.upload" round dense flat)
+                q-uploader(v-if="editingIcon" label="2MBまでのpng,jpg,gif" flat style="max-width: 100%" :multiple="false" accept="image/jpeg, image/png, image/gif" :max-file-size="2048*1024" method="PUT" :url="iconUploadURL" :headers="iconUploadHeaders" field-name="file" @uploaded="onUploadIconSuccess" @failed="onUploadIconFailed")
                 q-img(v-else :src="getUserIconURL(bot.botUserName)")
               div.col-5.col-md-12.col-sm-12.q-pa-md
                 q-btn.full-width(unelevated color="grey" @click="editingIcon = !editingIcon") {{ editingIcon ? 'キャンセル' : 'アイコン変更'}}
@@ -58,7 +49,7 @@
                 q-form(@submit="onSubmit")
                   q-input(label="BOT ID" v-model="id" readonly hint='')
                   q-input(label="BOT User ID" v-model="bot.botUserId" readonly hint='')
-                    template(slot="after")
+                    template(#after)
                       q-icon(name="file_copy" class="cursor-pointer" @click="copyText(bot.botUserId)")
                   q-input(label="BOT表示名" stack-label v-model="displayName" :readonly="!editing" :counter="editing" maxlength="32" hide-hint hint="BOTが投稿したメッセージに表示されます"
                     :rules="[val => val && val.length > 0 || '必須項目です']")
@@ -82,12 +73,12 @@
               q-tab-panel(name="cred")
                 p 以下の認証情報の取り扱いに十分注意してください
                 q-form
-                  q-input(label="Verification Token" :value="bot.tokens.verificationToken" :type="hideVerificationToken ? 'password' : 'text'" readonly)
-                    template(slot="after")
+                  q-input(label="Verification Token" v-model="bot.tokens.verificationToken" :type="hideVerificationToken ? 'password' : 'text'" readonly)
+                    template(#after)
                       q-icon(name="file_copy" class="cursor-pointer" :class="{ hidden: hideVerificationToken }" @click="copyText(bot.tokens.verificationToken)")
                       q-icon(:name="hideVerificationToken ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="hideVerificationToken = !hideVerificationToken")
-                  q-input(label="BOT Access Token" :value="bot.tokens.accessToken" :type="hideAccessToken ? 'password' : 'text'" readonly)
-                    template(slot="after")
+                  q-input(label="BOT Access Token" v-model="bot.tokens.accessToken" :type="hideAccessToken ? 'password' : 'text'" readonly)
+                    template(#after)
                       q-icon(name="file_copy" class="cursor-pointer" :class="{ hidden: hideAccessToken }" @click="copyText(bot.tokens.accessToken)")
                       q-icon(:name="hideAccessToken ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="hideAccessToken = !hideAccessToken")
                   div
@@ -100,7 +91,7 @@
                     span(v-for="(meta, ev) in evs" :key="ev")
                       q-checkbox(v-if="!meta.always" v-model="checkedEvents" :val="ev" :label="ev" :disable="meta.privileged && !bot.privileged" keep-color :color="meta.privileged ? 'orange': ''")
                         q-tooltip {{ meta.description }}
-                      q-checkbox(v-else :value="true" :label="ev" disable keep-color)
+                      q-checkbox(v-else :model-value="true" :label="ev" disable keep-color)
                         q-tooltip {{ meta.description }}
                 div.q-pa-md
                   q-btn.full-width(:disable="!subscribeEventsChanged" unelevated color="primary" @click="onChangeEventBtnClicked") 変更
@@ -125,7 +116,7 @@
                           q-btn(round dense flat icon="refresh" @click="fetchChannels")
                           q-btn(:disable="addingChannel === null" round dense flat icon="add" @click="onAddBotToChannelBtnClicked(addingChannel.id)")
               q-tab-panel(name="logs")
-                q-table(:columns="eventLogsColumns" :data="eventLogs" :loading="loadingEventLogs" flat row-key="requestId" title="最近のBOTイベント")
+                q-table(:columns="eventLogsColumns" :rows="eventLogs" :loading="loadingEventLogs" flat row-key="requestId" title="最近のBOTイベント")
                   template(#top-right)
                     q-btn(round dense flat icon="refresh" @click="fetchEventLogs" :disable="loadingEventLogs")
                   template(#body="props")
@@ -254,11 +245,11 @@ export default {
       return arr.some(v => arr2.indexOf(v) === -1)
     }
   },
-  async created () {
-    await this.fetchData()
-  },
   watch: {
     $route: 'fetchData'
+  },
+  async created () {
+    await this.fetchData()
   },
   methods: {
     async fetchData () {

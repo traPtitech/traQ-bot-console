@@ -42,9 +42,6 @@ export default {
       clients: []
     }
   },
-  async mounted () {
-    await this.getClients()
-  },
   computed: {
     myClients () {
       return this.clients.filter(w => w.developerId === this.userInfo.id)
@@ -55,6 +52,9 @@ export default {
     ...mapState([
       'userInfo'
     ])
+  },
+  async mounted () {
+    await this.getClients()
   },
   methods: {
     async getClients () {

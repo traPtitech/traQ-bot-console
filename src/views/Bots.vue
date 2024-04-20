@@ -49,9 +49,6 @@ export default {
       bots: []
     }
   },
-  async mounted () {
-    await this.getBots()
-  },
   computed: {
     myBots () {
       return this.bots.filter(b => b.developerId === this.userInfo.id)
@@ -62,6 +59,9 @@ export default {
     ...mapState([
       'userInfo'
     ])
+  },
+  async mounted () {
+    await this.getBots()
   },
   methods: {
     getUserIconURL,

@@ -1,12 +1,9 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { createStore } from 'vuex'
 import { traq, setAuthToken } from '../api'
 import { parseAPIChannelList } from '../utils'
 import createPersistedState from 'vuex-persistedstate'
 
-Vue.use(Vuex)
-
-export default new Vuex.Store({
+export const store = createStore({
   state: {
     userInfo: null,
     authToken: null,

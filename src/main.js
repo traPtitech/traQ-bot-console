@@ -1,22 +1,17 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 import App from './App.vue'
-import router from './router'
-import store from './store'
-import './registerServiceWorker'
+import { router } from './router'
+import { store } from './store'
 
+import 'quasar/dist/quasar.css'
+import '@quasar/extras/material-icons/material-icons.css'
 import './styles/quasar.styl'
 import lang from 'quasar/lang/ja.js'
-import '@quasar/extras/material-icons/material-icons.css'
 import { Quasar, Notify, Loading, Dialog } from 'quasar'
 
-Vue.use(Quasar, {
-  config: {},
-  components: {
-    /* not needed if importStrategy is not 'manual' */
-  },
-  directives: {
-    /* not needed if importStrategy is not 'manual' */
-  },
+const app = createApp(App)
+
+app.use(Quasar, {
   plugins: {
     Notify,
     Loading,
@@ -25,10 +20,9 @@ Vue.use(Quasar, {
   lang
 })
 
-Vue.config.productionTip = false
+app.config.productionTip = false
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+app.use(router)
+app.use(store)
+
+app.mount('#app')

@@ -21,16 +21,7 @@
           div.col.col-md-2.col-sm-3
             div.row
               span.col-4.col-sm-12
-                q-uploader(v-if="editingIcon" flat style="max-width: 100%" :multiple="false" accept="image/jpeg, image/png, image/gif" :max-file-size="2048*1024" method="PUT" :url="iconUploadURL" :headers="iconUploadHeaders" field-name="file" @uploaded="onUploadIconSuccess" @failed="onUploadIconFailed")
-                  template(slot="header" slot-scope="scope")
-                    div.row.no-wrap.items-center.q-pa-sm.q-gutter-xs
-                      q-spinner(v-if="scope.isUploading" class="q-uploader__spinner")
-                      div.col
-                        div.q-uploader__title 2MBまでのpng,jpg,gif
-                        div.q-uploader__subtitle {{ scope.uploadSizeLabel }} / {{ scope.uploadProgressLabel }}
-                      q-btn(v-if="scope.editable && scope.queuedFiles.length === 0" type="a" icon="add_box" round dense flat)
-                        q-uploader-add-trigger
-                      q-btn(v-if="scope.editable && scope.queuedFiles.length > 0" icon="cloud_upload" @click="scope.upload" round dense flat)
+                q-uploader(v-if="editingIcon" label="2MBまでのpng,jpg,gif" flat style="max-width: 100%" :multiple="false" accept="image/jpeg, image/png, image/gif" :max-file-size="2048*1024" method="PUT" :url="iconUploadURL" :headers="iconUploadHeaders" field-name="file" @uploaded="onUploadIconSuccess" @failed="onUploadIconFailed")
                 q-img(v-else :src="getUserIconURL(webhook.botUserName)")
               div.col-5.col-md-12.col-sm-12.q-pa-md
                 q-btn.full-width(unelevated color="grey" @click="editingIcon = !editingIcon") {{ editingIcon ? 'キャンセル' : 'アイコン変更'}}
@@ -46,14 +37,14 @@
                   q-badge(v-else color="red") Insecure Webhook
                 q-form.col(@submit="onSubmit")
                   q-input(label="Webhook ID" v-model="webhook.id" readonly hint='')
-                    template(slot="after")
+                    template(#after)
                       q-icon(name="file_copy" class="cursor-pointer" @click="copyText(webhook.id)")
                   q-input(label="Webhook User ID" v-model="webhook.botUserId" readonly hint='')
                   q-input(label="Webhook名" stack-label v-model="name.value" :readonly="!editing" :counter="editing" maxlength="32" :rules="[val => val && val.length > 0 || '必須項目です']")
                   q-input(label="説明" stack-label v-model="description.value" :readonly="!editing" type="textarea" autogrow :rules="[val => val && val.length > 0 || '必須項目です']")
                   q-select(v-model="channel.value" :readonly="!editing" :clearable="editing" use-input hide-selected fill-input input-debounce="0" stack-label label="投稿先チャンネル" :options="channelOptions" option-value="channelName" option-label="channelName"
                     :rules="[val => val || '必須項目です']" @filter="channelFilterFn" :loading="loadingChannel" :disable="loadingChannel" ref="channel")
-                    template(slot="no-option")
+                    template(#no-option)
                       q-item
                         q-item-section.text-grey チャンネルが表示されない場合は右の更新ボタンを押してください
                     template(v-if="editing" slot="after")
@@ -134,11 +125,11 @@ export default {
       return [{ name: 'Authorization', value: `Bearer ${this.authToken}` }]
     }
   },
-  async created () {
-    await this.fetchData()
-  },
   watch: {
     $route: 'fetchData'
+  },
+  async created () {
+    await this.fetchData()
   },
   methods: {
     async fetchData () {

@@ -4,7 +4,8 @@
       q-breadcrumbs(gutter="sm")
         q-breadcrumbs-el(v-for="i in breadcrumbItems" :label="i.name" :key="i.name", :to="i.to")
 
-    router-view.markdown-body
+    div.markdown-body
+      router-view
 </template>
 
 <script>

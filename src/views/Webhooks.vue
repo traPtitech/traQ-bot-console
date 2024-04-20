@@ -50,9 +50,6 @@ export default {
       webhooks: []
     }
   },
-  async mounted () {
-    await this.getWebhooks()
-  },
   computed: {
     myWebhooks () {
       return this.webhooks.filter(w => w.ownerId === this.userInfo.id)
@@ -63,6 +60,9 @@ export default {
     ...mapState([
       'userInfo'
     ])
+  },
+  async mounted () {
+    await this.getWebhooks()
   },
   methods: {
     async getWebhooks () {

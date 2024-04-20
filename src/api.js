@@ -2,7 +2,7 @@ import { Apis as TraQ } from '@traptitech/traq'
 import { randomString, pkce, hmacsha1 } from './utils'
 
 export const baseURL =
-  process.env.VUE_APP_API_ENDPOINT || 'https://q-dev.trapti.tech/api/v3'
+  import.meta.env.VITE_API_ENDPOINT || 'https://q-dev.trapti.tech/api/v3'
 
 export let traq = new TraQ({
   basePath: baseURL
@@ -25,7 +25,7 @@ export async function redirectAuthorizationEndpoint () {
   const authorizationEndpointUrl = new URL(`${baseURL}/oauth2/authorize`)
   authorizationEndpointUrl.search = new URLSearchParams({
     client_id:
-      process.env.VUE_APP_API_CLIENT_ID ||
+      import.meta.env.VITE_API_CLIENT_ID ||
       'lkElAHAUIqFmImUvxmWItnbWO7EBdxttwBaW',
     response_type: 'code',
     code_challenge: codeChallenge,
@@ -40,7 +40,7 @@ export function fetchAuthToken (code, verifier) {
     'authorization_code',
     code,
     undefined,
-    process.env.VUE_APP_API_CLIENT_ID || 'lkElAHAUIqFmImUvxmWItnbWO7EBdxttwBaW',
+    import.meta.env.VITE_API_CLIENT_ID || 'lkElAHAUIqFmImUvxmWItnbWO7EBdxttwBaW',
     verifier
   )
 }

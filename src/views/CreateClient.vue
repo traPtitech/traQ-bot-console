@@ -3,7 +3,7 @@
     h6 Client新規登録
     q-form.q-gutter-md(@submit="onSubmit")
       q-banner.bg-grey-3.text-black(rounded)
-        template(slot="avatar")
+        template(#avatar)
           q-icon.text-orange(name="warning")
         router-link(to="/docs/client") Clientマニュアル
         | と
@@ -15,7 +15,7 @@
         :rules="[val => val && val.length > 0 || '必須項目です']")
       q-input(v-model="callbackUrl" outlined stack-label label="リダイレクト先URL" hint="OAuth承認後のリダイレクト先のURLを入力してください"
         :rules="[val => val && urlRegex.test(val) || '有効なURLを入力してください']")
-      q-field(:value="scopes" outlined stack-label label="権限" hint="Client登録後変更することはできません"
+      q-field(v-model="scopes" outlined stack-label label="権限" hint="Client登録後変更することはできません"
           :rules="[val => val && val.length > 0 || '一つ以上選択してください']")
         template(v-slot:control)
           q-option-group(v-model="scopes" :options="scopeOptions" type="checkbox")
