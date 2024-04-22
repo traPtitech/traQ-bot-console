@@ -19,12 +19,11 @@
       h6 {{ bot.displayName }} (@{{ bot.botUserName }})の詳細
         q-space
         div.q-gutter-sm
-          template
-            q-badge(v-if="bot.state === 0" color="grey") 停止
-            q-badge(v-else-if="bot.state === 1" color="green") 有効
-            q-badge(v-else-if="bot.state === 2" color="amber") 一時停止
-              q-tooltip 何らかの原因で一時停止されています。アクティベーションしてください。
-            q-badge(v-else) 不明な状態({{ bot.state }}
+          q-badge(v-if="bot.state === 0" color="grey") 停止
+          q-badge(v-else-if="bot.state === 1" color="green") 有効
+          q-badge(v-else-if="bot.state === 2" color="amber") 一時停止
+            q-tooltip 何らかの原因で一時停止されています。アクティベーションしてください。
+          q-badge(v-else) 不明な状態({{ bot.state }}
           q-badge(v-if="bot.privileged" color="orange") Privileged
 
       div.q-gutter-md
@@ -64,9 +63,8 @@
                     q-btn.col.btn-fixed-width(label="送信" color="primary" type="submit" unelevated)
                 div.row.q-gutter-sm
                   template(v-if="!editing")
-                    template
-                      q-btn.col.btn-fixed-width(v-if="bot.state === 1" unelevated color="warning" @click="onDeactivateBtnClicked") 停止
-                      q-btn.col.btn-fixed-width(v-else unelevated color="primary" @click="onActivateBtnClicked") アクティベーション
+                    q-btn.col.btn-fixed-width(v-if="bot.state === 1" unelevated color="warning" @click="onDeactivateBtnClicked") 停止
+                    q-btn.col.btn-fixed-width(v-else unelevated color="primary" @click="onActivateBtnClicked") アクティベーション
                     q-btn.col.btn-fixed-width(color="secondary" unelevated @click="startEditing") 基本情報編集
                     q-btn.col.btn-fixed-width(unelevated color='negative' @click="onDeleteBtnClicked") 削除
                     q-btn.col.btn-fixed-width(unelevated color='warning' @click="onTransferBtnClicked") 移譲
