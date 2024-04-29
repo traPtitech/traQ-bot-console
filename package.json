@@ -11,7 +11,7 @@
   "dependencies": {
     "@quasar/extras": "1.16.11",
     "@traptitech/traq": "3.17.0-2",
-    "dayjs": "1.11.10",
+    "dayjs": "1.11.11",
     "github-markdown-css": "5.5.1",
     "quasar": "2.15.3",
     "vue": "3.4.26",
