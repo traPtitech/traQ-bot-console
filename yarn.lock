@@ -302,12 +302,12 @@
     js-tokens "^4.0.0"
     picocolors "^1.0.0"
 
-"@babel/parser@^7.24.0", "@babel/parser@^7.24.1", "@babel/parser@^7.6.0", "@babel/parser@^7.9.6":
+"@babel/parser@^7.24.0", "@babel/parser@^7.6.0", "@babel/parser@^7.9.6":
   version "7.24.4"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.24.4.tgz#234487a110d89ad5a3ed4a8a566c36b9453e8c88"
   integrity sha512-zTvEBcghmeBma9QIGunWevvBAp4/Qu9Bdq+2k0Ot4fVMD6v3dsC9WOcRSKk7tRRyBM/53yKMJko9xOatGQAwSg==
 
-"@babel/parser@^7.24.5":
+"@babel/parser@^7.24.4", "@babel/parser@^7.24.5":
   version "7.24.5"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.24.5.tgz#4a4d5ab4315579e5398a82dcf636ca80c3392790"
   integrity sha512-EOv5IK8arwh3LI47dz1b0tKUb/1uhHAnHJOrjgtQMIpu1uXd9mlFrJg9IUgGUgZ41Ch0K8REPTYpO7B76b4vJg==
@@ -3332,10 +3332,10 @@ punycode@^2.1.0:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.3.1.tgz#027422e2faec0b25e1549c3e1bd8309b9133b6e5"
   integrity sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==
 
-quasar@2.15.3:
-  version "2.15.3"
-  resolved "https://registry.yarnpkg.com/quasar/-/quasar-2.15.3.tgz#49c70f2a404f23d9dec9b8ae925702bc74f7ed86"
-  integrity sha512-+6g6D1t/O95dhuov4b6SwR3asowr01xwV1A2JWh5cVQc1hTmolXzgQNPbrOApLjGX7N1cQ119DWajJ/G8KzXPQ==
+quasar@2.16.0:
+  version "2.16.0"
+  resolved "https://registry.yarnpkg.com/quasar/-/quasar-2.16.0.tgz#c168a3a135fb67c39bd1e8e5fa82880a7dd2a412"
+  integrity sha512-j0MSuGuIAOQdtg/zEn/7jMIZjqS00Kp4t4h/0+HCqEkf6mxtwOJoaC7s0rIC+6AVYIErCTiXrp7Hmkt32Hom1w==
 
 queue-microtask@^1.2.2:
   version "1.2.3"
