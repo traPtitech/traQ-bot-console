@@ -1,4 +1,5 @@
 # Clientを新規登録する
+
 Clientは[Client新規登録ページ](/clients/create)から登録することができます。
 
 ## 登録項目の説明
@@ -25,7 +26,16 @@ Clientの利用する権限です。
 **あとから変更することはできません。**
 それぞれの権限で以下のようなことができます
 
+#### ユーザー識別子
+
++ traQ IDとUUIDの取得
+
+#### プロフィール情報
+
++ 自ユーザー情報の取得
+
 #### 読み取り
+
 + チャンネル情報の取得
 + メッセージの取得
 + チャンネル購読状況(通知をつけているか)の取得
@@ -48,6 +58,7 @@ Clientの利用する権限です。
 + Bot情報の取得
 
 #### 書き込み
+
 + チャンネルの作成
 + チャンネルトピックの変更
 + メッセージの投稿/編集/削除/通報
@@ -71,6 +82,7 @@ Clientの利用する権限です。
 + Botのインストール/アンインストール
 
 #### BOT管理
+
 + チャンネル情報の取得
 + ユーザー情報の取得
 + 自ユーザー情報の取得
@@ -83,7 +95,11 @@ Clientの利用する権限です。
 + Clientの作成/編集/削除
 
 #### 備考
+
 各権限で行えることの最新情報は以下のソースを参照してください。
+
++ [ユーザー識別子(openid)](https://github.com/traPtitech/traQ/blob/master/service/rbac/role/openid.go)
++ [プロフィール情報(profile)](https://github.com/traPtitech/traQ/blob/master/service/rbac/role/profile.go)
 + [読み取り(read)](https://github.com/traPtitech/traQ/blob/master/service/rbac/role/read.go)
 + [書き込み(write)](https://github.com/traPtitech/traQ/blob/master/service/rbac/role/write.go)
 + [BOT管理(manage_bot)](https://github.com/traPtitech/traQ/blob/master/service/rbac/role/manage_bot.go)
