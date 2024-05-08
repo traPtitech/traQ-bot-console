@@ -33,7 +33,7 @@ export default defineConfig({
       template: { transformAssetUrls }
     }),
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: 'prompt',
       devOptions: {
         enabled: true
       },
