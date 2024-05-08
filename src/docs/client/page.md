@@ -24,13 +24,13 @@ https://q.trap.jp/api/v3/oauth2/authorize
 | scope                 | `スコープ`       | false |
 
 stateやcode_challengeとcode_challenge_methodは付与することでCSRFを防げます。
-scopeは付与すると取得するtokenのスコープを狭められます。
+scopeは付与すると取得するトークンのスコープを狭められます。
 
 リクエストを送るとtraQのClient認可の承諾画面にリダイレクトされます。
 この画面で承認をすると作成時に指定したURLへ`code`パラメータが付与された状態でリダイレクトされます。
-この`code`パラメータを利用して`token`を取得します。
+この`code`パラメータを利用してトークンを取得します。
 
-### `token`の取得
+### トークンの取得
 
 先ほどの`code`を利用して
 ```
@@ -45,20 +45,30 @@ https://q.trap.jp/api/v3/oauth2/token
 | code          | `code`             | true                                                        |
 | code_verifier | `ベリファイア`     | false(`code`取得時にcode_challengeが含まれていた場合はtrue) |
 
-レスポンスで以下のような形式で`token`が取得できます
+レスポンスで以下のような形式でトークンが取得できます。
+
 ```json
 {
-  "access_token": "string",
-  "token_type": "string",
-  "expires_in": 0,
-  "refresh_token": "string",
-  "scope": "string",
-  "id_token": "string"
+  "access_token": "jvKP...3sl4",
+  "token_type": "Bearer",
+  "expires_in": 31536000,
+  "refresh_token": "woLc...HTVZ",
+  "scope": "read write",
+  "id_token": "xxxxx.yyyyy.zzzzz"
 }
 ```
-access_tokenが`token`、expires_inが有効秒数になっています。
-refresh_tokenは`token`のリフレッシュ時に使用します。
-scopeは`code`取得時にスコープが狭められた場合に付加されます。
+
+| key | 説明 | フィールドが存在するか |
+| :-- | :-- | :-- |
+| access_token | APIにアクセスする際に用いるトークン | 常に |
+| token_type | トークンの種類 常に `bearer` | 常に |
+| expires_in | トークンの有効期限 (秒) | 常に |
+| refresh_token | トークンのリフレッシュ時に使用 | リフレッシュトークン有効時のみ |
+| scope | トークンのスコープ | 取得時からスコープが狭められた場合にのみ |
+| id_token | JWT形式のID Token (OIDC) | openidスコープ要求時のみ |
+
+`id_token` を検証することで、ユーザーIDとプロフィール情報（profileスコープ要求時のみ）を取得できます。
 
 ### `token`のリフレッシュ
+
 執筆者募集中。書いてくれる方は#team/SysAd/randomチャンネルまで
