@@ -20,7 +20,7 @@
     "vuex-persistedstate": "4.1.0"
   },
   "devDependencies": {
-    "@quasar/vite-plugin": "1.6.0",
+    "@quasar/vite-plugin": "1.7.0",
     "@vitejs/plugin-vue": "5.0.4",
     "eslint": "9.2.0",
     "eslint-plugin-vue": "9.25.0",
