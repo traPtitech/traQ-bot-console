@@ -1401,12 +1401,12 @@
     magic-string "^0.25.0"
     string.prototype.matchall "^4.0.6"
 
-"@traptitech/traq@3.17.0-2":
-  version "3.17.0-2"
-  resolved "https://registry.yarnpkg.com/@traptitech/traq/-/traq-3.17.0-2.tgz#5549be4b019adf00c43d8aeca1e609b3b80d0dcc"
-  integrity sha512-GhOiKW4JSLqFtLas1uyTq2CuuNxVpjYJ2Cn955d7DEGoy1KHL4bwQQaFt5EDxlIXSfballZ655F4pN+QuRXsww==
+"@traptitech/traq@3.17.0-3":
+  version "3.17.0-3"
+  resolved "https://registry.yarnpkg.com/@traptitech/traq/-/traq-3.17.0-3.tgz#ada2103793f988882048fea1402fcfbcb840ff11"
+  integrity sha512-PsZltFNiguEfRoAmtOJ7R3wuiLQLh0m6RXfpuFdIaUvP+Z43GI4M1fX7AOOBHXoUIRgHEhLxNNFAo3/IzL/ELQ==
   dependencies:
-    axios "^1.6.7"
+    axios "^1.6.8"
 
 "@types/estree@0.0.39":
   version "0.0.39"
@@ -1637,7 +1637,7 @@ available-typed-arrays@^1.0.7:
   dependencies:
     possible-typed-array-names "^1.0.0"
 
-axios@^1.6.7:
+axios@^1.6.8:
   version "1.6.8"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.8.tgz#66d294951f5d988a00e87a0ffb955316a619ea66"
   integrity sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ==
