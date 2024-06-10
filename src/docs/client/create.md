@@ -20,21 +20,21 @@ Clientの承認後にリダイレクトされるURLです。
 この`code`パラメータを利用することで`token`を取得できます。
 `token`に関する説明は[こちら](/docs/client/page)
 
-### 権限
+### スコープ (`scope`)
 
-Clientの利用する権限です。
+Clientが利用する権限です。
 **あとから変更することはできません。**
-それぞれの権限で以下のようなことができます
+それぞれの権限で以下のようなことができます。
 
-#### ユーザーID取得
+#### ユーザーID取得 (`openid`)
 
 + traQ IDとUUIDの取得
 
-#### プロフィール取得
+#### プロフィール取得 (`profile`)
 
 + 自ユーザー情報の取得
 
-#### 読み取り
+#### 読み取り (`read`)
 
 + チャンネル情報の取得
 + メッセージの取得
@@ -57,7 +57,7 @@ Clientの利用する権限です。
 + Webhook情報の取得
 + Bot情報の取得
 
-#### 書き込み
+#### 書き込み (`write`)
 
 + チャンネルの作成
 + チャンネルトピックの変更
@@ -81,7 +81,7 @@ Clientの利用する権限です。
 + オンライン状態の更新
 + Botのインストール/アンインストール
 
-#### BOT管理
+#### BOT管理 (`manage_bot`)
 
 + チャンネル情報の取得
 + ユーザー情報の取得
@@ -96,9 +96,9 @@ Clientの利用する権限です。
 
 #### 備考
 
-各権限で行えることの最新情報は以下のソースを参照してください。
+各スコープで行えることの最新情報は以下のソースを参照してください。
 
-+ [ユーザー識別子(openid)](https://github.com/traPtitech/traQ/blob/master/service/rbac/role/openid.go)
++ [ユーザーID取得(openid)](https://github.com/traPtitech/traQ/blob/master/service/rbac/role/openid.go)
 + [プロフィール情報(profile)](https://github.com/traPtitech/traQ/blob/master/service/rbac/role/profile.go)
 + [読み取り(read)](https://github.com/traPtitech/traQ/blob/master/service/rbac/role/read.go)
 + [書き込み(write)](https://github.com/traPtitech/traQ/blob/master/service/rbac/role/write.go)

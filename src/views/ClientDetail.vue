@@ -26,7 +26,7 @@
                   q-input(label="Client名" stack-label v-model="name.value" :readonly="!editing" :counter="editing" maxlength="32" :rules="[val => val && val.length > 0 || '必須項目です']")
                   q-input(label="説明" stack-label v-model="description.value" :readonly="!editing" type="textarea" autogrow :rules="[val => val && val.length > 0 || '必須項目です']")
                   q-input(label="リダイレクト先URL" stack-label v-model="callbackUrl.value" :readonly="!editing" :counter="editing" :rules="[val => val && urlRegex.test(val) || '有効なURLを入力してください']")
-                  q-field(label="権限" stack-label v-model="client.scopes" readonly hint='')
+                  q-field(label="スコープ" stack-label v-model="client.scopes" readonly hint='')
                     template(v-slot:control)
                       q-option-group(v-model="client.scopes" :options="scopeOptions" type="checkbox" disable hint='')
                   q-input(v-if="client.developerId !== userInfo.id" label="作成者" hint='' v-model="client.developerName" readonly)
@@ -73,7 +73,10 @@ export default {
         value: '',
         temp: ''
       },
-      scopeOptions,
+      scopeOptions: scopeOptions.map((opt) => ({
+        label: `${opt.label} (${opt.value})`,
+        value: opt.value,
+      })),
       urlRegex: /http(s)?:\/\/([\w-]+.)+[\w-]+(\/[\w- ./?%&=]*)?/i,
       hideSecret: true
     }
