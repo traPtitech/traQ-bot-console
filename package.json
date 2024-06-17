@@ -12,7 +12,7 @@
     "@quasar/extras": "1.16.11",
     "@traptitech/traq": "3.18.0-1",
     "dayjs": "1.11.11",
-    "github-markdown-css": "5.5.1",
+    "github-markdown-css": "5.6.0",
     "quasar": "2.16.4",
     "vue": "3.4.27",
     "vue-router": "4.3.2",
