@@ -2037,12 +2037,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@traptitech/traq@npm:3.18.0-1":
-  version: 3.18.0-1
-  resolution: "@traptitech/traq@npm:3.18.0-1"
+"@traptitech/traq@npm:3.18.0-3":
+  version: 3.18.0-3
+  resolution: "@traptitech/traq@npm:3.18.0-3"
   dependencies:
-    axios: "npm:^1.6.8"
-  checksum: 10c0/00fb2baefdfcc5f741d294da4dd70368e43862bea22eb238e27d3f6fe0189aed108cd8ca73719bbca52069e5880b1837dbddf42c41f604ed69e603d73f426b5e
+    axios: "npm:^1.7.2"
+  checksum: 10c0/813b1ba05cfce4377e7564751eb215b4cbbef4e5bd0b453ed7844638df9b5683a11a6dba7d1e1e417a4e7861616ce0d3ac4758db3b4842408502ea8492276dc4
   languageName: node
   linkType: hard
 
@@ -2392,7 +2392,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.6.8":
+"axios@npm:^1.7.2":
   version: 1.7.2
   resolution: "axios@npm:1.7.2"
   dependencies:
@@ -5864,7 +5864,7 @@ __metadata:
   dependencies:
     "@quasar/extras": "npm:1.16.11"
     "@quasar/vite-plugin": "npm:1.7.0"
-    "@traptitech/traq": "npm:3.18.0-1"
+    "@traptitech/traq": "npm:3.18.0-3"
     "@vitejs/plugin-vue": "npm:5.0.5"
     dayjs: "npm:1.11.11"
     eslint: "npm:9.4.0"
