@@ -5879,7 +5879,7 @@ __metadata:
     vite-plugin-markdown: "npm:2.2.0"
     vite-plugin-pwa: "npm:0.20.0"
     vue: "npm:3.4.27"
-    vue-router: "npm:4.3.2"
+    vue-router: "npm:4.4.0"
     vuex: "npm:4.1.0"
     vuex-persistedstate: "npm:4.1.0"
   languageName: unknown
@@ -6187,14 +6187,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-router@npm:4.3.2":
-  version: 4.3.2
-  resolution: "vue-router@npm:4.3.2"
+"vue-router@npm:4.4.0":
+  version: 4.4.0
+  resolution: "vue-router@npm:4.4.0"
   dependencies:
     "@vue/devtools-api": "npm:^6.5.1"
   peerDependencies:
     vue: ^3.2.0
-  checksum: 10c0/63d5be4a983622e130c1ebe6e26dd17dee2346d77b35ef3f09ee0d8693fd38ad2387551c2db87a5cb258348dbc24dd815f48b4a55cc3ccb680c81aa4837ca88e
+  checksum: 10c0/aad52e6bf8f52b1fcc3465ad55ff7aaf302b22b7cec14108957eebeba608ad485626fea3eb6750ca516f3d3974c3830a3cd6d97ec8c431aaa45ed23ffede2803
   languageName: node
   linkType: hard
 
