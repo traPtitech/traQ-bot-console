@@ -1801,10 +1801,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@quasar/extras@npm:1.16.11":
-  version: 1.16.11
-  resolution: "@quasar/extras@npm:1.16.11"
-  checksum: 10c0/cc61379a80d701573dc22f1588d91ee10202b3951916cc8c8c560680409017bb6eaea07133039fc51e0ce2199d67bf60078dd7ad7fcfee0b5fe28f0a7c650d21
+"@quasar/extras@npm:1.16.12":
+  version: 1.16.12
+  resolution: "@quasar/extras@npm:1.16.12"
+  checksum: 10c0/663557f7e97ff52f7da66de147ec83e56667c8d7adf7dcf832fdff750f645dc26c591e45c6c35023e70ccd53a964d4e71c8009d2b9beb1b41576bfd49bd63529
   languageName: node
   linkType: hard
 
@@ -5862,7 +5862,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "traq-bot-console@workspace:."
   dependencies:
-    "@quasar/extras": "npm:1.16.11"
+    "@quasar/extras": "npm:1.16.12"
     "@quasar/vite-plugin": "npm:1.7.0"
     "@traptitech/traq": "npm:3.18.0-1"
     "@vitejs/plugin-vue": "npm:5.0.5"

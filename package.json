@@ -9,7 +9,7 @@
     "lint": "eslint --fix src"
   },
   "dependencies": {
-    "@quasar/extras": "1.16.11",
+    "@quasar/extras": "1.16.12",
     "@traptitech/traq": "3.18.0-1",
     "dayjs": "1.11.11",
     "github-markdown-css": "5.5.1",
