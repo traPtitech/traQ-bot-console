@@ -5126,10 +5126,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"quasar@npm:2.16.4":
-  version: 2.16.4
-  resolution: "quasar@npm:2.16.4"
-  checksum: 10c0/2ee2f985724c772f362546d635fcb58d6f30f8c6bf1b6fc98382ef4d4969bf20fb539462bac0fcee64921a1ff31aa91684202108e7b729d4f8c73864f925d8dc
+"quasar@npm:2.16.7":
+  version: 2.16.7
+  resolution: "quasar@npm:2.16.7"
+  checksum: 10c0/b8b5a4b642a659566fb0bb2e8a399ac4d428d58e5fc094bc283609d7ad48d8abd2a9b51cc380cd6862e86d2b8f8d569bd76e96f12452b19d343aa131f1aedc3a
   languageName: node
   linkType: hard
 
@@ -5873,7 +5873,7 @@ __metadata:
     markdown-it: "npm:14.1.0"
     markdown-it-mark: "npm:4.0.0"
     pug: "npm:3.0.3"
-    quasar: "npm:2.16.4"
+    quasar: "npm:2.16.7"
     stylus: "npm:0.63.0"
     vite: "npm:5.2.13"
     vite-plugin-markdown: "npm:2.2.0"
