@@ -21,10 +21,11 @@
           div.col.col-md-2.col-sm-3
             div.row
               span.col-4.col-sm-12
-                q-uploader(v-if="editingIcon" label="2MBまでのpng,jpg,gif" flat style="max-width: 100%" :multiple="false" accept="image/jpeg, image/png, image/gif" :max-file-size="2048*1024" method="PUT" :url="iconUploadURL" :headers="iconUploadHeaders" field-name="file" @uploaded="onUploadIconSuccess" @failed="onUploadIconFailed")
+                q-file(v-if="editingIcon" v-model="iconFile" label="2MBまでのpng,jpg,gif" flat style="max-width: 100%" accept="image/jpeg, image/png, image/gif")
                 q-img(v-else :src="getUserIconURL(webhook.botUserName)")
-              div.col-5.col-md-12.col-sm-12.q-pa-md
-                q-btn.full-width(unelevated color="grey" @click="editingIcon = !editingIcon") {{ editingIcon ? 'キャンセル' : 'アイコン変更'}}
+              div.col-5.col-md-12.col-sm-12.q-pa-md.q-gutter-sm
+                q-btn.full-width(v-if="editingIcon" unelevated color="primary" :disable="iconFile === null" :loading="uploadingIcon" @click="uploadIcon") アップロード
+                q-btn.full-width(unelevated color="grey" @click="toggleIconEditing") {{ editingIcon ? 'キャンセル' : 'アイコン変更'}}
           div.col-12.col-md-10.col-sm-9
             q-tabs.text-grey(v-model="tab" dense active-color="primary" indicator-color="primary" narrow-indicator align="left")
               q-tab(name="info" label="情報")
@@ -77,7 +78,10 @@
 import dayjs from 'dayjs'
 import { mapGetters, mapState } from 'vuex'
 import { copyToClipboard } from 'quasar'
-import { traq, getUserIconURL, baseURL, getUsersOptionItems } from '../api'
+import { traq, getUserIconURL, getUsersOptionItems } from '../api'
+
+const iconMaxFileSize = 2048 * 1024
+const iconAcceptTypes = ['image/jpeg', 'image/png', 'image/gif']
 
 export default {
   name: 'WebhookDetail',
@@ -90,6 +94,8 @@ export default {
       channelOptions: [],
       editing: false,
       editingIcon: false,
+      iconFile: null,
+      uploadingIcon: false,
       name: {
         value: '',
         temp: ''
@@ -115,15 +121,8 @@ export default {
       'getChannel'
     ]),
     ...mapState([
-      'authToken',
       'userInfo'
-    ]),
-    iconUploadURL () {
-      return `${baseURL}/webhooks/${this.$route.params.id}/icon`
-    },
-    iconUploadHeaders () {
-      return [{ name: 'Authorization', value: `Bearer ${this.authToken}` }]
-    }
+    ])
   },
   watch: {
     $route: 'fetchData'
@@ -325,8 +324,52 @@ export default {
         this.$q.loading.hide()
       }
     },
+    toggleIconEditing () {
+      this.editingIcon = !this.editingIcon
+      this.iconFile = null
+    },
+    validateIconFile () {
+      if (this.iconFile === null) {
+        return false
+      }
+      if (!iconAcceptTypes.includes(this.iconFile.type)) {
+        this.$q.notify({
+          icon: 'error_outline',
+          color: 'red-5',
+          textColor: 'white',
+          message: 'png,jpg,gifのいずれかを選択してください'
+        })
+        return false
+      }
+      if (this.iconFile.size > iconMaxFileSize) {
+        this.$q.notify({
+          icon: 'error_outline',
+          color: 'red-5',
+          textColor: 'white',
+          message: '2MB以下のファイルを選択してください'
+        })
+        return false
+      }
+      return true
+    },
+    async uploadIcon () {
+      if (!this.validateIconFile()) {
+        return
+      }
+      this.uploadingIcon = true
+      try {
+        await traq.changeWebhookIcon(this.webhook.id, this.iconFile)
+        this.onUploadIconSuccess()
+      } catch (e) {
+        console.error(e)
+        this.onUploadIconFailed()
+      } finally {
+        this.uploadingIcon = false
+      }
+    },
     onUploadIconSuccess () {
       this.editingIcon = false
+      this.iconFile = null
       this.$q.notify({
         icon: 'done',
         color: 'primary',
