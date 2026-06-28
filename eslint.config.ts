@@ -1,6 +1,6 @@
-const pluginVue = require('eslint-plugin-vue')
+import pluginVue from 'eslint-plugin-vue'
 
-module.exports = [
+export default [
   ...pluginVue.configs['flat/recommended'],
   {
     languageOptions: {

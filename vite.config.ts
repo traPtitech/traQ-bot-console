@@ -1,32 +1,34 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { quasar, transformAssetUrls } from '@quasar/vite-plugin'
-import mdPlugin from 'vite-plugin-markdown'
+import { Mode, plugin as mdPlugin } from 'vite-plugin-markdown'
 import { VitePWA } from 'vite-plugin-pwa'
+import MarkdownIt from 'markdown-it'
+import markdownItMark from 'markdown-it-mark'
 
-const md = require('markdown-it')()
-  .use(require('markdown-it-mark'))
+const md = MarkdownIt()
+  .use(markdownItMark)
 md.options.html = true
-md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
+md.renderer.rules.link_open = function (tokens, idx) {
   const token = tokens[idx]
-  const href = token.attrs[token.attrIndex('href')][1]
-  if (href.startsWith('/')) {
+  const href = token.attrs?.[token.attrIndex('href')][1]
+  if (href?.startsWith('/')) {
     return `<router-link to='${href}'>`
   } else {
     return `<a href='${href}' target='_blank'>`
   }
 }
-md.renderer.rules.link_close = function (tokens, idx, options, env, self) {
+md.renderer.rules.link_close = function (tokens, idx) {
   const token = tokens[idx - 2]
-  const href = token.attrs[token.attrIndex('href')][1]
-  if (href.startsWith('/')) {
+  const href = token.attrs?.[token.attrIndex('href')][1]
+  if (href?.startsWith('/')) {
     return '</router-link>'
   } else {
     return '</a>'
   }
 }
 
-// https://vitejs.dev/config/
+// https://vite.dev/config/
 export default defineConfig({
   plugins: [
     vue({
@@ -76,7 +78,7 @@ export default defineConfig({
     quasar({}),
 
     mdPlugin({
-      mode: ['html', 'vue'],
+      mode: [Mode.HTML, Mode.VUE],
       markdownIt: md,
     })
   ],

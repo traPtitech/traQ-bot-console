@@ -15,6 +15,9 @@
     "lib": ["ES2022", "DOM"]
   },
   "include": [
+    "config-env.d.ts",
+    "eslint.config.ts",
+    "vite.config.ts",
     "vitest.config.ts",
     "tests/**/*.ts"
   ]

@@ -2,13 +2,14 @@
   "name": "traq-bot-console",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint --fix src"
+    "lint": "eslint --config eslint.config.ts --fix src"
   },
   "dependencies": {
     "@quasar/extras": "1.16.11",
@@ -22,25 +23,22 @@
     "vuex-persistedstate": "4.1.0"
   },
   "devDependencies": {
-    "@quasar/vite-plugin": "1.7.0",
+    "@quasar/vite-plugin": "1.12.0",
+    "@types/markdown-it": "^14.1.2",
     "@types/node": "^26.0.1",
-    "@vitejs/plugin-vue": "5.0.5",
+    "@vitejs/plugin-vue": "6.0.7",
     "eslint": "9.4.0",
     "eslint-plugin-vue": "9.26.0",
+    "jiti": "^2.7.0",
     "markdown-it": "14.1.0",
     "markdown-it-mark": "4.0.0",
     "pug": "3.0.3",
     "stylus": "0.63.0",
     "typescript": "^6.0.3",
-    "vite": "5.2.13",
+    "vite": "8.1.0",
     "vite-plugin-markdown": "2.2.0",
-    "vite-plugin-pwa": "0.20.0",
-    "vitest": "1.6.0"
-  },
-  "dependenciesMeta": {
-    "esbuild": {
-      "built": true
-    }
+    "vite-plugin-pwa": "1.3.0",
+    "vitest": "4.1.9"
   },
   "packageManager": "yarn@4.17.0"
 }
