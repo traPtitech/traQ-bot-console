@@ -315,7 +315,7 @@ import dayjs from 'dayjs'
 import { computed, reactive, ref, watch } from 'vue'
 import { copyToClipboard, useQuasar } from 'quasar'
 import { useRoute, useRouter } from 'vue-router'
-import { useStore } from 'vuex'
+import { useStore } from '../store'
 import { traq, getUserIconURL, getUsersOptionItems } from '../api'
 
 const iconMaxFileSize = 2048 * 1024
@@ -343,24 +343,24 @@ const channel = reactive<any>({ value: null, temp: null })
 const secret = reactive({ value: '表示されません', editing: false })
 const messages = ref<any[]>([])
 const channelSelect = ref<any>(null)
-const getChannelArray = computed(() => store.getters.getChannelArray)
-const getChannel = (id: string) => store.getters.getChannel(id)
-const userInfo = computed<any>(() => store.state.userInfo)
+const getChannelArray = computed(() => store.channelArray)
+const getChannel = (id: string) => store.channelById(id)
+const userInfo = computed<any>(() => store.userInfo)
 
 const fetchData = async () => {
   loading.value = true
   webhook.value = null
   try {
     const webhookData: any = (await traq.getWebhook((route.params as any).id as string)).data
-    webhookData.botUserName = await store.dispatch('fetchUserName', webhookData.botUserId)
-    webhookData.ownerName = await store.dispatch('fetchUserName', webhookData.ownerId)
+    webhookData.botUserName = await store.fetchUserName(webhookData.botUserId)
+    webhookData.ownerName = await store.fetchUserName(webhookData.ownerId)
     name.value = webhookData.displayName
     description.value = webhookData.description
     webhook.value = webhookData
-    channel.value = store.getters.getChannel(webhookData.channelId)
+    channel.value = store.channelById(webhookData.channelId)
     if (channel.value === null || channel.value === undefined) {
-      await store.dispatch('updateChannelList')
-      channel.value = store.getters.getChannel(webhookData.channelId)
+      await store.updateChannelList()
+      channel.value = store.channelById(webhookData.channelId)
     }
     messages.value = (await traq.getWebhookMessages((route.params as any).id as string, 10)).data
   } catch (e: any) {
@@ -382,7 +382,7 @@ const fetchChannels = async () => {
   loadingChannel.value = true
   try {
     channel.value = null
-    await store.dispatch('updateChannelList')
+    await store.updateChannelList()
   } catch (e: any) {
     console.error(e)
     $q.notify({

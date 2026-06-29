@@ -1,9 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
-import { store } from '../store'
-import { fetchAuthToken, redirectAuthorizationEndpoint, setAuthToken } from '../api'
-
-setAuthToken(store.state.authToken)
+import { appStore as store } from '../store'
+import { fetchAuthToken, redirectAuthorizationEndpoint } from '../api'
 
 export const routes = [
   {
@@ -179,8 +177,8 @@ export const routes = [
     ],
     beforeEnter: async () => {
       try {
-        await store.dispatch('fetchUserInfo')
-        await store.dispatch('updateChannelList')
+        await store.fetchUserInfo()
+        await store.updateChannelList()
         return undefined
       } catch (e) {
         await redirectAuthorizationEndpoint()
@@ -202,7 +200,7 @@ export const routes = [
 
       try {
         const res = await fetchAuthToken(code, codeVerifier)
-        store.commit('setToken', res.data.access_token)
+        store.setToken(res.data.access_token)
         return { name: 'home' }
       } catch (e) {
         console.error(e)

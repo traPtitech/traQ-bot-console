@@ -286,7 +286,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useQuasar } from 'quasar'
-import { useStore } from 'vuex'
+import { useStore } from '../store'
 import { traq, getUserIconURL } from '../api'
 import clientScopes from '../clientScopes'
 
@@ -304,7 +304,7 @@ const getWebhooks = async () => {
   const webhooks: any[] = (await traq.getWebhooks()).data
 
   const botUserNames = await Promise.all(
-    webhooks.map(webhook => store.dispatch('fetchUserName', webhook.botUserId))
+    webhooks.map(webhook => store.fetchUserName(webhook.botUserId))
   )
   for (const i of webhooks.keys()) {
     webhooks[i].botUserName = botUserNames[i]
@@ -317,7 +317,7 @@ const getBots = async () => {
   const bots: any[] = (await traq.getBots()).data
 
   const botUserNames = await Promise.all(
-    bots.map(bot => store.dispatch('fetchUserName', bot.botUserId))
+    bots.map(bot => store.fetchUserName(bot.botUserId))
   )
   for (const i of bots.keys()) {
     bots[i].botUserName = botUserNames[i]

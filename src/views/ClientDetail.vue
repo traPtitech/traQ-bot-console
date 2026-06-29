@@ -191,7 +191,7 @@
 import { computed, reactive, ref, watch } from 'vue'
 import { copyToClipboard, useQuasar } from 'quasar'
 import { useRoute, useRouter } from 'vue-router'
-import { useStore } from 'vuex'
+import { useStore } from '../store'
 import { traq, getUsersOptionItems } from '../api'
 import clientScopeOptions from '../clientScopes'
 
@@ -215,14 +215,14 @@ const scopeOptions = clientScopeOptions.map(opt => ({
 }))
 const urlRegex = /http(s)?:\/\/([\w-]+.)+[\w-]+(\/[\w- ./?%&=]*)?/i
 const hideSecret = ref(true)
-const userInfo = computed<any>(() => store.state.userInfo)
+const userInfo = computed<any>(() => store.userInfo)
 
 const fetchData = async () => {
   loading.value = true
   client.value = null
   try {
     const clientData: any = (await traq.getClient((route.params as any).id as string, true)).data
-    clientData.developerName = await store.dispatch('fetchUserName', clientData.developerId)
+    clientData.developerName = await store.fetchUserName(clientData.developerId)
     name.value = clientData.name
     description.value = clientData.description
     callbackUrl.value = clientData.callbackUrl

@@ -81,22 +81,24 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { useStore } from 'vuex'
+import { useStore } from '../store'
 import { traq, getUserIconURL } from '../api'
 
 defineOptions({ name: 'LayoutDefault' })
 
 const store = useStore()
 const left = ref(true)
-const userInfo = computed(() => store.state.userInfo)
+const userInfo = computed(() => store.userInfo)
 
 const logout = async () => {
   try {
-    await traq.revokeOAuth2Token({ token: store.state.authToken } as any)
+    if (store.authToken !== null) {
+      await traq.revokeOAuth2Token(store.authToken)
+    }
   } catch (e: any) {
   }
-  store.commit('setToken', null)
-  store.commit('putChannelList', [])
+  store.setToken(null)
+  store.putChannelList([])
   location.reload()
 }
 </script>

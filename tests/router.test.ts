@@ -3,23 +3,21 @@ import { router } from '../src/router'
 
 const mocks = vi.hoisted(() => ({
   store: {
-    state: { authToken: 'token' },
-    dispatch: vi.fn(),
-    commit: vi.fn()
+    fetchUserInfo: vi.fn(),
+    updateChannelList: vi.fn(),
+    setToken: vi.fn()
   },
   fetchAuthToken: vi.fn(),
-  redirectAuthorizationEndpoint: vi.fn(),
-  setAuthToken: vi.fn()
+  redirectAuthorizationEndpoint: vi.fn()
 }))
 
 vi.mock('../src/store', () => ({
-  store: mocks.store
+  appStore: mocks.store
 }))
 
 vi.mock('../src/api', () => ({
   fetchAuthToken: mocks.fetchAuthToken,
-  redirectAuthorizationEndpoint: mocks.redirectAuthorizationEndpoint,
-  setAuthToken: mocks.setAuthToken
+  redirectAuthorizationEndpoint: mocks.redirectAuthorizationEndpoint
 }))
 
 vi.mock('vue-router', async importOriginal => {

@@ -567,7 +567,7 @@ import { computed, ref, watch } from 'vue'
 import { copyToClipboard, useQuasar } from 'quasar'
 import dayjs from 'dayjs'
 import { useRoute, useRouter } from 'vue-router'
-import { useStore } from 'vuex'
+import { useStore } from '../store'
 import {
   traq,
   getUserIconURL,
@@ -635,9 +635,9 @@ const mode = ref('')
 const endpoint = ref('')
 const editing = ref(false)
 
-const userInfo = computed<any>(() => store.state.userInfo)
-const getChannelArray = computed(() => store.getters.getChannelArray)
-const getChannel = (channelId: string) => store.getters.getChannel(channelId)
+const userInfo = computed<any>(() => store.userInfo)
+const getChannelArray = computed(() => store.channelArray)
+const getChannel = (channelId: string) => store.channelById(channelId)
 const id = computed({
   get: () => (route.params as any).id as string,
   set: () => {}
@@ -684,7 +684,7 @@ const fetchData = async () => {
     const botUser = (await traq.getUser(botData.botUserId)).data
     botData.botUserName = botUser.name
     botData.displayName = botUser.displayName
-    botData.developerName = await store.dispatch('fetchUserName', botData.developerId)
+    botData.developerName = await store.fetchUserName(botData.developerId)
     checkedEvents.value = [...botData.subscribeEvents]
     installedChannels.value = botData.channels
     await fetchEventLogs()
@@ -712,7 +712,7 @@ const fetchChannels = async () => {
   loadingChannels.value = true
   try {
     addingChannel.value = null
-    await store.dispatch('updateChannelList')
+    await store.updateChannelList()
   } catch (e: any) {
     console.error(e)
     $q.notify({

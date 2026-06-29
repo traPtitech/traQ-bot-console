@@ -105,7 +105,7 @@
 import { computed, ref } from 'vue'
 import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
+import { useStore } from '../store'
 import { traq } from '../api'
 
 defineOptions({ name: 'CreateWebhook' })
@@ -121,13 +121,13 @@ const channelOptions = ref<any[]>([])
 const secret = ref('')
 const accept = ref(false)
 const loadingChannel = ref(false)
-const getChannelArray = computed(() => store.getters.getChannelArray)
+const getChannelArray = computed(() => store.channelArray)
 
 const fetchChannels = async () => {
   loadingChannel.value = true
   try {
     targetChannel.value = null
-    await store.dispatch('updateChannelList')
+    await store.updateChannelList()
   } catch (e: any) {
     console.error(e)
     $q.notify({

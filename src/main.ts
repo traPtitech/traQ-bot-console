@@ -22,7 +22,7 @@ app.use(Quasar, {
 
 Dark.set('auto')
 
-app.use(router)
 app.use(store)
+app.use(router)
 
 app.mount('#app')
