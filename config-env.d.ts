@@ -1,8 +1,3 @@
-declare module 'eslint-plugin-vue' {
-  const plugin: any
-  export default plugin
-}
-
 declare module 'markdown-it-mark' {
   import type MarkdownIt from 'markdown-it'
 
@@ -37,22 +32,14 @@ declare module 'vuex' {
     actions?: Record<string, (...args: any[]) => unknown>
     plugins?: Array<(store: Store<S>) => void>
   }): Store<S>
+
+  export function useStore<S = unknown> (injectKey?: InjectionKey<Store<S>> | string): Store<S>
 }
 
 declare module 'virtual:pwa-register' {
   export function registerSW (options?: {
     onNeedRefresh?: () => void
   }): () => void
-}
-
-declare module '*.css'
-declare module '*.styl'
-
-declare module '*.vue' {
-  import type { DefineComponent } from 'vue'
-
-  const component: DefineComponent
-  export default component
 }
 
 declare module '*.md' {

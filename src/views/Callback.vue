@@ -2,8 +2,6 @@
   <div />
 </template>
 
-<script>
-export default {
-  name: 'Callback'
-}
+<script setup lang="ts">
+defineOptions({ name: 'Callback' })
 </script>

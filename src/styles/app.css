@@ -1,4 +1,4 @@
-@import './quasar.variables.styl'
+@import './quasar.variables.css';
 
 .q-dialog.fullscreen .q-card__section {
   max-height: 70vh;

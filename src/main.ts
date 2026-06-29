@@ -5,7 +5,7 @@ import { store } from './store'
 import { registerSW } from 'virtual:pwa-register'
 import 'quasar/dist/quasar.css'
 import '@quasar/extras/material-icons/material-icons.css'
-import './styles/quasar.styl'
+import './styles/app.css'
 import lang from 'quasar/lang/ja.js'
 import { Quasar, Notify, Loading, Dialog, Dark } from 'quasar'
 

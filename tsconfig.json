@@ -23,6 +23,7 @@
     "config-env.d.ts",
     "src/**/*.d.ts",
     "src/**/*.ts",
+    "src/**/*.vue",
     "eslint.config.ts",
     "vite.config.ts",
     "vitest.config.ts",

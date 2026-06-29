@@ -21,6 +21,9 @@ export default [
   },
   {
     languageOptions: {
+      parserOptions: {
+        parser: tsParser
+      },
       globals: {
         node: true,
         es2022: true
