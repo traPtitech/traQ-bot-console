@@ -1,7 +1,7 @@
 <template lang="pug">
-  q-page.q-pa-md.q-gutter-md
+  q-page.create-page.q-pa-md
     h6 Client新規登録
-    q-form.q-gutter-md(@submit="onSubmit")
+    q-form.create-form(@submit="onSubmit")
       q-banner.app-warning-banner(rounded)
         template(#avatar)
           q-icon.text-orange(name="warning")
@@ -20,8 +20,8 @@
         template(v-slot:control)
           q-option-group(v-model="scopes" :options="scopeOptions" type="checkbox")
       q-checkbox(v-model="accept" label="Client利用ルールに同意する")
-      div
-        q-btn.float-right(label="登録" color="primary" type="submit" unelevated)
+      div.create-actions
+        q-btn(label="登録" color="primary" type="submit" unelevated)
 
 </template>
 

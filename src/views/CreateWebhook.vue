@@ -1,7 +1,7 @@
 <template lang="pug">
-  q-page.q-pa-md.q-gutter-md
+  q-page.create-page.q-pa-md
     h6 Webhook新規作成
-    q-form.q-gutter-md(@submit="onSubmit")
+    q-form.create-form(@submit="onSubmit")
       q-banner.app-warning-banner(rounded)
         template(#avatar)
           q-icon.text-orange(name="warning")
@@ -22,8 +22,8 @@
           q-btn(round dense flat icon="refresh" @click="fetchChannels")
       q-input(v-model="secret" outlined stack-label label="Webhookシークレット" hint="Secure Webhookを使用しない場合は空欄にしてください。シークレットは後から見ることはできないので、記録しておいてください。")
       q-checkbox(v-model="accept" label="Webhook利用ルールに同意する")
-      div
-        q-btn.float-right(label="作成" color="primary" type="submit" unelevated)
+      div.create-actions
+        q-btn(label="作成" color="primary" type="submit" unelevated)
 </template>
 
 <script>

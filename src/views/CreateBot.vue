@@ -1,7 +1,7 @@
 <template lang="pug">
-  q-page.q-pa-md.q-gutter-md
+  q-page.create-page.q-pa-md
     h6 BOT新規登録
-    q-form.q-gutter-md(@submit="onSubmit")
+    q-form.create-form(@submit="onSubmit")
       q-banner.app-warning-banner(rounded)
         template(#avatar)
           q-icon.text-orange(name="warning")
@@ -20,8 +20,8 @@
       q-input(v-if="mode === 'HTTP'" v-model="endpoint" outlined stack-label label="BOTサーバーエンドポイント" hint="traQのイベント送信先のURLを入力してください"
         :rules="[modeRule]" reactive-rules)
       q-checkbox(v-model="accept" label="BOT利用ルールに同意する")
-      div
-        q-btn.float-right(label="登録" color="primary" type="submit" unelevated)
+      div.create-actions
+        q-btn(label="登録" color="primary" type="submit" unelevated)
 
 </template>
 
