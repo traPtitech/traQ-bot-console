@@ -26,9 +26,9 @@
                   q-input(label="Client名" stack-label v-model="name.value" :readonly="!editing" :counter="editing" maxlength="32" :rules="[val => val && val.length > 0 || '必須項目です']")
                   q-input(label="説明" stack-label v-model="description.value" :readonly="!editing" type="textarea" autogrow :rules="[val => val && val.length > 0 || '必須項目です']")
                   q-input(label="リダイレクト先URL" stack-label v-model="callbackUrl.value" :readonly="!editing" :counter="editing" :rules="[val => val && urlRegex.test(val) || '有効なURLを入力してください']")
-                  q-field(label="スコープ" stack-label v-model="client.scopes" readonly hint='')
-                    template(v-slot:control)
-                      q-option-group(v-model="client.scopes" :options="scopeOptions" type="checkbox" disable hint='')
+                  fieldset.scope-field
+                    legend スコープ
+                    q-option-group(v-model="client.scopes" :options="scopeOptions" type="checkbox" disable)
                   q-input(v-if="client.developerId !== userInfo.id" label="作成者" hint='' v-model="client.developerName" readonly)
                   div.row.q-gutter-sm(v-if="editing")
                     q-btn.col.btn-fixed-width(label="キャンセル" unelevated @click="cancelEditing")

@@ -15,10 +15,10 @@
         :rules="[val => val && val.length > 0 || '必須項目です']")
       q-input(v-model="callbackUrl" outlined stack-label label="リダイレクト先URL" hint="OAuth承認後のリダイレクト先のURLを入力してください"
         :rules="[val => val && urlRegex.test(val) || '有効なURLを入力してください']")
-      q-field(v-model="scopes" outlined stack-label label="スコープ" hint="Client登録後変更することはできません"
-          :rules="[val => val && val.length > 0 || '一つ以上選択してください']")
-        template(v-slot:control)
-          q-option-group(v-model="scopes" :options="scopeOptions" type="checkbox")
+      fieldset.scope-field
+        legend スコープ
+        q-option-group(v-model="scopes" :options="scopeOptions" type="checkbox")
+        div.scope-field__hint Client登録後変更することはできません
       q-checkbox(v-model="accept" label="Client利用ルールに同意する")
       div.create-actions
         q-btn(label="登録" color="primary" type="submit" unelevated)
@@ -53,6 +53,13 @@ export default {
           color: 'red-5',
           textColor: 'white',
           message: 'Client利用ルールに同意する必要があります'
+        })
+      } else if (this.scopes.length === 0) {
+        this.$q.notify({
+          icon: 'error_outline',
+          color: 'red-5',
+          textColor: 'white',
+          message: 'スコープを一つ以上選択してください'
         })
       } else {
         this.$q.loading.show({ delay: 400 })

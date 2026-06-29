@@ -177,13 +177,14 @@ export const routes = [
         component: () => import('../views/ClientDetail.vue')
       }
     ],
-    beforeEnter: async (to, from, next) => {
+    beforeEnter: async () => {
       try {
         await store.dispatch('fetchUserInfo')
         await store.dispatch('updateChannelList')
-        next()
+        return undefined
       } catch (e) {
         await redirectAuthorizationEndpoint()
+        return false
       }
     }
   },
@@ -191,20 +192,21 @@ export const routes = [
     path: '/callback',
     name: 'callback',
     component: () => import('../views/Callback.vue'),
-    beforeEnter: async (to, from, next) => {
+    beforeEnter: async to => {
       const code = to.query['code']
       const state = to.query['state']
       const codeVerifier = sessionStorage.getItem(`login-code-verifier-${state}`)
       if (!code || !codeVerifier) {
-        next({ name: 'home' })
+        return { name: 'home' }
       }
 
       try {
         const res = await fetchAuthToken(code, codeVerifier)
         store.commit('setToken', res.data.access_token)
-        next({ name: 'home' })
+        return { name: 'home' }
       } catch (e) {
         console.error(e)
+        return false
       }
     }
   }
