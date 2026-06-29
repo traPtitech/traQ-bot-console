@@ -2,7 +2,6 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { quasar, transformAssetUrls } from '@quasar/vite-plugin'
 import { Mode, plugin as mdPlugin } from 'vite-plugin-markdown'
-import { VitePWA } from 'vite-plugin-pwa'
 import MarkdownIt from 'markdown-it'
 import markdownItMark from 'markdown-it-mark'
 
@@ -35,44 +34,6 @@ export default defineConfig({
   plugins: [
     vue({
       template: { transformAssetUrls }
-    }),
-    VitePWA({
-      registerType: 'prompt',
-      devOptions: {
-        enabled: true
-      },
-      manifest: {
-        name: "traQ Bot Console",
-        short_name: "traQ Bot Console",
-        icons: [
-          {
-            src: 'pwa-192x192.png',
-            sizes: '192x192',
-            type: 'image/png'
-          },
-          {
-            src: 'pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png'
-          },
-          {
-            src: 'pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any'
-          },
-          {
-            src: 'pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'maskable'
-          }
-        ],
-        start_url: "./index.html",
-        theme_color: "#ffffff",
-        background_color: "#ffffff",
-        display: "standalone"
-      }
     }),
 
     // @quasar/plugin-vite options list:

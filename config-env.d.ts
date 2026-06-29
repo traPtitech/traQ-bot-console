@@ -36,12 +36,6 @@ declare module 'vuex' {
   export function useStore<S = unknown> (injectKey?: InjectionKey<Store<S>> | string): Store<S>
 }
 
-declare module 'virtual:pwa-register' {
-  export function registerSW (options?: {
-    onNeedRefresh?: () => void
-  }): () => void
-}
-
 declare module '*.md' {
   import type { Component } from 'vue'
 
