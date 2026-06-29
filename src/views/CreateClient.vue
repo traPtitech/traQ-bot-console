@@ -2,7 +2,7 @@
   q-page.q-pa-md.q-gutter-md
     h6 Client新規登録
     q-form.q-gutter-md(@submit="onSubmit")
-      q-banner.bg-grey-3.text-black(rounded)
+      q-banner.app-warning-banner(rounded)
         template(#avatar)
           q-icon.text-orange(name="warning")
         router-link(to="/docs/client") Clientマニュアル

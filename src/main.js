@@ -7,7 +7,7 @@ import 'quasar/dist/quasar.css'
 import '@quasar/extras/material-icons/material-icons.css'
 import './styles/quasar.styl'
 import lang from 'quasar/lang/ja.js'
-import { Quasar, Notify, Loading, Dialog } from 'quasar'
+import { Quasar, Notify, Loading, Dialog, Dark } from 'quasar'
 
 // https://vite-pwa-org.netlify.app/guide/prompt-for-update.html
 const updateSW = registerSW({
@@ -42,10 +42,13 @@ app.use(Quasar, {
   plugins: {
     Notify,
     Loading,
-    Dialog
+    Dialog,
+    Dark
   },
   lang
 })
+
+Dark.set('auto')
 
 app.config.productionTip = false
 
