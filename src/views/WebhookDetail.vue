@@ -296,7 +296,7 @@
                       top
                     >
                       <q-item-label caption>
-                        {{ dayjs(m.createdAt).format('YY/MM/DD HH:mm:ss') }}
+                        {{ formatDateTime(m.createdAt) }}
                       </q-item-label>
                     </q-item-section>
                   </q-item>
@@ -311,12 +311,12 @@
 </template>
 
 <script setup lang="ts">
-import dayjs from 'dayjs'
 import { computed, reactive, ref, watch } from 'vue'
 import { copyToClipboard, useQuasar } from 'quasar'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from '../store'
 import { traq, getUserIconURL, getUsersOptionItems } from '../api'
+import { formatDateTime } from '../utils'
 
 const iconMaxFileSize = 2048 * 1024
 const iconAcceptTypes = ['image/jpeg', 'image/png', 'image/gif']

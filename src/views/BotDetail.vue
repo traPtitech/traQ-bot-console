@@ -523,7 +523,7 @@
                         {{ props.row.event }}
                       </q-td>
                       <q-td key="datetime">
-                        {{ dayjs(props.row.datetime).format('YY/MM/DD HH:mm:ss.SSS') }}
+                        {{ formatDateTime(props.row.datetime, { milliseconds: true }) }}
                       </q-td>
                     </q-tr>
                   </template>
@@ -565,9 +565,9 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { copyToClipboard, useQuasar } from 'quasar'
-import dayjs from 'dayjs'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from '../store'
+import { formatDateTime } from '../utils'
 import {
   traq,
   getUserIconURL,

@@ -47,6 +47,14 @@ describe('utils', () => {
       .resolves.toBe('de7c9b85b8b78aa6bc8a7a36f70a90701c9db4d9')
   })
 
+  it('formats date times with optional milliseconds', async () => {
+    const { formatDateTime } = await import('../src/utils')
+    const date = new Date(2026, 0, 2, 3, 4, 5, 6)
+
+    expect(formatDateTime(date)).toBe('26/01/02 03:04:05')
+    expect(formatDateTime(date, { milliseconds: true })).toBe('26/01/02 03:04:05.006')
+  })
+
   it('flattens public channels with full names, sorted by channel path', async () => {
     const { parseAPIChannelList } = await import('../src/utils')
     const channels = [

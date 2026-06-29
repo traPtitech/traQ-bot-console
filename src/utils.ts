@@ -41,6 +41,29 @@ export async function pkce (verifier: string): Promise<string> {
   return sha256(verifier).then(bufferToBase64UrlEncoded)
 }
 
+function padDatePart (value: number, length = 2): string {
+  return value.toString().padStart(length, '0')
+}
+
+export function formatDateTime (input: string | number | Date, options: { milliseconds?: boolean } = {}): string {
+  const date = input instanceof Date ? input : new Date(input)
+  const formatted = [
+    padDatePart(date.getFullYear() % 100),
+    padDatePart(date.getMonth() + 1),
+    padDatePart(date.getDate())
+  ].join('/') + ' ' + [
+    padDatePart(date.getHours()),
+    padDatePart(date.getMinutes()),
+    padDatePart(date.getSeconds())
+  ].join(':')
+
+  if (options.milliseconds !== true) {
+    return formatted
+  }
+
+  return `${formatted}.${padDatePart(date.getMilliseconds(), 3)}`
+}
+
 export interface APIChannel {
   id: string
   name: string
