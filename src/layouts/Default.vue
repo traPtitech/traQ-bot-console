@@ -5,7 +5,7 @@
         q-btn(flat @click="left = !left" round dense icon="menu")
         q-toolbar-title traQ BOT Console
 
-    q-drawer(v-model="left" persistent show-if-above)
+    q-drawer(v-model="left" persistent show-if-above :width="240")
       q-scroll-area.fit(style="border-right: 1px solid #ddd")
         q-img(v-if="userInfo !== null" src="/material.png" style="height: 150px")
           div.absolute-bottom.bg-transparent
@@ -18,18 +18,6 @@
             q-item-section(avatar)
               q-icon(name="home")
             q-item-section ダッシュボード
-          q-item(clickable to="/webhooks")
-            q-item-section(avatar)
-              q-icon(name="input")
-            q-item-section Webhooks
-          q-item(clickable to="/bots")
-            q-item-section(avatar)
-              q-icon(name="tag_faces")
-            q-item-section BOTs
-          q-item(clickable to="/clients")
-            q-item-section(avatar)
-              q-icon(name="chrome_reader_mode")
-            q-item-section Clients
           q-item(clickable to="/docs")
             q-item-section(avatar)
               q-icon(name="help")

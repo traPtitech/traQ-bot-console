@@ -132,8 +132,7 @@ export const router = createRouter({
         },
         {
           path: 'bots',
-          name: 'bots',
-          component: () => import('../views/Bots.vue')
+          redirect: '/'
         },
         {
           path: 'bots/create',
@@ -147,8 +146,7 @@ export const router = createRouter({
         },
         {
           path: 'webhooks',
-          name: 'webhooks',
-          component: () => import('../views/Webhooks.vue')
+          redirect: '/'
         },
         {
           path: 'webhooks/create',
@@ -167,8 +165,7 @@ export const router = createRouter({
         },
         {
           path: 'clients',
-          name: 'clients',
-          component: () => import('../views/Clients.vue')
+          redirect: '/'
         },
         {
           path: 'clients/create',
