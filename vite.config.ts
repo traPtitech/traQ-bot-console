@@ -9,18 +9,20 @@ import markdownItMark from 'markdown-it-mark'
 const md = MarkdownIt()
   .use(markdownItMark)
 md.options.html = true
-md.renderer.rules.link_open = function (tokens, idx) {
+md.renderer.rules['link_open'] = function (tokens, idx) {
   const token = tokens[idx]
-  const href = token.attrs?.[token.attrIndex('href')][1]
+  const hrefIndex = token?.attrIndex('href') ?? -1
+  const href = hrefIndex >= 0 ? token?.attrs?.[hrefIndex]?.[1] : undefined
   if (href?.startsWith('/')) {
     return `<router-link to='${href}'>`
   } else {
     return `<a href='${href}' target='_blank'>`
   }
 }
-md.renderer.rules.link_close = function (tokens, idx) {
+md.renderer.rules['link_close'] = function (tokens, idx) {
   const token = tokens[idx - 2]
-  const href = token.attrs?.[token.attrIndex('href')][1]
+  const hrefIndex = token?.attrIndex('href') ?? -1
+  const href = hrefIndex >= 0 ? token?.attrs?.[hrefIndex]?.[1] : undefined
   if (href?.startsWith('/')) {
     return '</router-link>'
   } else {

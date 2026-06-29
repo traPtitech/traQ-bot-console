@@ -53,6 +53,12 @@ function installBrowserGlobals (): void {
   })
 }
 
+function getTraqInstance (index: number): TraqInstanceMock {
+  const instance = mocks.traqInstances[index]
+  if (!instance) throw new Error(`Expected traQ instance ${index} to be created`)
+  return instance
+}
+
 describe('api', () => {
   beforeEach(() => {
     vi.resetModules()
@@ -65,7 +71,7 @@ describe('api', () => {
     const api = await import('../src/api')
 
     expect(api.baseURL).toBe('https://q-dev.trapti.tech/api/v3')
-    expect(mocks.traqInstances[0].options).toEqual({
+    expect(getTraqInstance(0).options).toEqual({
       basePath: 'https://q-dev.trapti.tech/api/v3'
     })
     expect(api.getUserIconURL('BOT_こんにちは/space user')).toBe(
@@ -78,8 +84,8 @@ describe('api', () => {
 
     api.setAuthToken('token-1')
 
-    expect(api.traq).toBe(mocks.traqInstances[1])
-    expect(mocks.traqInstances[1].options).toEqual({
+    expect(api.traq).toBe(getTraqInstance(1))
+    expect(getTraqInstance(1).options).toEqual({
       basePath: 'https://q-dev.trapti.tech/api/v3',
       accessToken: 'token-1'
     })
@@ -99,18 +105,18 @@ describe('api', () => {
       'verifier-abcdefghijklmnopqrstuvwxyz0123456789abcdefg'
     )
     const assign = window.location.assign as unknown as ReturnType<typeof vi.fn>
-    const assigned = new URL(String(assign.mock.calls[0][0]))
+    const assigned = new URL(String(assign.mock.calls[0]?.[0]))
     expect(assigned.href).toBe('https://q-dev.trapti.tech/api/v3/oauth2/authorize?client_id=lkElAHAUIqFmImUvxmWItnbWO7EBdxttwBaW&response_type=code&code_challenge=challenge-value&code_challenge_method=S256&state=state-1234')
   })
 
   it('posts OAuth token requests through the current traQ client', async () => {
     const api = await import('../src/api')
-    mocks.traqInstances[0].postOAuth2Token.mockResolvedValue({ data: { access_token: 'token' } })
+    getTraqInstance(0).postOAuth2Token.mockResolvedValue({ data: { access_token: 'token' } })
 
     await expect(api.fetchAuthToken('code-1', 'verifier-1')).resolves.toEqual({
       data: { access_token: 'token' }
     })
-    expect(mocks.traqInstances[0].postOAuth2Token).toHaveBeenCalledWith(
+    expect(getTraqInstance(0).postOAuth2Token).toHaveBeenCalledWith(
       'authorization_code',
       'code-1',
       undefined,
@@ -121,12 +127,12 @@ describe('api', () => {
 
   it('posts webhook messages without a signature when no secret is given', async () => {
     const api = await import('../src/api')
-    mocks.traqInstances[0].postWebhook.mockResolvedValue({ ok: true })
+    getTraqInstance(0).postWebhook.mockResolvedValue({ ok: true })
 
     await api.postWebhookMessage('webhook-id', 'message body')
 
     expect(mocks.hmacsha1).not.toHaveBeenCalled()
-    expect(mocks.traqInstances[0].postWebhook).toHaveBeenCalledWith(
+    expect(getTraqInstance(0).postWebhook).toHaveBeenCalledWith(
       'webhook-id',
       undefined,
       undefined,
@@ -142,7 +148,7 @@ describe('api', () => {
     await api.postWebhookMessage('webhook-id', 'message body', 'secret')
 
     expect(mocks.hmacsha1).toHaveBeenCalledWith('message body', 'secret')
-    expect(mocks.traqInstances[0].postWebhook).toHaveBeenCalledWith(
+    expect(getTraqInstance(0).postWebhook).toHaveBeenCalledWith(
       'webhook-id',
       'signature-hex',
       undefined,
@@ -153,7 +159,7 @@ describe('api', () => {
 
   it('returns selectable users excluding owner, webhook users, and bot users', async () => {
     const api = await import('../src/api')
-    mocks.traqInstances[0].getUsers.mockResolvedValue({
+    getTraqInstance(0).getUsers.mockResolvedValue({
       data: [
         { id: 'owner', name: 'owner' },
         { id: 'webhook', name: 'Webhook#general' },

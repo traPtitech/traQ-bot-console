@@ -50,8 +50,6 @@ app.use(Quasar, {
 
 Dark.set('auto')
 
-app.config.productionTip = false
-
 app.use(router)
 app.use(store)
 

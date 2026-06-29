@@ -1,3 +1,8 @@
+export interface ScopeOption {
+  label: string
+  value: string
+}
+
 export default [
   {
     label: 'ユーザーID取得',
@@ -19,4 +24,4 @@ export default [
     label: 'BOT管理',
     value: 'manage_bot'
   }
-]
+] satisfies ScopeOption[]

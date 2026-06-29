@@ -26,6 +26,7 @@
     "@quasar/vite-plugin": "1.12.0",
     "@types/markdown-it": "^14.1.2",
     "@types/node": "^26.0.1",
+    "@typescript-eslint/parser": "^8.62.0",
     "@vitejs/plugin-vue": "6.0.7",
     "eslint": "10.6.0",
     "eslint-plugin-vue": "10.9.2",

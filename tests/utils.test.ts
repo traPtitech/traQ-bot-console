@@ -64,6 +64,6 @@ describe('utils', () => {
       { id: 'random', name: 'random', parentId: '', archived: false, channelName: '#random' },
       { id: 'zeta', name: 'zeta', parentId: '', archived: false, channelName: '#zeta' }
     ])
-    expect(channels[0].children).toEqual(['ignored'])
+    expect(channels[0]?.children).toEqual(['ignored'])
   })
 })

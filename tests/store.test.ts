@@ -51,7 +51,7 @@ describe('store', () => {
       paths: ['authToken', 'usernames', 'channelList']
     })
     expect(store.plugins).toEqual(['persisted-plugin'])
-    expect(store.state).toEqual({
+    expect(store.state()).toEqual({
       userInfo: null,
       authToken: null,
       usernames: {},

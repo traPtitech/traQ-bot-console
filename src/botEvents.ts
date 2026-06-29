@@ -1,3 +1,10 @@
+interface BotEvent {
+  category: string
+  description: string
+  always?: boolean
+  privileged?: boolean
+}
+
 export default {
   PING: {
     category: 'システム',
@@ -112,4 +119,4 @@ export default {
     category: 'ユーザーグループ',
     description: 'ユーザーグループの管理者が削除された'
   }
-}
+} satisfies Record<string, BotEvent>
