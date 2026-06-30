@@ -7,17 +7,19 @@ type TraqInstanceMock = {
   getUsers: ReturnType<typeof vi.fn>
 }
 
-const mocks = vi.hoisted((): {
-  traqInstances: TraqInstanceMock[]
-  randomString: ReturnType<typeof vi.fn>
-  pkce: ReturnType<typeof vi.fn>
-  hmacsha1: ReturnType<typeof vi.fn>
-} => ({
-  traqInstances: [],
-  randomString: vi.fn(),
-  pkce: vi.fn(),
-  hmacsha1: vi.fn()
-}))
+const mocks = vi.hoisted(
+  (): {
+    traqInstances: TraqInstanceMock[]
+    randomString: ReturnType<typeof vi.fn>
+    pkce: ReturnType<typeof vi.fn>
+    hmacsha1: ReturnType<typeof vi.fn>
+  } => ({
+    traqInstances: [],
+    randomString: vi.fn(),
+    pkce: vi.fn(),
+    hmacsha1: vi.fn(),
+  }),
+)
 
 vi.mock('@traptitech/traq', () => ({
   Apis: class MockTraQ {
@@ -26,34 +28,34 @@ vi.mock('@traptitech/traq', () => ({
     postWebhook = vi.fn()
     getUsers = vi.fn()
 
-    constructor (options: unknown) {
+    constructor(options: unknown) {
       this.options = options
       mocks.traqInstances.push(this)
     }
-  }
+  },
 }))
 
 vi.mock('../src/utils', () => ({
   randomString: mocks.randomString,
   pkce: mocks.pkce,
-  hmacsha1: mocks.hmacsha1
+  hmacsha1: mocks.hmacsha1,
 }))
 
-function installBrowserGlobals (): void {
+function installBrowserGlobals(): void {
   const storage = new Map<string, string>()
 
   vi.stubGlobal('window', {
     location: {
-      assign: vi.fn()
-    }
+      assign: vi.fn(),
+    },
   })
   vi.stubGlobal('sessionStorage', {
-    getItem: vi.fn(key => storage.get(key) ?? null),
-    setItem: vi.fn((key, value) => storage.set(key, value))
+    getItem: vi.fn((key) => storage.get(key) ?? null),
+    setItem: vi.fn((key, value) => storage.set(key, value)),
   })
 }
 
-function getTraqInstance (index: number): TraqInstanceMock {
+function getTraqInstance(index: number): TraqInstanceMock {
   const instance = mocks.traqInstances[index]
   if (!instance) throw new Error(`Expected traQ instance ${index} to be created`)
   return instance
@@ -72,10 +74,10 @@ describe('api', () => {
 
     expect(api.baseURL).toBe('https://q-dev.trapti.tech/api/v3')
     expect(getTraqInstance(0).options).toEqual({
-      basePath: 'https://q-dev.trapti.tech/api/v3'
+      basePath: 'https://q-dev.trapti.tech/api/v3',
     })
     expect(api.getUserIconURL('BOT_こんにちは/space user')).toBe(
-      'https://q-dev.trapti.tech/api/v3/public/icon/BOT_%E3%81%93%E3%82%93%E3%81%AB%E3%81%A1%E3%81%AF%2Fspace%20user'
+      'https://q-dev.trapti.tech/api/v3/public/icon/BOT_%E3%81%93%E3%82%93%E3%81%AB%E3%81%A1%E3%81%AF%2Fspace%20user',
     )
   })
 
@@ -87,7 +89,7 @@ describe('api', () => {
     expect(api.traq).toBe(getTraqInstance(1))
     expect(getTraqInstance(1).options).toEqual({
       basePath: 'https://q-dev.trapti.tech/api/v3',
-      accessToken: 'token-1'
+      accessToken: 'token-1',
     })
   })
 
@@ -102,11 +104,13 @@ describe('api', () => {
 
     expect(sessionStorage.setItem).toHaveBeenCalledWith(
       'login-code-verifier-state-1234',
-      'verifier-abcdefghijklmnopqrstuvwxyz0123456789abcdefg'
+      'verifier-abcdefghijklmnopqrstuvwxyz0123456789abcdefg',
     )
     const assign = window.location.assign as unknown as ReturnType<typeof vi.fn>
     const assigned = new URL(String(assign.mock.calls[0]?.[0]))
-    expect(assigned.href).toBe('https://q-dev.trapti.tech/api/v3/oauth2/authorize?client_id=lkElAHAUIqFmImUvxmWItnbWO7EBdxttwBaW&response_type=code&code_challenge=challenge-value&code_challenge_method=S256&state=state-1234')
+    expect(assigned.href).toBe(
+      'https://q-dev.trapti.tech/api/v3/oauth2/authorize?client_id=lkElAHAUIqFmImUvxmWItnbWO7EBdxttwBaW&response_type=code&code_challenge=challenge-value&code_challenge_method=S256&state=state-1234',
+    )
   })
 
   it('posts OAuth token requests through the current traQ client', async () => {
@@ -114,14 +118,14 @@ describe('api', () => {
     getTraqInstance(0).postOAuth2Token.mockResolvedValue({ data: { access_token: 'token' } })
 
     await expect(api.fetchAuthToken('code-1', 'verifier-1')).resolves.toEqual({
-      data: { access_token: 'token' }
+      data: { access_token: 'token' },
     })
     expect(getTraqInstance(0).postOAuth2Token).toHaveBeenCalledWith(
       'authorization_code',
       'code-1',
       undefined,
       'lkElAHAUIqFmImUvxmWItnbWO7EBdxttwBaW',
-      'verifier-1'
+      'verifier-1',
     )
   })
 
@@ -137,7 +141,7 @@ describe('api', () => {
       undefined,
       undefined,
       undefined,
-      'message body'
+      'message body',
     )
   })
 
@@ -153,7 +157,7 @@ describe('api', () => {
       'signature-hex',
       undefined,
       undefined,
-      'message body'
+      'message body',
     )
   })
 
@@ -166,14 +170,14 @@ describe('api', () => {
         { id: 'bot', name: 'BOT_helper' },
         { id: 'z', name: 'zeta' },
         { id: 'a', name: 'Alpha' },
-        { id: 'b', name: 'beta' }
-      ]
+        { id: 'b', name: 'beta' },
+      ],
     })
 
     await expect(api.getUsersOptionItems('owner')).resolves.toEqual([
       { label: '@Alpha', value: { id: 'a', name: 'Alpha' } },
       { label: '@beta', value: { id: 'b', name: 'beta' } },
-      { label: '@zeta', value: { id: 'z', name: 'zeta' } }
+      { label: '@zeta', value: { id: 'z', name: 'zeta' } },
     ])
   })
 })

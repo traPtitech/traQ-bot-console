@@ -7,20 +7,20 @@ const mocks = vi.hoisted(() => ({
   traq: {
     getMe: vi.fn(),
     getUser: vi.fn(),
-    getChannels: vi.fn()
-  }
+    getChannels: vi.fn(),
+  },
 }))
 
 vi.mock('../src/api', () => ({
   traq: mocks.traq,
-  setAuthToken: mocks.setAuthToken
+  setAuthToken: mocks.setAuthToken,
 }))
 
 vi.mock('../src/utils', () => ({
-  parseAPIChannelList: mocks.parseAPIChannelList
+  parseAPIChannelList: mocks.parseAPIChannelList,
 }))
 
-function stubLocalStorage (initial: Record<string, string> = {}) {
+function stubLocalStorage(initial: Record<string, string> = {}) {
   const storage = new Map(Object.entries(initial))
   const localStorage = {
     getItem: vi.fn((key: string) => storage.get(key) ?? null),
@@ -29,14 +29,14 @@ function stubLocalStorage (initial: Record<string, string> = {}) {
     }),
     removeItem: vi.fn((key: string) => {
       storage.delete(key)
-    })
+    }),
   }
   vi.stubGlobal('localStorage', localStorage)
   vi.stubGlobal('window', { localStorage })
   return localStorage
 }
 
-async function loadStore () {
+async function loadStore() {
   vi.resetModules()
   return (await import('../src/store')).appStore
 }
@@ -66,8 +66,8 @@ describe('store', () => {
       vuex: JSON.stringify({
         authToken: 'token-1',
         usernames: { 'user-1': 'alice' },
-        channelList: [{ id: 'channel-1', name: 'general', archived: false }]
-      })
+        channelList: [{ id: 'channel-1', name: 'general', archived: false }],
+      }),
     })
 
     const store = await loadStore()
@@ -82,18 +82,18 @@ describe('store', () => {
     const store = await loadStore()
     store.putChannelList([
       { id: 'active', name: 'active', parentId: '', channelName: '#active', archived: false },
-      { id: 'archived', name: 'archived', parentId: '', channelName: '#archived', archived: true }
+      { id: 'archived', name: 'archived', parentId: '', channelName: '#archived', archived: true },
     ])
 
     expect(store.channelArray).toEqual([
-      { id: 'active', name: 'active', parentId: '', channelName: '#active', archived: false }
+      { id: 'active', name: 'active', parentId: '', channelName: '#active', archived: false },
     ])
     expect(store.channelById('archived')).toEqual({
       id: 'archived',
       name: 'archived',
       parentId: '',
       channelName: '#archived',
-      archived: true
+      archived: true,
     })
     expect(store.channelById('missing')).toBeUndefined()
   })
@@ -105,21 +105,34 @@ describe('store', () => {
     store.setUserInfo({ id: 'me' } as any)
     store.setToken('token-1')
     store.addUserNameCache({ id: 'user-1', name: 'alice' })
-    store.putChannelList([{ id: 'channel-1', name: 'general', parentId: '', channelName: '#general', archived: false }])
+    store.putChannelList([
+      { id: 'channel-1', name: 'general', parentId: '', channelName: '#general', archived: false },
+    ])
     await nextTick()
 
     expect(store.userInfo).toEqual({ id: 'me' })
     expect(store.authToken).toBe('token-1')
     expect(store.usernames).toEqual({ 'user-1': 'alice' })
     expect(store.channelList).toEqual([
-      { id: 'channel-1', name: 'general', parentId: '', channelName: '#general', archived: false }
+      { id: 'channel-1', name: 'general', parentId: '', channelName: '#general', archived: false },
     ])
     expect(mocks.setAuthToken).toHaveBeenCalledWith('token-1')
-    expect(localStorage.setItem).toHaveBeenLastCalledWith('vuex', JSON.stringify({
-      authToken: 'token-1',
-      usernames: { 'user-1': 'alice' },
-      channelList: [{ id: 'channel-1', name: 'general', parentId: '', channelName: '#general', archived: false }]
-    }))
+    expect(localStorage.setItem).toHaveBeenLastCalledWith(
+      'vuex',
+      JSON.stringify({
+        authToken: 'token-1',
+        usernames: { 'user-1': 'alice' },
+        channelList: [
+          {
+            id: 'channel-1',
+            name: 'general',
+            parentId: '',
+            channelName: '#general',
+            archived: false,
+          },
+        ],
+      }),
+    )
   })
 
   it('fetches the current user info', async () => {
@@ -162,7 +175,9 @@ describe('store', () => {
   it('fetches public channels, parses them, and stores the channel list', async () => {
     const store = await loadStore()
     const publicChannels = [{ id: 'channel-1' }]
-    const parsedChannels = [{ id: 'channel-1', name: 'general', parentId: '', channelName: '#general', archived: false }]
+    const parsedChannels = [
+      { id: 'channel-1', name: 'general', parentId: '', channelName: '#general', archived: false },
+    ]
     mocks.traq.getChannels.mockResolvedValue({ data: { public: publicChannels } })
     mocks.parseAPIChannelList.mockReturnValue(parsedChannels)
 

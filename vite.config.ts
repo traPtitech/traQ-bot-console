@@ -5,8 +5,7 @@ import { Mode, plugin as mdPlugin } from 'vite-plugin-markdown'
 import MarkdownIt from 'markdown-it'
 import markdownItMark from 'markdown-it-mark'
 
-const md = MarkdownIt()
-  .use(markdownItMark)
+const md = MarkdownIt().use(markdownItMark)
 md.options.html = true
 md.renderer.rules['link_open'] = function (tokens, idx) {
   const token = tokens[idx]
@@ -33,7 +32,7 @@ md.renderer.rules['link_close'] = function (tokens, idx) {
 export default defineConfig({
   plugins: [
     vue({
-      template: { transformAssetUrls }
+      template: { transformAssetUrls },
     }),
 
     // @quasar/plugin-vite options list:
@@ -43,6 +42,6 @@ export default defineConfig({
     mdPlugin({
       mode: [Mode.HTML, Mode.VUE],
       markdownIt: md,
-    })
+    }),
   ],
 })

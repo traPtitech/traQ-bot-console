@@ -18,15 +18,5 @@
     "skipLibCheck": true,
     "types": ["node", "vite/client", "vitest"],
     "lib": ["ES2022", "DOM"]
-  },
-  "include": [
-    "config-env.d.ts",
-    "src/**/*.d.ts",
-    "src/**/*.ts",
-    "src/**/*.vue",
-    "eslint.config.ts",
-    "vite.config.ts",
-    "vitest.config.ts",
-    "tests/**/*.ts"
-  ]
+  }
 }

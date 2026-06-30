@@ -5,27 +5,27 @@ const mocks = vi.hoisted(() => ({
   store: {
     fetchUserInfo: vi.fn(),
     updateChannelList: vi.fn(),
-    setToken: vi.fn()
+    setToken: vi.fn(),
   },
   fetchAuthToken: vi.fn(),
-  redirectAuthorizationEndpoint: vi.fn()
+  redirectAuthorizationEndpoint: vi.fn(),
 }))
 
 vi.mock('../src/store', () => ({
-  appStore: mocks.store
+  appStore: mocks.store,
 }))
 
 vi.mock('../src/api', () => ({
   fetchAuthToken: mocks.fetchAuthToken,
-  redirectAuthorizationEndpoint: mocks.redirectAuthorizationEndpoint
+  redirectAuthorizationEndpoint: mocks.redirectAuthorizationEndpoint,
 }))
 
-vi.mock('vue-router', async importOriginal => {
+vi.mock('vue-router', async (importOriginal) => {
   const actual = await importOriginal<typeof import('vue-router')>()
 
   return {
     ...actual,
-    createWebHistory: actual.createMemoryHistory
+    createWebHistory: actual.createMemoryHistory,
   }
 })
 

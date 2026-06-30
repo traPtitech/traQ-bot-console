@@ -8,33 +8,29 @@ export default [
       parser: tsParser,
       globals: {
         node: true,
-        es2022: true
-      }
+        es2022: true,
+      },
     },
-    files: [
-      "src/**/*.ts"
-    ],
+    files: ['src/**/*.ts'],
     rules: {
-      "vue/custom-event-name-casing": "error",
-      "vue/multi-word-component-names": "off",
-    }
+      'vue/custom-event-name-casing': 'error',
+      'vue/multi-word-component-names': 'off',
+    },
   },
   {
     languageOptions: {
       parserOptions: {
-        parser: tsParser
+        parser: tsParser,
       },
       globals: {
         node: true,
-        es2022: true
-      }
+        es2022: true,
+      },
     },
-    files: [
-      "src/**/*.vue"
-    ],
+    files: ['src/**/*.vue'],
     rules: {
-      "vue/custom-event-name-casing": "error",
-      "vue/multi-word-component-names": "off",
-    }
-  }
+      'vue/custom-event-name-casing': 'error',
+      'vue/multi-word-component-names': 'off',
+    },
+  },
 ]

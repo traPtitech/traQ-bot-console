@@ -8,8 +8,11 @@
     "build": "vite build",
     "serve": "vite preview",
     "test": "vitest run",
-    "typecheck": "vue-tsc --noEmit",
-    "lint": "eslint --config eslint.config.ts --fix src"
+    "format": "oxfmt --config oxfmt.config.ts \"*.config.ts\" config-env.d.ts package.json tsconfig.json \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "format:check": "yarn format --check",
+    "type-check": "vue-tsc --noEmit",
+    "lint": "eslint --config eslint.config.ts src --max-warnings=0",
+    "lint:fix": "eslint --config eslint.config.ts --fix src"
   },
   "dependencies": {
     "@quasar/extras": "2.0.1",
@@ -31,6 +34,7 @@
     "jiti": "^2.7.0",
     "markdown-it": "14.1.0",
     "markdown-it-mark": "4.0.0",
+    "oxfmt": "^0.56.0",
     "typescript": "^6.0.3",
     "vite": "8.1.0",
     "vite-plugin-markdown": "2.2.0",

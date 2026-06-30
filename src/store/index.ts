@@ -17,17 +17,17 @@ interface State extends PersistedState {
 // Keep the previous vuex-persistedstate key so existing sessions stay signed in.
 const persistedStateKey = 'vuex'
 
-function getLocalStorage (): Storage | null {
+function getLocalStorage(): Storage | null {
   return typeof window === 'undefined' ? null : window.localStorage
 }
 
-function readPersistedState (): PersistedState {
+function readPersistedState(): PersistedState {
   const storage = getLocalStorage()
   if (storage === null) {
     return {
       authToken: null,
       usernames: {},
-      channelList: []
+      channelList: [],
     }
   }
 
@@ -37,7 +37,7 @@ function readPersistedState (): PersistedState {
       return {
         authToken: null,
         usernames: {},
-        channelList: []
+        channelList: [],
       }
     }
 
@@ -45,27 +45,30 @@ function readPersistedState (): PersistedState {
     return {
       authToken: parsed.authToken ?? null,
       usernames: parsed.usernames ?? {},
-      channelList: parsed.channelList ?? []
+      channelList: parsed.channelList ?? [],
     }
   } catch (e) {
     console.error(e)
     return {
       authToken: null,
       usernames: {},
-      channelList: []
+      channelList: [],
     }
   }
 }
 
-function writePersistedState ({ authToken, usernames, channelList }: State): void {
+function writePersistedState({ authToken, usernames, channelList }: State): void {
   const storage = getLocalStorage()
   if (storage === null) return
 
-  storage.setItem(persistedStateKey, JSON.stringify({
-    authToken,
-    usernames,
-    channelList
-  }))
+  storage.setItem(
+    persistedStateKey,
+    JSON.stringify({
+      authToken,
+      usernames,
+      channelList,
+    }),
+  )
 }
 
 const persistedState = readPersistedState()
@@ -77,31 +80,31 @@ export const useStore = defineStore('app', {
     userInfo: null,
     authToken: persistedState.authToken,
     usernames: persistedState.usernames,
-    channelList: persistedState.channelList
+    channelList: persistedState.channelList,
   }),
   getters: {
-    channelArray: state => state.channelList.filter(c => !c.archived),
-    channelById: state => (id: string) => state.channelList.find(c => c.id === id)
+    channelArray: (state) => state.channelList.filter((c) => !c.archived),
+    channelById: (state) => (id: string) => state.channelList.find((c) => c.id === id),
   },
   actions: {
-    setUserInfo (info: MyUserDetail) {
+    setUserInfo(info: MyUserDetail) {
       this.userInfo = info
     },
-    setToken (token: string | null) {
+    setToken(token: string | null) {
       this.authToken = token
       setAuthToken(token)
     },
-    addUserNameCache ({ id, name }: { id: string, name: string }) {
+    addUserNameCache({ id, name }: { id: string; name: string }) {
       this.usernames[id] = name
     },
-    putChannelList (list: ParsedChannel[]) {
+    putChannelList(list: ParsedChannel[]) {
       this.channelList = list
     },
-    async fetchUserInfo () {
+    async fetchUserInfo() {
       const res = await traq.getMe()
       this.setUserInfo(res.data)
     },
-    async fetchUserName (id: string): Promise<string> {
+    async fetchUserName(id: string): Promise<string> {
       let name = this.usernames[id]
       if (name) return name
 
@@ -115,12 +118,12 @@ export const useStore = defineStore('app', {
       this.addUserNameCache({ id, name })
       return name
     },
-    async updateChannelList () {
+    async updateChannelList() {
       const res = await traq.getChannels()
       const list = parseAPIChannelList(res.data.public)
       this.putChannelList(list)
-    }
-  }
+    },
+  },
 })
 
 export const appStore = useStore(store)

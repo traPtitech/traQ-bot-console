@@ -15,9 +15,9 @@ app.use(Quasar, {
     Notify,
     Loading,
     Dialog,
-    Dark
+    Dark,
   },
-  lang
+  lang,
 })
 
 Dark.set('auto')

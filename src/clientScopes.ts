@@ -6,22 +6,22 @@ export interface ScopeOption {
 export default [
   {
     label: 'ユーザーID取得',
-    value: 'openid'
+    value: 'openid',
   },
   {
     label: 'プロフィール取得',
-    value: 'profile'
+    value: 'profile',
   },
   {
     label: '読み取り',
-    value: 'read'
+    value: 'read',
   },
   {
     label: '書き込み',
-    value: 'write'
+    value: 'write',
   },
   {
     label: 'BOT管理',
-    value: 'manage_bot'
-  }
+    value: 'manage_bot',
+  },
 ] satisfies ScopeOption[]

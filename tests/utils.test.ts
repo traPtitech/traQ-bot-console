@@ -6,10 +6,10 @@ type TestWindow = {
   btoa: (input: string) => string
 }
 
-function installBrowserCrypto (): void {
+function installBrowserCrypto(): void {
   vi.stubGlobal('window', {
     crypto: webcrypto as unknown as Crypto,
-    btoa: input => Buffer.from(input, 'binary').toString('base64')
+    btoa: (input) => Buffer.from(input, 'binary').toString('base64'),
   } satisfies TestWindow)
 }
 
@@ -36,15 +36,17 @@ describe('utils', () => {
   it('creates RFC 7636 compatible PKCE challenges', async () => {
     const { pkce } = await import('../src/utils')
 
-    await expect(pkce('dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk'))
-      .resolves.toBe('E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM')
+    await expect(pkce('dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk')).resolves.toBe(
+      'E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM',
+    )
   })
 
   it('calculates HMAC-SHA1 signatures as lowercase hex', async () => {
     const { hmacsha1 } = await import('../src/utils')
 
-    await expect(hmacsha1('The quick brown fox jumps over the lazy dog', 'key'))
-      .resolves.toBe('de7c9b85b8b78aa6bc8a7a36f70a90701c9db4d9')
+    await expect(hmacsha1('The quick brown fox jumps over the lazy dog', 'key')).resolves.toBe(
+      'de7c9b85b8b78aa6bc8a7a36f70a90701c9db4d9',
+    )
   })
 
   it('formats date times with optional milliseconds', async () => {
@@ -58,19 +60,37 @@ describe('utils', () => {
   it('flattens public channels with full names, sorted by channel path', async () => {
     const { parseAPIChannelList } = await import('../src/utils')
     const channels = [
-      { id: 'project', name: 'project', parentId: 'general', archived: false, children: ['ignored'] },
+      {
+        id: 'project',
+        name: 'project',
+        parentId: 'general',
+        archived: false,
+        children: ['ignored'],
+      },
       { id: 'zeta', name: 'zeta', parentId: null, archived: false },
       { id: 'general', name: 'general', parentId: null, archived: false },
       { id: 'alpha', name: 'alpha', parentId: 'general', archived: true },
-      { id: 'random', name: 'random', parentId: undefined, archived: false }
+      { id: 'random', name: 'random', parentId: undefined, archived: false },
     ]
 
     expect(parseAPIChannelList(channels)).toEqual([
       { id: 'general', name: 'general', parentId: '', archived: false, channelName: '#general' },
-      { id: 'alpha', name: 'alpha', parentId: 'general', archived: true, channelName: '#general/alpha' },
-      { id: 'project', name: 'project', parentId: 'general', archived: false, channelName: '#general/project' },
+      {
+        id: 'alpha',
+        name: 'alpha',
+        parentId: 'general',
+        archived: true,
+        channelName: '#general/alpha',
+      },
+      {
+        id: 'project',
+        name: 'project',
+        parentId: 'general',
+        archived: false,
+        channelName: '#general/project',
+      },
       { id: 'random', name: 'random', parentId: '', archived: false, channelName: '#random' },
-      { id: 'zeta', name: 'zeta', parentId: '', archived: false, channelName: '#zeta' }
+      { id: 'zeta', name: 'zeta', parentId: '', archived: false, channelName: '#zeta' },
     ])
     expect(channels[0]?.children).toEqual(['ignored'])
   })
