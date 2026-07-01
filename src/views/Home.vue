@@ -289,6 +289,11 @@ import { useQuasar } from 'quasar'
 import { useStore } from '../store'
 import { traq, getUserIconURL } from '../api'
 import clientScopes from '../clientScopes'
+import {
+  canAccessOthersBots,
+  canAccessOthersWebhooks,
+  canManageOthersClients,
+} from '../permissions'
 
 defineOptions({ name: 'PageHome' })
 
@@ -301,7 +306,7 @@ const bots = ref<any[]>([])
 const clients = ref<any[]>([])
 
 const getWebhooks = async () => {
-  const webhooks: any[] = (await traq.getWebhooks()).data
+  const webhooks: any[] = (await traq.getWebhooks(canAccessOthersWebhooks(store.userInfo))).data
 
   const botUserNames = await Promise.all(
     webhooks.map(webhook => store.fetchUserName(webhook.botUserId))
@@ -314,7 +319,7 @@ const getWebhooks = async () => {
 }
 
 const getBots = async () => {
-  const bots: any[] = (await traq.getBots()).data
+  const bots: any[] = (await traq.getBots(canAccessOthersBots(store.userInfo))).data
 
   const botUserNames = await Promise.all(
     bots.map(bot => store.fetchUserName(bot.botUserId))
@@ -327,7 +332,7 @@ const getBots = async () => {
 }
 
 const getClients = async () => {
-  const clients: any[] = (await traq.getClients()).data
+  const clients: any[] = (await traq.getClients(canManageOthersClients(store.userInfo))).data
   for (const client of clients) {
     client.scopeLabels = client.scopes.map(
       (scope: string) => clientScopes.find(s => s.value === scope)?.label ?? scope
