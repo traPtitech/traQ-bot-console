@@ -52,6 +52,16 @@
             <q-item-section>ダッシュボード</q-item-section>
           </q-item>
           <q-item
+            v-if="hasAdminDashboard"
+            clickable
+            :to="{ name: 'adminDashboard' }"
+          >
+            <q-item-section avatar>
+              <q-icon name="admin_panel_settings" />
+            </q-item-section>
+            <q-item-section>管理者ダッシュボード</q-item-section>
+          </q-item>
+          <q-item
             clickable
             to="/docs"
           >
@@ -83,12 +93,23 @@
 import { computed, ref } from 'vue'
 import { useStore } from '../store'
 import { traq, getUserIconURL } from '../api'
+import {
+  canAccessOthersBots,
+  canAccessOthersWebhooks,
+  canManageOthersClients,
+} from '../permissions'
 
 defineOptions({ name: 'LayoutDefault' })
 
 const store = useStore()
 const left = ref(true)
 const userInfo = computed(() => store.userInfo)
+const hasAdminDashboard = computed(
+  () =>
+    canAccessOthersWebhooks(userInfo.value) ||
+    canAccessOthersBots(userInfo.value) ||
+    canManageOthersClients(userInfo.value),
+)
 
 const logout = async () => {
   try {

@@ -1,14 +1,15 @@
 <template>
   <div class="dashboard-grid">
     <DashboardPanel
+      v-if="showWebhooks"
       title="Webhooks"
-      caption="あなたが作成したWebhook"
+      :caption="webhooksCaption"
       :add-to="{ name: 'createWebhook' }"
       add-label="Webhookを作成"
       :loading="loading"
       :empty="webhooks.length === 0"
-      empty-title="まだ Webhook はありません"
-      empty-caption="Webhookを作成するとここに表示されます"
+      :empty-title="webhooksEmptyTitle"
+      :empty-caption="webhooksEmptyCaption"
     >
       <q-item
         v-for="webhook in webhooks"
@@ -51,19 +52,26 @@
           >
             Insecure
           </q-badge>
+          <q-item-label
+            v-if="includeAll && webhook.ownerName !== undefined"
+            caption
+          >
+            @{{ webhook.ownerName }}によって作成
+          </q-item-label>
         </q-item-section>
       </q-item>
     </DashboardPanel>
 
     <DashboardPanel
+      v-if="showBots"
       title="BOTs"
-      caption="あなたが登録したBOT"
+      :caption="botsCaption"
       :add-to="{ name: 'createBot' }"
       add-label="BOTを登録"
       :loading="loading"
       :empty="bots.length === 0"
-      empty-title="まだ BOT はありません"
-      empty-caption="BOTを登録するとここに表示されます"
+      :empty-title="botsEmptyTitle"
+      :empty-caption="botsEmptyCaption"
     >
       <q-item
         v-for="bot in bots"
@@ -115,19 +123,26 @@
           <q-badge v-else>
             不明な状態
           </q-badge>
+          <q-item-label
+            v-if="includeAll && bot.developerName !== undefined"
+            caption
+          >
+            @{{ bot.developerName }}によって登録
+          </q-item-label>
         </q-item-section>
       </q-item>
     </DashboardPanel>
 
     <DashboardPanel
+      v-if="showClients"
       title="Clients"
-      caption="あなたが作成したClient"
+      :caption="clientsCaption"
       :add-to="{ name: 'createClient' }"
       add-label="Clientを登録"
       :loading="loading"
       :empty="clients.length === 0"
-      empty-title="まだ Client はありません"
-      empty-caption="Clientを登録するとここに表示されます"
+      :empty-title="clientsEmptyTitle"
+      :empty-caption="clientsEmptyCaption"
     >
       <q-item
         v-for="client in clients"
@@ -152,10 +167,16 @@
           </q-item-label>
         </q-item-section>
         <q-item-section
-          class="scope-section"
+          :class="includeAll ? 'meta-section' : 'scope-section'"
           side
           top
         >
+          <q-item-label
+            v-if="includeAll && client.developerName !== undefined"
+            caption
+          >
+            @{{ client.developerName }}によって作成
+          </q-item-label>
           <q-badge
             v-for="scope in client.scopeLabels"
             :key="scope"
@@ -170,7 +191,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import type { Bot, OAuth2Client, Webhook } from "@traptitech/traq";
 import { useQuasar } from "quasar";
 import { useStore } from "../store";
@@ -180,6 +201,18 @@ import DashboardPanel from "./DashboardPanel.vue";
 
 defineOptions({ name: "DashboardLists" });
 
+const {
+  includeAll = false,
+  showWebhooks = true,
+  showBots = true,
+  showClients = true,
+} = defineProps<{
+  includeAll?: boolean;
+  showWebhooks?: boolean;
+  showBots?: boolean;
+  showClients?: boolean;
+}>();
+
 const $q = useQuasar();
 const store = useStore();
 
@@ -187,13 +220,16 @@ const loading = ref(true);
 
 type WebhookListItem = Webhook & {
   botUserName: string;
+  ownerName?: string;
 };
 
 type BotListItem = Bot & {
   botUserName: string;
+  developerName?: string;
 };
 
 type ClientListItem = OAuth2Client & {
+  developerName?: string;
   scopeLabels: string[];
 };
 
@@ -201,37 +237,82 @@ const webhooks = ref<WebhookListItem[]>([]);
 const bots = ref<BotListItem[]>([]);
 const clients = ref<ClientListItem[]>([]);
 
+const webhooksCaption = computed(() =>
+  includeAll ? "管理者権限で表示できるWebhook" : "あなたが作成したWebhook",
+);
+const botsCaption = computed(() =>
+  includeAll ? "管理者権限で表示できるBOT" : "あなたが登録したBOT",
+);
+const clientsCaption = computed(() =>
+  includeAll ? "管理者権限で表示できるClient" : "あなたが作成したClient",
+);
+
+const webhooksEmptyTitle = computed(() =>
+  includeAll ? "表示できる Webhook はありません" : "まだ Webhook はありません",
+);
+const botsEmptyTitle = computed(() =>
+  includeAll ? "表示できる BOT はありません" : "まだ BOT はありません",
+);
+const clientsEmptyTitle = computed(() =>
+  includeAll ? "表示できる Client はありません" : "まだ Client はありません",
+);
+
+const webhooksEmptyCaption = computed(() =>
+  includeAll
+    ? "Webhookが存在しないか、表示権限がありません"
+    : "Webhookを作成するとここに表示されます",
+);
+const botsEmptyCaption = computed(() =>
+  includeAll ? "BOTが存在しないか、表示権限がありません" : "BOTを登録するとここに表示されます",
+);
+const clientsEmptyCaption = computed(() =>
+  includeAll
+    ? "Clientが存在しないか、表示権限がありません"
+    : "Clientを登録するとここに表示されます",
+);
+
 const getWebhooks = async () => {
-  const webhooks = (await traq.getWebhooks(false)).data;
+  if (!showWebhooks) return [];
+
+  const webhooks = (await traq.getWebhooks(includeAll)).data;
 
   return Promise.all(
     webhooks.map(async (webhook) => ({
       ...webhook,
       botUserName: await store.fetchUserName(webhook.botUserId),
+      ownerName: includeAll ? await store.fetchUserName(webhook.ownerId) : undefined,
     })),
   );
 };
 
 const getBots = async () => {
-  const bots = (await traq.getBots(false)).data;
+  if (!showBots) return [];
+
+  const bots = (await traq.getBots(includeAll)).data;
 
   return Promise.all(
     bots.map(async (bot) => ({
       ...bot,
       botUserName: await store.fetchUserName(bot.botUserId),
+      developerName: includeAll ? await store.fetchUserName(bot.developerId) : undefined,
     })),
   );
 };
 
 const getClients = async () => {
-  const clients = (await traq.getClients(false)).data;
+  if (!showClients) return [];
 
-  return clients.map((client) => ({
-    ...client,
-    scopeLabels: client.scopes.map(
-      (scope) => clientScopes.find((s) => s.value === scope)?.label ?? scope,
-    ),
-  }));
+  const clients = (await traq.getClients(includeAll)).data;
+
+  return Promise.all(
+    clients.map(async (client) => ({
+      ...client,
+      developerName: includeAll ? await store.fetchUserName(client.developerId) : undefined,
+      scopeLabels: client.scopes.map(
+        (scope) => clientScopes.find((s) => s.value === scope)?.label ?? scope,
+      ),
+    })),
+  );
 };
 
 onMounted(async () => {
@@ -306,5 +387,14 @@ onMounted(async () => {
   gap: 4px;
   justify-content: flex-end;
   max-width: 120px;
+}
+
+.meta-section {
+  align-items: flex-end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: flex-end;
+  max-width: 180px;
 }
 </style>

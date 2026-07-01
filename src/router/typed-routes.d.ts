@@ -6,6 +6,7 @@ type IdParams = { id: string }
 
 export interface RouteNamedMap {
   home: RouteRecordInfo<'home', '/', EmptyParams, EmptyParams>
+  adminDashboard: RouteRecordInfo<'adminDashboard', '/admin', EmptyParams, EmptyParams>
   createBot: RouteRecordInfo<'createBot', '/bots/create', EmptyParams, EmptyParams>
   botDetail: RouteRecordInfo<'botDetail', '/bots/:id', IdParamsRaw, IdParams>
   createWebhook: RouteRecordInfo<'createWebhook', '/webhooks/create', EmptyParams, EmptyParams>

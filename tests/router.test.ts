@@ -43,6 +43,10 @@ describe('router', () => {
     expect(router.resolve('/webhooks').matched.at(-1)?.redirect).toEqual({ name: 'home' })
     expect(router.resolve('/clients').matched.at(-1)?.redirect).toEqual({ name: 'home' })
   })
+
+  test('resolves admin dashboard route by name', () => {
+    expect(router.resolve({ name: 'adminDashboard' }).fullPath).toBe('/admin')
+  })
 })
 
 const assertRouteTypes = () => {

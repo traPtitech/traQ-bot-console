@@ -13,6 +13,11 @@ export const routes = [
         component: () => import('../views/Home.vue'),
       },
       {
+        path: 'admin',
+        name: 'adminDashboard',
+        component: () => import('../views/Admin.vue'),
+      },
+      {
         path: 'docs/',
         component: () => import('../layouts/Docs.vue'),
         children: [
