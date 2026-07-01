@@ -53,12 +53,14 @@
 </template>
 
 <script setup lang="ts">
+import type { RouterLinkProps } from 'vue-router'
+
 defineOptions({ name: 'DashboardPanel' })
 
 defineProps<{
   title: string
   caption: string
-  addTo: string
+  addTo: RouterLinkProps['to']
   addLabel: string
   loading: boolean
   empty: boolean

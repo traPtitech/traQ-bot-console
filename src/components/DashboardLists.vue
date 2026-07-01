@@ -3,7 +3,7 @@
     <DashboardPanel
       title="Webhooks"
       caption="あなたが作成したWebhook"
-      add-to="/webhooks/create"
+      :add-to="{ name: 'createWebhook' }"
       add-label="Webhookを作成"
       :loading="loading"
       :empty="webhooks.length === 0"
@@ -13,7 +13,7 @@
       <q-item
         v-for="webhook in webhooks"
         :key="webhook.id"
-        :to="`/webhooks/${webhook.id}`"
+        :to="{ name: 'webhookDetail', params: { id: webhook.id } }"
         clickable
       >
         <q-item-section avatar>
@@ -58,7 +58,7 @@
     <DashboardPanel
       title="BOTs"
       caption="あなたが登録したBOT"
-      add-to="/bots/create"
+      :add-to="{ name: 'createBot' }"
       add-label="BOTを登録"
       :loading="loading"
       :empty="bots.length === 0"
@@ -68,7 +68,7 @@
       <q-item
         v-for="bot in bots"
         :key="bot.id"
-        :to="`/bots/${bot.id}`"
+        :to="{ name: 'botDetail', params: { id: bot.id } }"
         clickable
       >
         <q-item-section avatar>
@@ -122,7 +122,7 @@
     <DashboardPanel
       title="Clients"
       caption="あなたが作成したClient"
-      add-to="/clients/create"
+      :add-to="{ name: 'createClient' }"
       add-label="Clientを登録"
       :loading="loading"
       :empty="clients.length === 0"
@@ -132,7 +132,7 @@
       <q-item
         v-for="client in clients"
         :key="client.id"
-        :to="`/clients/${client.id}`"
+        :to="{ name: 'clientDetail', params: { id: client.id } }"
         clickable
       >
         <q-item-section avatar>
