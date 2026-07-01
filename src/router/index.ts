@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
-import { appStore as store } from '../store'
-import { fetchAuthToken, redirectAuthorizationEndpoint } from '../api'
+import { handleOAuthCallback, requireAuthentication } from './guards'
 
 export const routes = [
   {
@@ -175,38 +174,13 @@ export const routes = [
         component: () => import('../views/ClientDetail.vue'),
       },
     ],
-    beforeEnter: async () => {
-      try {
-        await store.fetchUserInfo()
-        await store.updateChannelList()
-        return undefined
-      } catch (e) {
-        await redirectAuthorizationEndpoint()
-        return false
-      }
-    },
+    beforeEnter: requireAuthentication,
   },
   {
     path: '/callback',
     name: 'callback',
     component: () => import('../views/Callback.vue'),
-    beforeEnter: async (to) => {
-      const code = to.query['code']
-      const state = to.query['state']
-      const codeVerifier = sessionStorage.getItem(`login-code-verifier-${state}`)
-      if (!code || !codeVerifier) {
-        return { name: 'home' }
-      }
-
-      try {
-        const res = await fetchAuthToken(code, codeVerifier)
-        store.setToken(res.data.access_token)
-        return { name: 'home' }
-      } catch (e) {
-        console.error(e)
-        return false
-      }
-    },
+    beforeEnter: handleOAuthCallback,
   },
 ] satisfies RouteRecordRaw[]
 
