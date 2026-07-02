@@ -46,6 +46,16 @@
         </q-item-label>
       </q-item-section>
     </q-item>
+    <q-item v-else-if="filteredEmpty">
+      <q-item-section>
+        <q-item-label class="text-grey-7">
+          {{ filteredEmptyTitle }}
+        </q-item-label>
+        <q-item-label caption>
+          {{ filteredEmptyCaption }}
+        </q-item-label>
+      </q-item-section>
+    </q-item>
     <template v-else>
       <slot />
     </template>
@@ -66,6 +76,9 @@ defineProps<{
   empty: boolean
   emptyTitle: string
   emptyCaption: string
+  filteredEmpty: boolean
+  filteredEmptyTitle: string
+  filteredEmptyCaption: string
 }>()
 </script>
 
