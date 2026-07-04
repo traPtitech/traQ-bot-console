@@ -6,6 +6,7 @@ export const routes = [
   {
     path: '/',
     component: () => import('../layouts/Default.vue'),
+    meta: { requiresAuth: true },
     children: [
       {
         path: '',
@@ -179,7 +180,6 @@ export const routes = [
         component: () => import('../views/ClientDetail.vue'),
       },
     ],
-    beforeEnter: requireAuthentication,
   },
   {
     path: '/callback',
@@ -192,4 +192,17 @@ export const routes = [
 export const router = createRouter({
   history: createWebHistory(),
   routes,
+})
+
+export const routeRequiresAuthentication = (to: {
+  matched: Array<{ meta: Record<string, unknown> }>
+}) => {
+  return to.matched.some((route) => route.meta['requiresAuth'] === true)
+}
+
+router.beforeEach((to) => {
+  if (routeRequiresAuthentication(to)) {
+    return requireAuthentication()
+  }
+  return undefined
 })

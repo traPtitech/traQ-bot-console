@@ -2,14 +2,32 @@ import type { RouteLocationNormalized, RouteLocationRaw } from 'vue-router'
 import { fetchAuthToken, redirectAuthorizationEndpoint } from '../api'
 import { appStore as store } from '../store'
 
+const getResponseStatus = (error: unknown): number | undefined => {
+  if (typeof error !== 'object' || error === null || !('response' in error)) {
+    return undefined
+  }
+
+  const { response } = error
+  if (typeof response !== 'object' || response === null || !('status' in response)) {
+    return undefined
+  }
+
+  const { status } = response
+  return typeof status === 'number' ? status : undefined
+}
+
 export async function requireAuthentication(): Promise<undefined | false> {
   try {
     await store.fetchUserInfo()
     await store.updateChannelList()
     return undefined
   } catch (e) {
-    await redirectAuthorizationEndpoint()
-    return false
+    const status = getResponseStatus(e)
+    if (status === 401 || status === 403) {
+      await redirectAuthorizationEndpoint()
+      return false
+    }
+    throw e
   }
 }
 

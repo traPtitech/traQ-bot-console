@@ -49,12 +49,22 @@ describe('router guards', () => {
   })
 
   it('redirects to authorization when current state fetching fails', async () => {
-    mocks.store.fetchUserInfo.mockRejectedValue(new Error('unauthorized'))
+    mocks.store.fetchUserInfo.mockRejectedValue({ response: { status: 401 } })
 
     await expect(requireAuthentication()).resolves.toBe(false)
 
     expect(mocks.store.updateChannelList).not.toHaveBeenCalled()
     expect(mocks.redirectAuthorizationEndpoint).toHaveBeenCalledWith()
+  })
+
+  it('throws non-authentication errors from current state fetching', async () => {
+    const error = { response: { status: 500 } }
+    mocks.store.fetchUserInfo.mockRejectedValue(error)
+
+    await expect(requireAuthentication()).rejects.toBe(error)
+
+    expect(mocks.store.updateChannelList).not.toHaveBeenCalled()
+    expect(mocks.redirectAuthorizationEndpoint).not.toHaveBeenCalled()
   })
 
   it('redirects callback navigation home when code is missing', async () => {

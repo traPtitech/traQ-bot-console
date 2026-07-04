@@ -1,5 +1,5 @@
-import { describe, expect, expectTypeOf, test, vi } from 'vitest'
-import { router } from '../src/router'
+import { beforeEach, describe, expect, expectTypeOf, test, vi } from 'vitest'
+import { routeRequiresAuthentication, router } from '../src/router'
 
 const mocks = vi.hoisted(() => ({
   store: {
@@ -30,6 +30,12 @@ vi.mock('vue-router', async (importOriginal) => {
 })
 
 describe('router', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    mocks.store.fetchUserInfo.mockResolvedValue(undefined)
+    mocks.store.updateChannelList.mockResolvedValue(undefined)
+  })
+
   test('resolves typed detail routes by name', () => {
     const route = router.resolve({ name: 'botDetail', params: { id: 'bot-id' } })
 
@@ -46,6 +52,12 @@ describe('router', () => {
 
   test('resolves admin dashboard route by name', () => {
     expect(router.resolve({ name: 'adminDashboard' }).fullPath).toBe('/admin')
+  })
+
+  test('marks protected child routes for authentication', () => {
+    expect(routeRequiresAuthentication(router.resolve('/admin'))).toBe(true)
+    expect(routeRequiresAuthentication(router.resolve('/bots/bot-id'))).toBe(true)
+    expect(routeRequiresAuthentication(router.resolve('/callback'))).toBe(false)
   })
 })
 
