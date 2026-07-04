@@ -129,6 +129,17 @@ describe('api', () => {
     )
   })
 
+  it('rejects OAuth token requests when code or verifier is missing', async () => {
+    const api = await import('../src/api')
+
+    await expect(api.fetchAuthToken(null, 'verifier-1')).rejects.toThrow(
+      'code or verifier is missing',
+    )
+    await expect(api.fetchAuthToken('code-1', null)).rejects.toThrow('code or verifier is missing')
+
+    expect(getTraqInstance(0).postOAuth2Token).not.toHaveBeenCalled()
+  })
+
   it('posts webhook messages without a signature when no secret is given', async () => {
     const api = await import('../src/api')
     getTraqInstance(0).postWebhook.mockResolvedValue({ ok: true })

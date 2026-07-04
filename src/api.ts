@@ -38,13 +38,16 @@ export function fetchAuthToken(
   verifier: string | null,
 ) {
   const normalizedCode = Array.isArray(code) ? code[0] : code
+  if (!normalizedCode || !verifier) {
+    return Promise.reject(new Error('code or verifier is missing'))
+  }
 
   return traq.postOAuth2Token(
     'authorization_code',
-    normalizedCode as string,
+    normalizedCode,
     undefined,
     import.meta.env['VITE_API_CLIENT_ID'] || 'lkElAHAUIqFmImUvxmWItnbWO7EBdxttwBaW',
-    verifier as string,
+    verifier,
   )
 }
 
