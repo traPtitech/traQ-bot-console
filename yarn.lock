@@ -494,10 +494,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@quasar/extras@npm:2.0.1":
-  version: 2.0.1
-  resolution: "@quasar/extras@npm:2.0.1"
-  checksum: 10c0/c4a75bb6a6fd73ba0ef8ccfade8dae3a640548ba75a133996e3bf384bdf7e4ecf74fbc13d8dff9b90b4ce45f3c40f37296f2f5c1cf1e31812de424b6f9f6d4c1
+"@quasar/extras@npm:2.0.2":
+  version: 2.0.2
+  resolution: "@quasar/extras@npm:2.0.2"
+  checksum: 10c0/b7134e3b3febac8b1bbc40bebbb02e987d13d12eab54765beefa33bfd009d4c213485d2667f47b2a7b75a1bc322692a7390849c7b35d5a37b8369cb87236a618
   languageName: node
   linkType: hard
 
@@ -3364,7 +3364,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "traq-bot-console@workspace:."
   dependencies:
-    "@quasar/extras": "npm:2.0.1"
+    "@quasar/extras": "npm:2.0.2"
     "@quasar/vite-plugin": "npm:1.12.0"
     "@traptitech/traq": "npm:3.28.2-1"
     "@types/markdown-it": "npm:^14.1.2"
