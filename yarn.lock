@@ -2944,10 +2944,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"quasar@npm:2.20.1":
-  version: 2.20.1
-  resolution: "quasar@npm:2.20.1"
-  checksum: 10c0/becd32821783b4e167e3b1102ea60db13b4a6bed8e6ff843a32c21a774516e738f683b4f348c6df7fa62287e873fadfc1bfaad38edf5a88fbf83b379f2652939
+"quasar@npm:2.21.0":
+  version: 2.21.0
+  resolution: "quasar@npm:2.21.0"
+  checksum: 10c0/35d3077c4e0b88f470afdbefed18ee9e5d2989d5a82567c163b72b4cbe2624881650158f29cb6534701360797fb181b7948ead2ea342ac5eac9a9518dfaec4c4
   languageName: node
   linkType: hard
 
@@ -3194,7 +3194,7 @@ __metadata:
     markdown-it-mark: "npm:4.0.0"
     oxfmt: "npm:^0.56.0"
     pinia: "npm:3.0.4"
-    quasar: "npm:2.20.1"
+    quasar: "npm:2.21.0"
     typescript: "npm:^6.0.3"
     typescript-eslint: "npm:8.62.0"
     vite: "npm:8.1.0"
