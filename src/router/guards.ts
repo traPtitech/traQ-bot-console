@@ -19,7 +19,6 @@ const getResponseStatus = (error: unknown): number | undefined => {
 export async function requireAuthentication(): Promise<undefined | false> {
   try {
     await store.fetchUserInfo()
-    await store.updateChannelList()
     return undefined
   } catch (e) {
     const status = getResponseStatus(e)
