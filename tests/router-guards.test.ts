@@ -30,6 +30,9 @@ function installSessionStorage(entries: Record<string, string> = {}): void {
 
   vi.stubGlobal('sessionStorage', {
     getItem: vi.fn((key: string) => storage.get(key) ?? null),
+    removeItem: vi.fn((key: string) => {
+      storage.delete(key)
+    }),
   })
 }
 
@@ -88,6 +91,16 @@ describe('router guards', () => {
     expect(mocks.store.setToken).not.toHaveBeenCalled()
   })
 
+  it('redirects callback navigation home without storage lookup when state is repeated', async () => {
+    await expect(
+      handleOAuthCallback(routeWithQuery({ code: 'code-1', state: ['state-1', 'state-2'] })),
+    ).resolves.toEqual({ name: 'home' })
+
+    expect(sessionStorage.getItem).not.toHaveBeenCalled()
+    expect(mocks.fetchAuthToken).not.toHaveBeenCalled()
+    expect(mocks.store.setToken).not.toHaveBeenCalled()
+  })
+
   it('stores the fetched token and redirects callback navigation home', async () => {
     installSessionStorage({ 'login-code-verifier-state-1': 'verifier-1' })
     mocks.fetchAuthToken.mockResolvedValue({ data: { access_token: 'token-1' } })
@@ -98,6 +111,7 @@ describe('router guards', () => {
 
     expect(mocks.fetchAuthToken).toHaveBeenCalledWith('code-1', 'verifier-1')
     expect(mocks.store.setToken).toHaveBeenCalledWith('token-1')
+    expect(sessionStorage.removeItem).toHaveBeenCalledWith('login-code-verifier-state-1')
   })
 
   it('cancels callback navigation when token fetching fails', async () => {
@@ -111,5 +125,6 @@ describe('router guards', () => {
 
     expect(consoleError).toHaveBeenCalled()
     expect(mocks.store.setToken).not.toHaveBeenCalled()
+    expect(sessionStorage.removeItem).toHaveBeenCalledWith('login-code-verifier-state-1')
   })
 })

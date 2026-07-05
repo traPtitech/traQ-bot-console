@@ -36,7 +36,12 @@ export async function handleOAuthCallback(
 ): Promise<RouteLocationRaw | false> {
   const code = to.query['code']
   const state = to.query['state']
-  const codeVerifier = sessionStorage.getItem(`login-code-verifier-${state}`)
+  if (typeof state !== 'string') {
+    return { name: 'home' }
+  }
+
+  const codeVerifierKey = `login-code-verifier-${state}`
+  const codeVerifier = sessionStorage.getItem(codeVerifierKey)
   if (!code || !codeVerifier) {
     return { name: 'home' }
   }
@@ -48,5 +53,7 @@ export async function handleOAuthCallback(
   } catch (e) {
     console.error(e)
     return false
+  } finally {
+    sessionStorage.removeItem(codeVerifierKey)
   }
 }
