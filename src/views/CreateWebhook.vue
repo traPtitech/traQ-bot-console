@@ -102,7 +102,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
 import { useStore } from '../store'
@@ -140,6 +140,10 @@ const fetchChannels = async () => {
     loadingChannel.value = false
   }
 }
+
+onMounted(() => {
+  fetchChannels()
+})
 
 const channelFilterFn = (val: string, update: (callback: () => void) => void) => {
   if (val === '') {

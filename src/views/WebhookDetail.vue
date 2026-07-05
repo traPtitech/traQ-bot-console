@@ -357,11 +357,8 @@ const fetchData = async () => {
     name.value = webhookData.displayName
     description.value = webhookData.description
     webhook.value = webhookData
+    await store.updateChannelList()
     channel.value = store.channelById(webhookData.channelId)
-    if (channel.value === null || channel.value === undefined) {
-      await store.updateChannelList()
-      channel.value = store.channelById(webhookData.channelId)
-    }
     messages.value = (await traq.getWebhookMessages((route.params as any).id as string, 10)).data
   } catch (e: any) {
     console.error(e)
