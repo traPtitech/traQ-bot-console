@@ -1,73 +1,58 @@
-import tsPlugin from '@typescript-eslint/eslint-plugin'
-import tsParser from '@typescript-eslint/parser'
+import { defineConfig } from 'eslint/config'
 import pluginVue from 'eslint-plugin-vue'
+import tseslint from 'typescript-eslint'
 
-const commonRules = {
-  'vue/custom-event-name-casing': 'error',
-  'vue/multi-word-component-names': 'off',
-  '@typescript-eslint/ban-ts-comment': [
-    'error',
-    {
-      'ts-check': false,
-      'ts-expect-error': 'allow-with-description',
-      'ts-ignore': true,
-      'ts-nocheck': true,
-      minimumDescriptionLength: 3,
-    },
-  ],
-  '@typescript-eslint/consistent-type-imports': [
-    'error',
-    {
-      fixStyle: 'separate-type-imports',
-      prefer: 'type-imports',
-    },
-  ],
-  '@typescript-eslint/no-unused-vars': [
-    'error',
-    {
-      argsIgnorePattern: '^_',
-      caughtErrors: 'none',
-      ignoreRestSiblings: true,
-      varsIgnorePattern: '^_',
-    },
-  ],
-}
-
-export default [
+const config = defineConfig([
   ...pluginVue.configs['flat/recommended'],
   {
-    languageOptions: {
-      parser: tsParser,
-      globals: {
-        node: true,
-        es2022: true,
-      },
-    },
-    files: ['src/**/*.ts'],
+    files: ['src/**/*.{ts,vue}'],
     plugins: {
-      '@typescript-eslint': tsPlugin,
+      '@typescript-eslint': tseslint.plugin,
     },
     rules: {
-      ...commonRules,
+      'vue/custom-event-name-casing': 'error',
+      'vue/multi-word-component-names': 'off',
+      '@typescript-eslint/ban-ts-comment': [
+        'error',
+        {
+          'ts-check': false,
+          'ts-expect-error': 'allow-with-description',
+          'ts-ignore': true,
+          'ts-nocheck': true,
+          minimumDescriptionLength: 3,
+        },
+      ],
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        {
+          fixStyle: 'separate-type-imports',
+          prefer: 'type-imports',
+        },
+      ],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          caughtErrors: 'none',
+          ignoreRestSiblings: true,
+          varsIgnorePattern: '^_',
+        },
+      ],
     },
   },
   {
     languageOptions: {
+      parser: tseslint.parser,
+    },
+    files: ['src/**/*.ts'],
+  },
+  {
+    languageOptions: {
       parserOptions: {
-        parser: tsParser,
-      },
-      globals: {
-        node: true,
-        es2022: true,
+        parser: tseslint.parser,
       },
     },
     files: ['src/**/*.vue'],
-    plugins: {
-      '@typescript-eslint': tsPlugin,
-    },
-    rules: {
-      ...commonRules,
-    },
   },
   {
     files: [
@@ -83,4 +68,6 @@ export default [
       '@typescript-eslint/no-explicit-any': 'error',
     },
   },
-]
+])
+
+export default config
