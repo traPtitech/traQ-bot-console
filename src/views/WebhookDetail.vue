@@ -213,7 +213,7 @@
                     readonly
                   />
                   <q-input
-                    v-model="webhook.createdAt"
+                    :model-value="formatDateTime(webhook.createdAt)"
                     label="作成日時"
                     hint=""
                     readonly
@@ -507,7 +507,7 @@ const cancelEditing = () => {
   name.value = name.temp
   description.value = description.temp
   channel.value = channel.temp
-  channelSelect.value?.updateInputValue(channel.value.channelName)
+  channelSelect.value?.updateInputValue(channel.value?.channelName ?? '')
   secret.value = '表示されません'
   secret.editing = false
   editing.value = false

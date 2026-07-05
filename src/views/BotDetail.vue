@@ -58,7 +58,7 @@
             <q-tooltip>何らかの原因で一時停止されています。アクティベーションしてください。</q-tooltip>
           </q-badge>
           <q-badge v-else>
-            不明な状態({{ bot.state }}
+            不明な状態({{ bot.state }})
           </q-badge>
           <q-badge
             v-if="bot.privileged"
