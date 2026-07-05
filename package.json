@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@quasar/extras": "2.0.1",
-    "@traptitech/traq": "3.28.2-0",
+    "@traptitech/traq": "3.28.2-1",
     "github-markdown-css": "5.9.0",
     "pinia": "3.0.4",
     "quasar": "2.20.1",
