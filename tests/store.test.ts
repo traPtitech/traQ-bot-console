@@ -135,6 +135,23 @@ describe('store', () => {
     )
   })
 
+  it('keeps state updates when persisted state writing fails', async () => {
+    const localStorage = stubLocalStorage()
+    const error = new Error('quota exceeded')
+    localStorage.setItem.mockImplementation(() => {
+      throw error
+    })
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const store = await loadStore()
+
+    store.setToken('token-1')
+    await nextTick()
+
+    expect(store.authToken).toBe('token-1')
+    expect(localStorage.setItem).toHaveBeenCalled()
+    expect(consoleError).toHaveBeenCalledWith(error)
+  })
+
   it('fetches the current user info', async () => {
     const store = await loadStore()
     mocks.traq.getMe.mockResolvedValue({ data: { id: 'me', name: 'myself' } })

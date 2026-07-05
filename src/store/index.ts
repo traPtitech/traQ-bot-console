@@ -61,14 +61,18 @@ function writePersistedState({ authToken, usernames, channelList }: State): void
   const storage = getLocalStorage()
   if (storage === null) return
 
-  storage.setItem(
-    persistedStateKey,
-    JSON.stringify({
-      authToken,
-      usernames,
-      channelList,
-    }),
-  )
+  try {
+    storage.setItem(
+      persistedStateKey,
+      JSON.stringify({
+        authToken,
+        usernames,
+        channelList,
+      }),
+    )
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 const persistedState = readPersistedState()
