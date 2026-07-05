@@ -563,7 +563,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { copyToClipboard, useQuasar } from 'quasar'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from '../store'
@@ -723,6 +723,10 @@ const fetchChannels = async () => {
     loadingChannels.value = false
   }
 }
+
+onMounted(() => {
+  fetchChannels()
+})
 
 const channelFilterFn = (val: string, update: (callback: () => void) => void) => {
   if (val === '') {

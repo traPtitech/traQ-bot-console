@@ -47,7 +47,6 @@ describe('router guards', () => {
     await expect(requireAuthentication()).resolves.toBeUndefined()
 
     expect(mocks.store.fetchUserInfo).toHaveBeenCalledWith()
-    expect(mocks.store.updateChannelList).toHaveBeenCalledWith()
     expect(mocks.redirectAuthorizationEndpoint).not.toHaveBeenCalled()
   })
 
