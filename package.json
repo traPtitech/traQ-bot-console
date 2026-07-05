@@ -20,7 +20,7 @@
     "@traptitech/traq": "3.28.2-1",
     "github-markdown-css": "5.9.0",
     "pinia": "3.0.4",
-    "quasar": "2.20.1",
+    "quasar": "2.21.0",
     "vue": "3.5.39",
     "vue-router": "5.1.0"
   },
