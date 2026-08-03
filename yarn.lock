@@ -3135,18 +3135,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.5.17":
-  version: 8.5.20
-  resolution: "postcss@npm:8.5.20"
-  dependencies:
-    nanoid: "npm:^3.3.16"
-    picocolors: "npm:^1.1.1"
-    source-map-js: "npm:^1.2.1"
-  checksum: 10c0/9c7a0e32c77ac54c5613f974e6ccc97d4a70fdb3bf242617f3fb4d652e5c62a37c86c589e6e7a2d1e7120f80bc169cdf673482b88bd75020d2a44899fa569c13
-  languageName: node
-  linkType: hard
-
-"postcss@npm:^8.5.19":
+"postcss@npm:^8.5.17, postcss@npm:^8.5.19":
   version: 8.5.20
   resolution: "postcss@npm:8.5.20"
   dependencies:
@@ -3199,10 +3188,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"quasar@npm:2.21.0":
-  version: 2.21.0
-  resolution: "quasar@npm:2.21.0"
-  checksum: 10c0/35d3077c4e0b88f470afdbefed18ee9e5d2989d5a82567c163b72b4cbe2624881650158f29cb6534701360797fb181b7948ead2ea342ac5eac9a9518dfaec4c4
+"quasar@npm:2.23.4":
+  version: 2.23.4
+  resolution: "quasar@npm:2.23.4"
+  checksum: 10c0/9c0db46f60cd874545964dc784d101e257f7090fcf2f2b8cec19996c7f52807d32bc355739cdf8ef1e95e043398d8c38ba2d63ce4cfc1b9803c82d26f4e7bce5
   languageName: node
   linkType: hard
 
@@ -3507,7 +3496,7 @@ __metadata:
     markdown-it-mark: "npm:4.0.0"
     oxfmt: "npm:^0.59.0"
     pinia: "npm:3.0.4"
-    quasar: "npm:2.21.0"
+    quasar: "npm:2.23.4"
     typescript: "npm:^6.0.3"
     typescript-eslint: "npm:8.62.0"
     vite: "npm:8.1.5"
