@@ -57,3 +57,28 @@
   }
 }
 ```
+
+## THREAD_CREATED
+スレッドが作成された
+
+### サンプル
+```json
+{
+  "eventTime": "2019-05-08T13:50:51.059768423Z",
+  "channel": {
+    "id": "016a97b6-0aa6-7333-9f1e-b86ea6d9f900",
+    "name": "おすすめの店おしえて",
+    "path": "#gps/yamada/おすすめの店おしえて",
+    "parentId": "711afb4c-23e7-46dc-b845-5160f7088ce9",
+    "creator": {
+      "id": "dfdff0c9-5de0-46ee-9721-2525e8bb3d45",
+      "name": "takashi_trap",
+      "displayName": "寺田 健二",
+      "iconId": "2bc06cda-bdb9-4a68-8000-62f907f36a92",
+      "bot": false
+    },
+    "createdAt": "2019-05-08T13:50:51.046000Z",
+    "updatedAt": "2019-05-08T13:50:51.046000Z"
+  }
+}
+```

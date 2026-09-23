@@ -86,6 +86,11 @@ export default {
     category: 'タグ',
     description: 'BOTからタグが削除された',
   },
+  THREAD_CREATED: {
+    category: 'チャンネル',
+    description: 'スレッドが作成された',
+    privileged: true,
+  },
   USER_GROUP_CREATED: {
     category: 'ユーザーグループ',
     description: 'ユーザーグループが作成された',
