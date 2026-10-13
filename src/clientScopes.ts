@@ -24,4 +24,8 @@ export default [
     label: 'BOT管理',
     value: 'manage_bot',
   },
+  {
+    label: 'Qall (通話)',
+    value: 'qall',
+  },
 ] satisfies ScopeOption[]
