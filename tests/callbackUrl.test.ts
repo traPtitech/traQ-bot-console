@@ -26,6 +26,17 @@ describe('isValidCallbackUrl', () => {
     'javascript:alert(1)',
     'data:text/html,<script>alert(1)</script>',
     'file:///etc/passwd',
+    'qall:1/callback',
+    'myapp:1234',
+    'javascript:1/alert(document.domain)',
+    'https:1/../../login',
+    'https:///callback',
+    'http:1234',
+    'ws://example.com/callback',
+    'https://user:pass@example.com/callback',
+    'jp.trap.qall://u:p@h/callback',
+    'jp.trap.qall:/cb x',
+    ' https://example.com/callback',
   ])('rejects %s', (value) => {
     expect(isValidCallbackUrl(value)).toBe(false)
   })
