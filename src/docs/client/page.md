@@ -19,8 +19,8 @@ https://q.trap.jp/api/v3/oauth2/authorize
 | response_type         | code             | true  |
 | client_id             | `クライアントID` | true  |
 | state                 | `任意文字列`     | false |
-| code_challenge        | `チャレンジ`     | false |
-| code_challenge_method | `メソッド`       | false |
+| code_challenge        | `チャレンジ`     | false (リダイレクト先がhttp(s)以外の場合はtrue) |
+| code_challenge_method | `メソッド`       | false (リダイレクト先がhttp(s)以外の場合はtrue) |
 | scope                 | `スコープ`       | false |
 
 stateやcode_challengeとcode_challenge_methodは付与することでCSRFを防げます。
@@ -29,6 +29,14 @@ scopeは付与すると取得するトークンのスコープを狭められま
 リクエストを送るとtraQのClient認可の承諾画面にリダイレクトされます。
 この画面で承認をすると作成時に指定したURLへ`code`パラメータが付与された状態でリダイレクトされます。
 この`code`パラメータを利用してトークンを取得します。
+
+### ネイティブアプリの場合
+
+リダイレクト先に`com.example.app:/callback`のようなhttp(s)以外のURIを指定した場合は、以下に注意してください。
+
++ 認可リクエストはアプリ内のWebViewではなく、システムのブラウザで開いてください
++ `code_challenge`と`code_challenge_method=S256`(PKCE)が必須です
++ `prompt=none`は使用できません
 
 ### トークンの取得
 
