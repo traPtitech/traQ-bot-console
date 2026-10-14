@@ -37,7 +37,7 @@ const absoluteUriRegex = (() => {
   return new RegExp(`^[A-Za-z][A-Za-z0-9+\\-.]*:${hierPart}(?:\\?${query})?$`)
 })()
 
-// traQ 側と同じく、URL またはリバースドメイン形式のスキームの URI を許可する
+// URL、またはリバースドメイン形式のスキームの URI を許可する (後者は traQ 側と同じ条件)
 export function isValidCallbackUrl(value: string): boolean {
   if (urlRegex.test(value)) {
     return true
