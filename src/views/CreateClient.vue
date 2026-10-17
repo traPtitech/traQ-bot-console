@@ -47,8 +47,8 @@
         outlined
         stack-label
         label="リダイレクト先URL"
-        hint="OAuth承認後のリダイレクト先のURLを入力してください"
-        :rules="[val => val && urlRegex.test(val) || '有効なURLを入力してください']"
+        hint="OAuth承認後のリダイレクト先のURLを入力してください (ネイティブアプリは com.example.app:/callback のようなリバースドメイン形式のスキームも使用できます)"
+        :rules="[val => val && isValidCallbackUrl(val) || '有効なURLを入力してください']"
       />
       <fieldset class="scope-field">
         <legend>スコープ</legend>
@@ -83,6 +83,7 @@ import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
 import { traq } from '../api'
 import scopeOptions from '../clientScopes'
+import { isValidCallbackUrl } from '../callbackUrl'
 
 defineOptions({ name: 'CreateClient' })
 
@@ -94,7 +95,6 @@ const description = ref('')
 const callbackUrl = ref('')
 const scopes = ref<any[]>([])
 const accept = ref(false)
-const urlRegex = /http(s)?:\/\/([\w-]+.)+[\w-]+(\/[\w- ./?%&=]*)?/i
 const scopeOptionsWithLabels = scopeOptions.map(opt => ({
   label: `${opt.label} (${opt.value})`,
   value: opt.value,

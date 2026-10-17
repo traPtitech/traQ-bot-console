@@ -87,7 +87,7 @@
                     stack-label
                     :readonly="!editing"
                     :counter="editing"
-                    :rules="[val => val && urlRegex.test(val) || '有効なURLを入力してください']"
+                    :rules="[val => val && isValidCallbackUrl(val) || '有効なURLを入力してください']"
                   />
                   <fieldset class="scope-field">
                     <legend>スコープ</legend>
@@ -194,6 +194,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useStore } from '../store'
 import { traq, getUsersOptionItems } from '../api'
 import clientScopeOptions from '../clientScopes'
+import { isValidCallbackUrl } from '../callbackUrl'
 
 defineOptions({ name: 'ClientDetail' })
 
@@ -213,7 +214,6 @@ const scopeOptions = clientScopeOptions.map(opt => ({
   label: `${opt.label} (${opt.value})`,
   value: opt.value,
 }))
-const urlRegex = /http(s)?:\/\/([\w-]+.)+[\w-]+(\/[\w- ./?%&=]*)?/i
 const hideSecret = ref(true)
 const userInfo = computed<any>(() => store.userInfo)
 
