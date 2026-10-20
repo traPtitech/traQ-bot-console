@@ -20,6 +20,9 @@ Clientの承認後にリダイレクトされるURLです。
 この`code`パラメータを利用することで`token`を取得できます。
 `token`に関する説明は[こちら](/docs/client/page)
 
+スマートフォンなどのネイティブアプリでは、`com.example.app:/callback`のような、自分が管理するドメインを逆順にしたスキームのURIも指定できます。
+この場合は認可リクエストの方法が一部異なります。詳しくは[こちら](/docs/client/page)
+
 ### スコープ (`scope`)
 
 Clientが利用する権限です。
@@ -94,6 +97,13 @@ Clientが利用する権限です。
 + Clientの情報の取得
 + Clientの作成/編集/削除
 
+#### Qall (`qall`)
+
++ Qallの通話への参加
++ 全ユーザーの通話参加状況の取得
++ 通話ルーム情報・参加者の発言権の変更
++ サウンドボードの利用/追加
+
 #### 備考
 
 各スコープで行えることの最新情報は以下のソースを参照してください。
@@ -103,3 +113,4 @@ Clientが利用する権限です。
 + [読み取り(read)](https://github.com/traPtitech/traQ/blob/master/service/rbac/role/read.go)
 + [書き込み(write)](https://github.com/traPtitech/traQ/blob/master/service/rbac/role/write.go)
 + [BOT管理(manage_bot)](https://github.com/traPtitech/traQ/blob/master/service/rbac/role/manage_bot.go)
++ [Qall(qall)](https://github.com/traPtitech/traQ/blob/master/service/rbac/role/qall.go)
